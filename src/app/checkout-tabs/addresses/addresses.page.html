@@ -1,0 +1,17 @@
+<checkout-header [pageTitle]="pageTitle"></checkout-header>
+
+<ion-content [fullscreen]="true">
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <ion-button *ngIf="selectedTab$ | async as selectedTab" (click)="reviewReady(selectedTab)"
+                    expand="block" fill="clear" shape="round">
+                    Review Ready
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    
+</ion-content>

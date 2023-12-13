@@ -1,0 +1,17 @@
+<ion-tabs *ngIf="viewState$ | async as vs">
+  <ion-tab-bar slot="bottom">
+
+    <div *ngFor="let tab of vs?.tabsState" style="width: 100%;">
+      <ion-tab-button [tab]="tab.tab" [href]="'tabs/' + tab?.tab" [selected]="tab.selected" [disabled]="tab?.disabled">
+        <ion-icon aria-hidden="true" [name]="tab?.iconName"></ion-icon>
+        <ion-badge color="success" mode="ios" *ngIf="tab?.buttonChecked">
+          <ion-icon aria-hidden="true" name="checkmark-outline"></ion-icon>
+        </ion-badge>
+        <ion-label>
+          {{tab?.name}}
+        </ion-label>
+      </ion-tab-button>
+    </div>
+
+  </ion-tab-bar>
+</ion-tabs>
