@@ -3,9 +3,14 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/checkout/addresses',
+    redirectTo: '/home',
     pathMatch: 'full',
   },
+  // {
+  //   path: '',
+  //   redirectTo: '/checkout/cart-review',
+  //   pathMatch: 'full',
+  // },
   {
     path: 'checkout',
     loadChildren: () => import('./checkout-tabs/checkout.routes').then((m) => m.routes),

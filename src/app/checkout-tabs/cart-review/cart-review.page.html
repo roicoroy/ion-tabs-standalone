@@ -2,9 +2,11 @@
 
 <ion-content [fullscreen]="true">
   <div>
-    <ion-button *ngIf="selectedTab$ | async as selectedTab" (click)="reviewReady(selectedTab)" expand="block"
-      fill="clear" shape="round">
-      Review Ready
+    <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
+    <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">
+      Form Ready!
     </ion-button>
   </div>
 </ion-content>
+
+<checkout-footer></checkout-footer>

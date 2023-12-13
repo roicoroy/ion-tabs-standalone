@@ -51,6 +51,9 @@ export class CheckoutTabsState {
     @Action(CheckoutActions.SelectedCheckoutTabsState)
     selectedCheckoutTabsState(ctx: StateContext<ICheckoutTabsStateModel>, { selectedTab }: CheckoutActions.SelectedCheckoutTabsState) {
         const state = ctx.getState();
+
+        console.log(selectedTab);
+
         return ctx.patchState({
             ...state,
             selectedTab,

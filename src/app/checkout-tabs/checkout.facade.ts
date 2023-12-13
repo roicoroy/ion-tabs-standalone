@@ -37,6 +37,6 @@ export class CheckoutTabsFacade {
                         tabsState: tabsState[0],
                         selectedTab,
                     }))
-            ) as any;
+            ) as unknown as any;
     }
 }

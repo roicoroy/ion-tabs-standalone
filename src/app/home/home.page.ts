@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { NavigationService } from '../shared/utils/navigation.service';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,14 @@ import { IonicModule } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
 
+  private navigationsService = inject(NavigationService);
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  checkoutPage() {
+    this.navigationsService.navigateFlip('/checkout/cart-review');
+  }
 }

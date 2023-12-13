@@ -3,71 +3,45 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CheckoutHeaderComponent } from '../header/header.component';
-import { Select, Store } from '@ngxs/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { CheckoutActions } from '../checkout-store/checkout.actions';
-import { CheckoutTabsState } from '../checkout-store/checkout.state';
-import { ICheckoutTabs } from '../checkout-tabs.config';
-import { ICheckoutTabsFacadeModel, CheckoutTabsFacade } from '../checkout.facade';
+import { Subject } from 'rxjs';
+import { CheckoutTabsService } from '../checkout-tabs.service';
+import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.component';
 
 @Component({
   selector: 'app-shipping',
   templateUrl: './shipping.page.html',
   styleUrls: ['../checkout.styles.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, CheckoutHeaderComponent]
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    CheckoutHeaderComponent,
+    CheckoutFooterComponent
+  ]
 })
 export class ShippingPage implements OnInit {
-  
+
   pageTitle = 'Shipping Page';
-
-  @Select(CheckoutTabsState.getTabsState) tabsState$!: Observable<ICheckoutTabs[]>;
-
-  @Select(CheckoutTabsState.getSelectedTab) selectedTab$!: Observable<string>;
 
   buttonToggle: boolean = false;
 
-  viewState$!: Observable<ICheckoutTabsFacadeModel>;
-
-  private checkoutTabs: ICheckoutTabs[] = [];
-
-  private store = inject(Store);
-
-  private facade = inject(CheckoutTabsFacade);
+  private service = inject(CheckoutTabsService);
 
   private readonly ngUnsubscribe = new Subject();
 
-  constructor() {
-    this.viewState$ = this.facade.viewState$;
-
-    //   this.selectedTab$.subscribe((selectedTab) => {
-    //     console.log(selectedTab);
-    //   });
-  }
-
   ngOnInit() {
-    this.tabsState$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((tabs) => {
-        this.checkoutTabs = tabs;
-      });
   }
 
   toogle() {
     this.buttonToggle = !this.buttonToggle
+    this.service.ready(this.buttonToggle);
   }
   reviewReady(selectedTab: string): void {
-    const result: any = this.checkoutTabs.filter(checkoutTabs => {
-      return checkoutTabs?.tab === selectedTab;
-    });
-    this.toogle();
-    const parsed: any = {
-      buttonChecked: this.buttonToggle,
-      disabled: false,
-      tab: result[0]?.tab,
-      selected: true
-    }
-    this.store.dispatch(new CheckoutActions.UpdateCheckoutTabsState(parsed));
+  }
+
+  formReady(ready: boolean) {
+    this.service.ready(ready);
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,25 @@
+<ion-footer>
+  <ion-toolbar color="secondary" class="ion-tex-center">
+    <ion-row class="iont-text-center">
+      <ion-col size="4" expand="block" fill="clear" shape="round">
+        <ion-button (click)="back()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col expand="block" fill="clear" shape="round">
+        <ion-button>
+          <ion-label class="ion-wrap">
+            Clear all
+          </ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4" expand="block" fill="clear" shape="round">
+        <ion-button>
+          <ion-label class="ion-wrap">
+            Clear {{ pageTitle }}
+          </ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

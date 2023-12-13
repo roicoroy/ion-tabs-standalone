@@ -5,13 +5,13 @@ import { IonicModule } from '@ionic/angular';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
 
 @Component({
-  selector: 'checkout-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['../checkout.styles.scss'],
+  selector: 'checkout-footer',
+  templateUrl: './checkout-footer.component.html',
+  styleUrls: ['./checkout-footer.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class CheckoutHeaderComponent implements OnInit {
+export class CheckoutFooterComponent implements OnInit {
 
   @Input() pageTitle!: string;
 

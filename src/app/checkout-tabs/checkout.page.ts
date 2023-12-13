@@ -8,6 +8,7 @@ import { CheckoutTabsFacade, ICheckoutTabsFacadeModel } from './checkout.facade'
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { CheckoutActions } from './checkout-store/checkout.actions';
+import { CheckoutTabsService } from './checkout-tabs.service';
 
 @Component({
   selector: 'app-tabs',
@@ -27,27 +28,23 @@ export class CheckoutTabsPage {
 
   private store = inject(Store);
 
+  private service = inject(CheckoutTabsService);
+
   constructor() {
-    addIcons({
-      triangle,
-      ellipse,
-      square,
-      checkmarkOutline,
-      book,
-      cart,
-      wallet,
-      bicycle
-    });
   }
 
   ionViewWillEnter() {
+    this.service.init();
     this.viewState$ = this.facade.viewState$;
+    // this.viewState$.subscribe((vs) => {
+    //   console.log(JSON.parse(vs.selectedTab));
+    // });
   }
 
 
-  // ionTabsDidChange($event: any) {
-  //   const selectedTab = $event.tab;
-  //   this.store.dispatch(new CheckoutActions.SelectedCheckoutTabsState(selectedTab));
-  // }
+  onTabsWillChange($event: any) {
+    const selectedTab = $event.tab;
+    this.store.dispatch(new CheckoutActions.SelectedCheckoutTabsState(selectedTab));
+  }
 
 }
