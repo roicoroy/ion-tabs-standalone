@@ -14,7 +14,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { CheckoutTabsState } from './app/tabs/checkout-store/checkout.state';
+import { CheckoutTabsState } from './app/checkout-tabs/checkout-store/checkout.state';
 
 if (environment.production) {
   enableProdMode();

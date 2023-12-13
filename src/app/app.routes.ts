@@ -8,7 +8,6 @@ export const routes: Routes = [
   },
   {
     path: 'checkout',
-    // loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
     loadChildren: () => import('./checkout-tabs/checkout.routes').then((m) => m.routes),
   },
   {
