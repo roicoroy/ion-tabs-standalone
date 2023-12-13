@@ -27,12 +27,6 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       NgxsStoragePluginModule.forRoot({
         key: [
-          'auth',
-          'customer',
-          'products',
-          'settings',
-          'errors',
-          'keyboard',
           'checkoutTabs'
         ]
       })),
@@ -41,11 +35,11 @@ bootstrapApplication(AppComponent, {
         [
           CheckoutTabsState,
         ],
-        { developmentMode: true }
+        { developmentMode: false }
       ),
       NgxsReduxDevtoolsPluginModule.forRoot(),
       NgxsLoggerPluginModule.forRoot({
-        disabled: false,
+        disabled: true,
       }),
       NgxsFormPluginModule.forRoot(),
       IonicStorageModule.forRoot()
