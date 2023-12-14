@@ -1,5 +1,18 @@
+import { CartItem } from "./store/cart.state";
+
+export function joinItems(cartItems: CartItem[], products: Product[]) {
+  return cartItems.map(cartItem => {
+    const product = products.find(p => p.id === cartItem.productId);
+    return {
+      ...cartItem,
+      ...product,
+      total: cartItem.quantity * Number(product?.price),
+    };
+  });
+}
+
 export interface Product {
-  id?: number;
+  id: number;
   name?: string;
   slug?: string;
   permalink?: string;
@@ -14,7 +27,7 @@ export interface Product {
   description?: string;
   short_description?: string;
   sku?: string;
-  price?: string;
+  price: string;
   regular_price?: string;
   sale_price?: string;
   date_on_sale_from?: Date;
@@ -64,9 +77,10 @@ export interface Product {
   menu_order?: number;
   meta_data?: Array<any>;
   images?: Images[];
+  yoast_head: any;
 }
 
-export interface  Category {
+export interface Category {
   id: number;
   name: string;
   slug: string;
@@ -95,11 +109,11 @@ export enum ProductOrder {
   'asc' = 'asc'
 }
 export enum ProductOrderBy {
-  'date'= 'date',
-  'id'= 'id',
-  'include'= 'include',
-  'title'= 'title',
-  'slug'= 'slug'
+  'date' = 'date',
+  'id' = 'id',
+  'include' = 'include',
+  'title' = 'title',
+  'slug' = 'slug'
 }
 
 export interface ProductQuery {

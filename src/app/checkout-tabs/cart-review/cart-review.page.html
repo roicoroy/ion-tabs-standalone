@@ -1,12 +1,21 @@
 <checkout-header [pageTitle]="pageTitle"></checkout-header>
 
 <ion-content [fullscreen]="true">
-  <div>
-    <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
-    <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">
-      Form Ready!
-    </ion-button>
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <app-cart></app-cart>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-row>
+      <ion-col size="12">
+        <ion-button fill="outline" [routerLink]="['/checkout/addresses']" (click)="formReady(true)">
+          Proceed
+        </ion-button>
+      </ion-col>
+    </ion-row> -->
+  </ion-grid>
+
 </ion-content>
 
 <checkout-footer></checkout-footer>

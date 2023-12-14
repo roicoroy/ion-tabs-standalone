@@ -24,7 +24,7 @@ export class WoocommerceHelperService {
     }));
 
   }
-
+  
   includeQuery(query: any = {}): any {
     const queryPatch: any = {};
     Object.keys(query).forEach(key => {

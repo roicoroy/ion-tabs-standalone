@@ -15,6 +15,12 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { CheckoutTabsState } from './app/checkout-tabs/checkout-store/checkout.state';
+import { ProductsState } from './app/shop/store/products.state';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { WooInterceptor } from './app/shared/wooApi/woo.interceptor';
+import { register } from 'swiper/element/bundle';
+import { CartState } from './app/shop/store/cart.state';
+register();
 
 if (environment.production) {
   enableProdMode();
@@ -22,18 +28,28 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: WooInterceptor,
+      multi: true
+    },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     importProvidersFrom(
+      HttpClientModule,
       NgxsStoragePluginModule.forRoot({
         key: [
-          'checkoutTabs'
+          'checkoutTabs',
+          'products',
+          'cart'
         ]
       })),
     importProvidersFrom(
       NgxsModule.forRoot(
         [
           CheckoutTabsState,
+          ProductsState,
+          CartState
         ],
         { developmentMode: false }
       ),

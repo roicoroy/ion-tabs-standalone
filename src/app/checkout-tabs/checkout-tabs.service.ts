@@ -50,7 +50,7 @@ export class CheckoutTabsService implements OnDestroy {
       tab: result[0]?.tab,
       selected: true
     }
-    console.log(parsed);
+    // console.log(parsed);
     this.store.dispatch(new CheckoutActions.UpdateCheckoutTabsState(parsed));
   }
 

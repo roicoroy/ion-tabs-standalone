@@ -52,7 +52,7 @@ export class CheckoutTabsState {
     selectedCheckoutTabsState(ctx: StateContext<ICheckoutTabsStateModel>, { selectedTab }: CheckoutActions.SelectedCheckoutTabsState) {
         const state = ctx.getState();
 
-        console.log(selectedTab);
+        // console.log(selectedTab);
 
         return ctx.patchState({
             ...state,

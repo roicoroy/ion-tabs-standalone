@@ -9,10 +9,10 @@ import { Device, DeviceId, DeviceInfo } from '@capacitor/device';
 import { catchError } from 'rxjs';
 import { WoocommerceHelperService } from './wooApi';
 import { ModalController } from '@ionic/angular';
-import { FcmModalComponent } from '../components/fcm-modal/fcm-modal.component';
 import { environment } from 'src/environments/environment';
 import { ErrorLoggingActions } from '../store/errors-logging/errors-logging.actions';
 import { Platform } from '@ionic/angular';
+import { FcmModalComponent } from '../components/fcm-modal/fcm-modal.component';
 
 export interface INotifcationPayload {
     id: string;

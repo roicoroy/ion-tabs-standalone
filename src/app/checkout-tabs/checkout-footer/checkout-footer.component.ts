@@ -22,7 +22,7 @@ export class CheckoutFooterComponent implements OnInit {
   ngOnInit() { }
 
   back() {
-    this.navigationsService.navControllerDefault('home', 'back');
+    this.navigationsService.navControllerDefault('product-list', 'back');
   }
 
 }
