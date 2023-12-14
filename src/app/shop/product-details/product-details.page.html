@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="false">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="product-list"></ion-back-button>
@@ -14,9 +14,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="false">
 
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">
         Details
@@ -25,7 +25,7 @@
     <ion-toolbar>
       <app-cart></app-cart>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
 
   <ion-card *ngIf="(product$ | async) as product" class="card product">
@@ -34,12 +34,15 @@
         {{ product.name }}
       </ion-card-title>
     </ion-card-header>
-    <ion-button (click)="addToCart(product.id)">
-      <ion-icon slot="icon-only" name="add"></ion-icon>
+    
+    <ion-button (click)="addToCart(product.id)" expand="block" fill="outline" shape="round">
+      Add to cart
     </ion-button>
-    <ion-button (click)="removeFromCart(product.id)">
+    
+    <!-- <ion-button (click)="removeFromCart(product.id)">
       <ion-icon slot="icon-only" name="remove"></ion-icon>
-    </ion-button>
+    </ion-button> -->
+    
     <ion-card-content>
       
       <ion-text color="primary" [innerHTML]="sanitise(product.price_html)"></ion-text>

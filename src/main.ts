@@ -20,6 +20,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { WooInterceptor } from './app/shared/wooApi/woo.interceptor';
 import { register } from 'swiper/element/bundle';
 import { CartState } from './app/shop/store/cart.state';
+import { AddressesState } from './app/addresses/store/addresses.state';
 register();
 
 if (environment.production) {
@@ -41,7 +42,8 @@ bootstrapApplication(AppComponent, {
         key: [
           'checkoutTabs',
           'products',
-          'cart'
+          'cart',
+          'addresses'
         ]
       })),
     importProvidersFrom(
@@ -49,7 +51,8 @@ bootstrapApplication(AppComponent, {
         [
           CheckoutTabsState,
           ProductsState,
-          CartState
+          CartState,
+          AddressesState
         ],
         { developmentMode: false }
       ),

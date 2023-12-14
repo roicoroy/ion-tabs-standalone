@@ -5,12 +5,9 @@
         Products List
       </ion-button>
     </ion-buttons>
-    <ion-title>home</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="checkoutPage()">
-        Checkout
-      </ion-button>
-    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -27,15 +24,17 @@
       <ion-col size="12">
         <cart-icon></cart-icon>
       </ion-col>
-      <ion-col size="12">
+      <!-- <ion-col size="12">
         <app-cart></app-cart>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
-    <ion-row>
+    <!-- <ion-row>
       <ion-col size="12">
-        products list
+        <ion-button (click)="addressesPage()" expand="block" fill="clear" shape="round">
+          Addresses
+        </ion-button>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
   </ion-grid>
 
 

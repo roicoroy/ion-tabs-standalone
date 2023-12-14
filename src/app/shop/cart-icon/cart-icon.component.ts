@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CartItem, CartState } from '../store';
 import { Store } from '@ngxs/store';
-import { Product } from '../products.interface';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
 
 @Component({
@@ -45,7 +44,6 @@ export class CartIconComponent implements OnInit, OnDestroy {
           console.error(e)
         },
         complete: () => {
-          // console.info('complete')
         },
       });
   }

@@ -1,5 +1,3 @@
-<ion-button (click)="checkout()" *ngIf="cartItems$ | async as cart">
-  <ion-badge color="success" mode="ios">
-    {{ numberOfCartItems }}
-  </ion-badge>
-</ion-button>
+<ion-badge color="success" mode="ios" (click)="checkout()" *ngIf="cartItems$ | async as cart">
+  {{ numberOfCartItems }}
+</ion-badge>

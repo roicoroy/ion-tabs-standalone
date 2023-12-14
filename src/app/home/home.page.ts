@@ -40,6 +40,10 @@ export class HomePage implements OnInit {
     // this.navigationsService.navigateFlip('/checkout/cart-review');
   }
   
+  addressesPage() {
+    this.navigationsService.navigateFlip('/checkout/addresses');
+  }
+  
   productsListPage() {
     this.navigationsService.navigateFlip('/product-list');
   }

@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { CartState } from 'src/app/shop/store';
 import { LoadingController } from '@ionic/angular';
+import { CartIconComponent } from 'src/app/shop/cart-icon/cart-icon.component';
 
 @Component({
   selector: 'app-cart-review',
@@ -23,6 +24,7 @@ import { LoadingController } from '@ionic/angular';
     FormsModule,
     RouterLink,
     CartComponent,
+    CartIconComponent,
     CheckoutHeaderComponent,
     CheckoutFooterComponent
   ]

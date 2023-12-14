@@ -6,6 +6,7 @@ import { CheckoutHeaderComponent } from '../header/header.component';
 import { Subject } from 'rxjs';
 import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.component';
 import { CheckoutTabsService } from '../checkout-tabs.service';
+import { AddressesComponent } from 'src/app/addresses/addresses/addresses.component';
 
 @Component({
   selector: 'app-addresses',
@@ -17,7 +18,8 @@ import { CheckoutTabsService } from '../checkout-tabs.service';
     CommonModule,
     FormsModule,
     CheckoutHeaderComponent,
-    CheckoutFooterComponent
+    CheckoutFooterComponent,
+    AddressesComponent
   ]
 })
 export class AddressesPage implements OnInit, OnDestroy {
@@ -37,6 +39,7 @@ export class AddressesPage implements OnInit, OnDestroy {
     this.buttonToggle = !this.buttonToggle
     this.service.ready(this.buttonToggle);
   }
+  
   reviewReady(selectedTab: string): void {
   }
 

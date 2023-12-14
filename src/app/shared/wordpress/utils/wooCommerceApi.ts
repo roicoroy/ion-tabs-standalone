@@ -1,15 +1,16 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { Order } from "./types/wooCommerceTypes";
+import { environment } from "src/environments/environment";
 
 // initialise the WooCommerceRestApi //
 // NOTE: must execute these API calls server-side because env vars only available there and it is more secure
-let api:any;
-// const api = new WooCommerceRestApi({
-//   url: process.env.WORDPRESS_URL!,
-//   consumerKey: process.env.WOOCOMMERCE_KEY!,
-//   consumerSecret: process.env.WOOCOMMERCE_SECRET!,
-//   version: "wc/v3",
-// });
+// let api:any;
+const api = new WooCommerceRestApi({
+  url: environment.origin!,
+  consumerKey: environment.woocommerce.consumer_key!,
+  consumerSecret: environment.woocommerce.consumer_secret!,
+  version: "wc/v3",
+});
 
 // fetch all products from WooCommerce //
 export async function fetchWooCommerceProducts() {

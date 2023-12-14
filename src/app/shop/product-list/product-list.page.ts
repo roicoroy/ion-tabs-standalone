@@ -11,6 +11,7 @@ import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import { IAlbum, Lightbox, LightboxModule } from 'ngx-lightbox';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
+import { CartIconComponent } from '../cart-icon/cart-icon.component';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +24,7 @@ import { NavigationService } from 'src/app/shared/utils/navigation.service';
     IonicModule,
     CommonModule,
     FormsModule,
+    CartIconComponent,
     LightboxModule
   ]
 })
