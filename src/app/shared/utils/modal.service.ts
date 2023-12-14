@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Component, ComponentRef, Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { PrivacyComponent } from 'src/app/components/privacy/privacy.component';
@@ -10,8 +10,15 @@ import { TermsOfServiceComponent } from 'src/app/components/terms-of-service/ter
 export class ModalService {
 
   private modalController = inject(ModalController);
-  
+
   private router = inject(Router);
+
+  async openModal(component: any) {
+    const modal = await this.modalController.create({
+      component
+    });
+    return await modal.present();
+  }
 
   async showPrivacyModal() {
     const modal = await this.modalController.create({
@@ -19,7 +26,7 @@ export class ModalService {
     });
     return await modal.present();
   }
-  
+
   async showTermsModal() {
     const modal = await this.modalController.create({
       component: TermsOfServiceComponent

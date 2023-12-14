@@ -1,0 +1,49 @@
+<ion-grid>
+  <ion-row>
+
+    <ion-col size="6">
+      Billing Address
+      <ion-item *ngIf="billing_address$ | async as address">
+        <ion-label>
+          {{address | json }}
+        </ion-label>
+        <ion-button (click)="openModalAddressPage(address, 'billing_address')" expand="block" fill="clear"
+          shape="round">
+          Add Billing Address
+        </ion-button>
+        <ion-button (click)="clear('billing_address')" expand="block" fill="clear"
+          shape="round">
+          Clear
+        </ion-button>
+      </ion-item>
+
+    </ion-col>
+
+    <ion-col size="6">
+      Shipping Address
+      <ion-item *ngIf="shipping_address$ | async as address">
+        <ion-label>
+          {{ address | json }}
+        </ion-label>
+        <ion-button (click)="openModalAddressPage(address, 'shipping_address')" expand="block" fill="clear"
+          shape="round">
+          Add Shipping Address
+        </ion-button>
+        <ion-button (click)="clear('shipping_address')" expand="block" fill="clear"
+          shape="round">
+          Clear
+        </ion-button>
+      </ion-item>
+
+    </ion-col>
+
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12">
+      <!-- <ion-button (click)="openModalAddressPage()" expand="block" fill="clear" shape="round">
+        Add Address Page
+      </ion-button> -->
+    </ion-col>
+  </ion-row>
+</ion-grid>

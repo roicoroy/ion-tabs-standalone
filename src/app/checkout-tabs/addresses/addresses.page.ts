@@ -6,7 +6,7 @@ import { CheckoutHeaderComponent } from '../header/header.component';
 import { Subject } from 'rxjs';
 import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.component';
 import { CheckoutTabsService } from '../checkout-tabs.service';
-import { AddressesComponent } from 'src/app/addresses/addresses/addresses.component';
+import { AddressesComponent } from 'src/app/addresses/addresses-list/addresses.component';
 
 @Component({
   selector: 'app-addresses',

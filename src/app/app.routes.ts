@@ -29,4 +29,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./shop/product-details/product-details.page').then(m => m.ProductDetailsPage)
   },
+  {
+    path: 'add-address/:address',
+    loadComponent: () => import('./addresses/add-address/add-address.page').then( m => m.AddAddressPage)
+  },
 ];

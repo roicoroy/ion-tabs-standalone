@@ -5,16 +5,16 @@ import { Shipping, Billing } from 'src/app/shared/wooApi';
 import { AddressesActions } from './addresses.actions';
 
 export class IAddressesStateModel {
-    shipping_address!: Shipping | undefined;
-    billing_address!: Billing | undefined;
+    billing_address?: Billing | null;
+    shipping_address?: Shipping | null;
 }
 
 @State<IAddressesStateModel>({
     name: 'addresses',
-    defaults: {
-        shipping_address: undefined,
-        billing_address: undefined,
-    }
+    // defaults: {
+    //     shipping_address: undefined,
+    //     billing_address: undefined,
+    // }
 })
 @Injectable()
 export class AddressesState {
@@ -22,25 +22,56 @@ export class AddressesState {
     private store = inject(Store);
 
     @Selector()
-    static getShipping(state: IAddressesStateModel): Shipping | undefined{
+    static getShipping(state: IAddressesStateModel): Shipping | undefined | null {
         return state.shipping_address;
     }
 
     @Selector()
-    static getBilling(state: IAddressesStateModel): Billing | undefined{
+    static getBilling(state: IAddressesStateModel): Billing | undefined | null {
         return state.billing_address;
     }
 
-    @Action(AddressesActions.UpdateShippingAddress)
-    updateShippingAddress(ctx: StateContext<ICheckoutTabsStateModel>, { address }: AddressesActions.UpdateShippingAddress) {
+    @Action(AddressesActions.UpdateBillingAddress)
+    updateBillingAddress(ctx: StateContext<IAddressesStateModel>, { billing_address }: AddressesActions.UpdateBillingAddress) {
         const state = ctx.getState();
-        console.log(address);
+        if (billing_address != null) {
+            return ctx.patchState({
+                ...state,
+                billing_address
+            });
+        }
     }
 
-    @Action(AddressesActions.UpdateBillingAddress)
-    updateBillingAddress(ctx: StateContext<ICheckoutTabsStateModel>, { address }: AddressesActions.UpdateBillingAddress) {
+    @Action(AddressesActions.ClearBillingAddress)
+    clearBillingAddress(ctx: StateContext<IAddressesStateModel>) {
         const state = ctx.getState();
-        console.log(address);
+        return ctx.patchState({
+            ...state,
+            billing_address: null
+        });
     }
+
+    @Action(AddressesActions.UpdateShippingAddress)
+    updateShippingAddress(ctx: StateContext<IAddressesStateModel>, { shipping_address }: AddressesActions.UpdateShippingAddress) {
+        const state = ctx.getState();
+        console.log(shipping_address);
+        if (shipping_address != null) {
+            return ctx.patchState({
+                ...state,
+                shipping_address
+            });
+        }
+    }
+
+    @Action(AddressesActions.ClearShippingAddress)
+    clearShippingAddress(ctx: StateContext<IAddressesStateModel>) {
+        const state = ctx.getState();
+        return ctx.patchState({
+            ...state,
+            shipping_address: null
+        });
+    }
+
+
 
 }

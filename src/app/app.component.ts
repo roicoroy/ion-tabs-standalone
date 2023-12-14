@@ -4,7 +4,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngxs/store';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, call, camera, cameraOutline, cog, cogOutline, home, homeOutline, mail, menu, menuOutline, storefront, storefrontOutline, thumbsUp, thumbsUpOutline, homeSharp, heart, share, create, add, cart, checkmarkOutline, arrowBack, wallet, bicycle, book, triangle, remove } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, call, camera, cameraOutline, cog, cogOutline, home, homeOutline, mail, menu, menuOutline, storefront, storefrontOutline, thumbsUp, thumbsUpOutline, homeSharp, heart, share, create, add, cart, checkmarkOutline, arrowBack, wallet, bicycle, book, triangle, remove, informationCircleOutline } from 'ionicons/icons';
 
 import { AuthActions } from './store/auth/auth.actions';
 import { Observable, Subject } from 'rxjs';
@@ -89,6 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
       remove,
       cart,
       create,
+      informationCircleOutline,
       add,
       share,
       homeSharp,

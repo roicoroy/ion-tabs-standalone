@@ -1,12 +1,19 @@
 import { Shipping, Billing } from "src/app/shared/wooApi";
 
 export namespace AddressesActions {
-    export class UpdateShippingAddress {
-        static type = '[ChckoutActions] Update Checkout Tabs State';
-        constructor(public address: Shipping) { }
-    }
+
     export class UpdateBillingAddress {
         static type = '[ChckoutActions] Selected Checkout Tabs State';
-        constructor(public address: Billing) { }
+        constructor(public billing_address: Billing) { }
+    }
+    export class UpdateShippingAddress {
+        static type = '[ChckoutActions] Update Checkout Tabs State';
+        constructor(public shipping_address: Shipping) { }
+    }
+    export class ClearBillingAddress {
+        static type = '[ChckoutActions] Clear Billing Address';
+    }
+    export class ClearShippingAddress {
+        static type = '[ChckoutActions] Clear Shipping Address';
     }
 }
