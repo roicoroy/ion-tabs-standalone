@@ -3,37 +3,118 @@
 
     <ion-col size="6">
       Billing Address
-      <ion-item *ngIf="billing_address$ | async as address">
-        <ion-label>
-          {{address | json }}
-        </ion-label>
-        <ion-button (click)="openModalAddressPage(address, 'billing_address')" expand="block" fill="clear"
-          shape="round">
-          Add Billing Address
-        </ion-button>
-        <ion-button (click)="clear('billing_address')" expand="block" fill="clear"
-          shape="round">
-          Clear
-        </ion-button>
-      </ion-item>
+      <div *ngIf="billing_address$ | async as address">
+        <ion-item>
+          <ion-label>
+            Email: {{ address.email }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            First name: {{ address.first_name }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Last name: {{ address.last_name }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            First line address : {{ address.address_1 }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Second line address: {{ address.address_2 }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Postcode: {{ address.postcode }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            City: {{ address.city }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Country: {{ address.country }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Phone: {{ address.phone }}
+          </ion-label>
+        </ion-item>
+      </div>
 
+      <ion-button (click)="openModalAddressPage('billing_address')" expand="block" fill="clear" shape="round">
+        Add Billing Address
+      </ion-button>
+      <ion-button (click)="clear('billing_address')" expand="block" fill="clear" shape="round">
+        Clear
+      </ion-button>
     </ion-col>
 
     <ion-col size="6">
       Shipping Address
-      <ion-item *ngIf="shipping_address$ | async as address">
-        <ion-label>
-          {{ address | json }}
-        </ion-label>
-        <ion-button (click)="openModalAddressPage(address, 'shipping_address')" expand="block" fill="clear"
-          shape="round">
-          Add Shipping Address
-        </ion-button>
-        <ion-button (click)="clear('shipping_address')" expand="block" fill="clear"
-          shape="round">
-          Clear
-        </ion-button>
-      </ion-item>
+      <div *ngIf="shipping_address$ | async as address">
+        <ion-item>
+          <ion-label>
+            Email: {{ address.email }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            First name: {{ address.first_name }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Last name: {{ address.last_name }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            First line address : {{ address.address_1 }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Second line address: {{ address.address_2 }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Postcode: {{ address.postcode }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            City: {{ address.city }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Country: {{ address.country }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Phone: {{ address.phone }}
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <ion-button (click)="openModalAddressPage('shipping_address')" expand="block" fill="clear" shape="round">
+        Add Shipping Address
+      </ion-button>
+      <ion-button (click)="clear('shipping_address')" expand="block" fill="clear" shape="round">
+        Clear
+      </ion-button>
 
     </ion-col>
 

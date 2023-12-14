@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
-import { Billing, Product, Shipping } from 'src/app/shared/wooApi';
+import { Billing, Shipping } from 'src/app/shared/wooApi';
 import { AddressesState } from './store/addresses.state';
 
 export interface IAddressesFacadeModel {

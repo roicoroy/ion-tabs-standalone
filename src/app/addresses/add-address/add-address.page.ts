@@ -11,6 +11,7 @@ import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { AddressesActions } from '../store/addresses.actions';
 import { EAddresses } from '../addresses-list/addresses.component';
+import { CheckoutTabsService } from 'src/app/checkout-tabs/checkout-tabs.service';
 
 @Component({
   selector: 'app-add-address',
@@ -122,6 +123,9 @@ export class AddAddressPage implements OnInit, OnDestroy {
       const updated: string = "Billing Address Updated";
       this.store.dispatch(new AddressesActions.UpdateBillingAddress(this.addressForm.value));
       await this.modalController.dismiss(updated);
+    } else {
+      const updated: string = "Billing Address NOT Updated";
+      await this.modalController.dismiss(updated);
     }
   }
 
@@ -129,6 +133,9 @@ export class AddAddressPage implements OnInit, OnDestroy {
     if (this.addressForm.valid) {
       const updated: string = "Shipping Address Updated";
       this.store.dispatch(new AddressesActions.UpdateShippingAddress(this.addressForm.value));
+      await this.modalController.dismiss(updated);
+    } else {
+      const updated: string = "Shipping Address NOT Updated";
       await this.modalController.dismiss(updated);
     }
   }

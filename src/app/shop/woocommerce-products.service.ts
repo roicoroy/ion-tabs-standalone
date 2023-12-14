@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import {
-  Product,
   ProductQuery,
   RetrieveProductsResponse,
   ProductReviewsResponse,
   ProductReview
 } from './products.interface';
 import { WoocommerceHelperService } from '../shared/wooApi/helper.service';
+import { Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
 
 @Injectable({
   providedIn: 'root'

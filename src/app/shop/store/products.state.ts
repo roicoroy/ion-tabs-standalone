@@ -4,7 +4,8 @@ import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { tap, catchError, Observable, Subject, takeUntil } from 'rxjs';
 import { ProductsActions } from './products.actions';
 import { WoocommerceProductsService } from 'src/app/shared/wooApi';
-import { Product } from '../products.interface';
+import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+
 // import { ErrorLoggingActions } from 'src/app/store/errors-logging/errors-logging.actions';
 
 export interface IProductsStateModel {

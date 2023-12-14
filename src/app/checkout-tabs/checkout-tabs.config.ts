@@ -1,9 +1,9 @@
 export interface ICheckoutTabs {
-  name: string;
-  tab: string;
-  iconName: string;
-  buttonChecked: boolean;
-  disabled: boolean;
+  name?: string;
+  tab?: string;
+  iconName?: string;
+  buttonChecked?: boolean;
+  disabled?: boolean;
   selected?: boolean;
 }
 

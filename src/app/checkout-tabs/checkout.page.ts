@@ -40,11 +40,9 @@ export class CheckoutTabsPage {
     //   console.log(JSON.parse(vs.selectedTab));
     // });
   }
-
-
+  
   onTabsWillChange($event: any) {
     const selectedTab = $event.tab;
     this.store.dispatch(new CheckoutActions.SelectedCheckoutTabsState(selectedTab));
   }
-
 }

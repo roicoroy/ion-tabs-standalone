@@ -3,10 +3,10 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router, RouterLink } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, map, takeUntil } from 'rxjs';
 import { AddressesState } from '../store/addresses.state';
 import { Select, Store } from '@ngxs/store';
-import { Shipping, Billing } from 'src/app/shared/wooApi';
+import { Shipping, Billing, Address } from 'src/app/shared/wooApi';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
 import { ModalController } from '@ionic/angular';
 import { AddAddressPage } from '../add-address/add-address.page';
@@ -36,6 +36,9 @@ export class AddressesComponent implements OnInit, OnDestroy {
 
   @Select(AddressesState.getShipping) shipping_address$!: Observable<Shipping>;
 
+  private billing_address!: Address;
+  private shipping_address!: Address;
+
   private navigation = inject(NavigationService);
 
   private store = inject(Store);
@@ -44,22 +47,8 @@ export class AddressesComponent implements OnInit, OnDestroy {
 
   private readonly ngUnsubscribe = new Subject();
 
-  // constructor() {
-  //   // this.shipping_address$
-  //   //   .pipe(takeUntil(this.ngUnsubscribe))
-  //   //   .subscribe({
-  //   //     next: (p: Shipping) => {
-  //   //       console.log('shipping_address', p);
-  //   //     },
-  //   //   });
-  //   // this.billing_address$
-  //   //   .pipe(takeUntil(this.ngUnsubscribe))
-  //   //   .subscribe({
-  //   //     next: (p: Billing) => {
-  //   //       console.log('billing_address', p);
-  //   //     }
-  //   //   });
-  // }
+  constructor() {
+  }
 
   ngOnInit() { }
 
@@ -71,20 +60,33 @@ export class AddressesComponent implements OnInit, OnDestroy {
       this.store.dispatch(new AddressesActions.ClearShippingAddress());
     }
   }
-
-  async openModalAddressPage(address: any, addressType: string) {
+  // address?: Address, 
+  async openModalAddressPage(addressType?: string) {
+    // console.table(address);
+    // console.table(addressType);
     const presentingElement: HTMLElement = document.querySelector('.main-content')!;
+    const mockAddress: Address = {
+      email: 'ee@ee.com',
+      first_name: 'Rest ppp',
+      last_name: 'Rest ppp',
+      address_1: 'Rest ppp',
+      address_2: 'Rest ppp',
+      postcode: 'Rest ppp',
+      city: 'Rest ppp',
+      country: 'Rest ppp',
+      phone: 'Rest ppp',
+    }
     const modal = await this.modalController.create({
       component: AddAddressPage,
       componentProps: {
-        address,
+        address: mockAddress,
         addressType
       },
       // presentingElement
     });
     await modal.present();
     const response = await modal.onDidDismiss();
-    console.table(response.data);
+    // console.table(response.data);
   }
 
   ngOnDestroy(): void {

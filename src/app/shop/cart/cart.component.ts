@@ -5,9 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { CartItem, CartState } from '../store/cart.state';
 import { Select, Store } from '@ngxs/store';
-import { Product } from '../products.interface';
 import { CartActions } from '../store/cart.actions';
 import { Router, RouterLink } from '@angular/router';
+import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 
 @Component({
   selector: 'app-cart',

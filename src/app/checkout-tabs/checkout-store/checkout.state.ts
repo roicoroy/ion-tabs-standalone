@@ -36,7 +36,7 @@ export class CheckoutTabsState {
         const checkoutTabs: any = this.store.selectSnapshot((state: ICheckoutTabsStateModel) => state.checkoutTabs);
         const update = (checkoutTabs: ICheckoutTabs[], updatedData: ICheckoutTabs) => {
             return checkoutTabs.map((tab) => {
-                if (tab.tab === updatedData.tab) {
+                if (tab.tab === updatedData?.tab) {
                     return { ...tab, ...updatedData };
                 }
                 return tab;

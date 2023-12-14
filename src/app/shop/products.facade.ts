@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Product } from 'src/app/shared/wooApi';
 import { ProductsState } from './store/products.state';
+import { Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
 
 export interface IProductsFacadeModel {
     products: Product[];

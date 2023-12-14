@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { WoocommerceHelperService } from '../helper.service';
-import { ListOrderParameters, Order } from './orders.interface';
+import { ListOrderParameters, IOrder } from './orders.interface';
 
 
 @Injectable({
@@ -16,28 +16,28 @@ export class WoocommerceOrderService {
     private wooHelper: WoocommerceHelperService
   ) { }
 
-  createOrder(order: Order): Observable<Order> {
-    return this.httpClient.post<Order>(`orders`, order)
+  createOrder(order: IOrder): Observable<IOrder> {
+    return this.httpClient.post<IOrder>(`orders`, order)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  retrieveOrder(id: string): Observable<Order> {
-    return this.httpClient.get<Order>(`orders/${id}`)
+  retrieveOrder(id: string): Observable<IOrder> {
+    return this.httpClient.get<IOrder>(`orders/${id}`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  listAllOrders(params?: ListOrderParameters): Observable<Order[]>  {
-    return this.httpClient.get<Order[]>(`orders`, {params: params as HttpParams || {}})
+  listAllOrders(params?: ListOrderParameters): Observable<IOrder[]>  {
+    return this.httpClient.get<IOrder[]>(`orders`, {params: params as HttpParams || {}})
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  updateOrder(order: Partial<Order>): Observable<Order>  {
-    return this.httpClient.put<Order>(`orders/${order.id}`, order)
+  updateOrder(order: Partial<IOrder>): Observable<IOrder>  {
+    return this.httpClient.put<IOrder>(`orders/${order.id}`, order)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  deleteOrder(id: string): Observable<Order>  {
-    return this.httpClient.delete<Order>(`orders/${id}`)
+  deleteOrder(id: string): Observable<IOrder>  {
+    return this.httpClient.delete<IOrder>(`orders/${id}`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 }

@@ -1,5 +1,5 @@
 
-export interface Order {
+export interface IOrder {
     id?: number;
     parent_id?: number;
     number?: string;
@@ -45,15 +45,15 @@ export interface Order {
 }
 
 export interface Address {
-    email?: string;
-    first_name?: string;
-    last_name?: string;
-    address_1?: string;
-    address_2?: string;
-    city?: string;
-    postcode?: string;
-    country?: string;
-    phone?: string;
+    email?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+    address_1?: string | null;
+    address_2?: string | null;
+    city?: string | null;
+    postcode?: string | null;
+    country?: string | null;
+    phone?: string | null;
 }
 
 export interface Billing extends Address {

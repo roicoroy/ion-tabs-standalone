@@ -39,19 +39,19 @@ export class CheckoutTabsService implements OnDestroy {
       });
   }
 
-  ready(ready: boolean) {
+  async ready(ready: boolean) {
     const result: any = this.checkoutTabs.filter(checkoutTabs => {
       return checkoutTabs?.tab === this.selectedTab;
     });
     // console.log(result);
-    const parsed: any = {
+    const parsed: ICheckoutTabs = {
       buttonChecked: ready,
-      disabled: result[0]?.disabled,
+      // disabled: result[0]?.disabled,
       tab: result[0]?.tab,
       selected: true
     }
     // console.log(parsed);
-    this.store.dispatch(new CheckoutActions.UpdateCheckoutTabsState(parsed));
+    await this.store.dispatch(new CheckoutActions.UpdateCheckoutTabsState(parsed));
   }
 
   ngOnDestroy(): void {

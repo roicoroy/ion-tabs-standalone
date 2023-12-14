@@ -2,9 +2,10 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { Subject } from 'rxjs';
-import { Product, joinItems } from '../products.interface';
+import { joinItems } from '../products.interface';
 import { CartActions } from './cart.actions';
 import { IProductsStateModel, ProductsState } from './products.state';
+import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 // import { ErrorLoggingActions } from 'src/app/store/errors-logging/errors-logging.actions';
 export interface CartItem {
     productId: Product["id"];

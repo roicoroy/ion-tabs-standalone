@@ -11,10 +11,32 @@ export class IAddressesStateModel {
 
 @State<IAddressesStateModel>({
     name: 'addresses',
-    // defaults: {
-    //     shipping_address: undefined,
-    //     billing_address: undefined,
-    // }
+    defaults: {
+        shipping_address: null,
+        billing_address: null,
+        // shipping_address: {
+        //     email: null,
+        //     first_name: null,
+        //     last_name: null,
+        //     address_1: null,
+        //     address_2: null,
+        //     city: null,
+        //     postcode: null,
+        //     country: null,
+        //     phone: null,
+        // },
+        // billing_address: {
+        //     email: null,
+        //     first_name: null,
+        //     last_name: null,
+        //     address_1: null,
+        //     address_2: null,
+        //     city: null,
+        //     postcode: null,
+        //     country: null,
+        //     phone: null,
+        // },
+    }
 })
 @Injectable()
 export class AddressesState {
@@ -54,8 +76,8 @@ export class AddressesState {
     @Action(AddressesActions.UpdateShippingAddress)
     updateShippingAddress(ctx: StateContext<IAddressesStateModel>, { shipping_address }: AddressesActions.UpdateShippingAddress) {
         const state = ctx.getState();
-        console.log(shipping_address);
-        if (shipping_address != null) {
+        // console.log(shipping_address);
+        if (shipping_address) {
             return ctx.patchState({
                 ...state,
                 shipping_address
@@ -71,7 +93,5 @@ export class AddressesState {
             shipping_address: null
         });
     }
-
-
 
 }

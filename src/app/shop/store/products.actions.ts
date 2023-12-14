@@ -1,4 +1,4 @@
-import { Product } from '../products.interface';
+import { Product } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export namespace ProductsActions {
     export class RetrieveProducts {

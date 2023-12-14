@@ -1,3 +1,4 @@
+import { Product } from "../shared/wordpress/utils/types/wooCommerceTypes";
 import { CartItem } from "./store/cart.state";
 
 export function joinItems(cartItems: CartItem[], products: Product[]) {
@@ -11,7 +12,7 @@ export function joinItems(cartItems: CartItem[], products: Product[]) {
   });
 }
 
-export interface Product {
+export interface IProduct {
   id: number;
   name?: string;
   slug?: string;
@@ -99,7 +100,7 @@ export interface Images {
 }
 
 export interface RetrieveProductsResponse {
-  products: Product[];
+  products: IProduct[];
   headers: Array<any>;
 }
 

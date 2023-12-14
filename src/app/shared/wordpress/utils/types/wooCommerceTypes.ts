@@ -69,6 +69,7 @@ export interface Product {
   menu_order: number;
   meta_data: MetaDatum[];
   _links: Links;
+  yoast_head: any;
 }
 
 export interface Category {

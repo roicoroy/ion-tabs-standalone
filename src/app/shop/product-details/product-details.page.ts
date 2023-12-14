@@ -6,13 +6,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../store/products.actions';
-import { Product } from '../products.interface';
 import { ProductsState } from '../store/products.state';
 import { LoadingController } from '@ionic/angular';
 import { CartComponent } from '../cart/cart.component';
 import { CartActions } from '../store/cart.actions';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 
 @Component({
   selector: 'app-product-details',

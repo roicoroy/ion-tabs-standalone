@@ -7,6 +7,7 @@ import { CartComponent } from '../shop/cart/cart.component';
 import { CartIconComponent } from '../shop/cart-icon/cart-icon.component';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../shop/store/products.actions';
+import { AddressesComponent } from '../addresses/addresses-list/addresses.component';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import { ProductsActions } from '../shop/store/products.actions';
     FormsModule,
     CartComponent,
     CartIconComponent,
+    AddressesComponent
   ]
 })
 export class HomePage implements OnInit {
