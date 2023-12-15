@@ -9,6 +9,7 @@ import { Store } from '@ngxs/store';
 import { IStoreSnapshoModel } from 'src/app/store/store.snapshot.interface';
 import { IonStorageService } from '../../utils/ionstorage.service';
 import { environment } from 'src/environments/environment';
+import { Customer } from '../../wordpress/utils/types/wooCommerceTypes';
 
 // Plugins used https://wordpress.org/plugins/json-api-user/
 
@@ -34,9 +35,9 @@ export class AuthService {
       .pipe(catchError((err: any) => this.wooHelper.handleError(err)));
   }
 
-  register(registerData?: RegisterPayload): Observable<any> {
-    return this.httpClient.post('wp-json/wp/v2/users/register/', registerData);
-      // .pipe(catchError(err => this.wooHelper.handleError(err)));
+  register(registerData?: Customer): Observable<any> {
+    return this.httpClient.post('wp-json/wp/v2/users/register/', registerData)
+      .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
   login(username: string, password: string) {
@@ -49,7 +50,7 @@ export class AuthService {
       username,
       password
     }, { headers: header });
-      // .pipe(catchError(err => this.wooHelper.handleError(err)));
+    // .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
   retrievePassword(username: string): Observable<any> {
@@ -69,7 +70,6 @@ export class AuthService {
     return this.httpClient.post(`api/user/generate_auth_cookie/`, this.wooHelper.includeEncoded(data))
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
-
 
   async getUser() {
     const value = await this.ionStorage.storageGet('user');

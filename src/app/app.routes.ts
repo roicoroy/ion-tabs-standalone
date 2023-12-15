@@ -45,4 +45,8 @@ export const routes: Routes = [
     path: 'add-address/:address',
     loadComponent: () => import('./addresses/add-address/add-address.page').then( m => m.AddAddressPage)
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./profile/profile.page').then( m => m.ProfilePage)
+  },
 ];

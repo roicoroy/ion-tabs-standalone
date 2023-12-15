@@ -1,13 +1,14 @@
 import { Injectable, OnDestroy, inject } from "@angular/core";
 import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
-import { AuthService, CreateNonceRes, LoginPayload, UserResponse, WordpressWpUserResponsePayload } from "src/app/shared/wooApi";
-import { tap, catchError, Observable, Subject, takeUntil } from "rxjs";
+import { AuthService, CreateNonceRes, LoginPayload, UserResponse, WoocommerceCustomerService, WordpressWpUserResponsePayload } from "src/app/shared/wooApi";
+import { tap, catchError, Observable, Subject, takeUntil, combineLatest, map, lastValueFrom, of } from "rxjs";
 import { AuthActions } from "./auth.actions";
 import { IonStorageService } from "src/app/shared/utils/ionstorage.service";
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/utils/alert.service";
 import { LoadingService } from "src/app/shared/utils/loading.service";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
+import { AddressesActions } from "src/app/addresses/store/addresses.actions";
 
 export interface IUserResponseModel {
     token: string | null;
@@ -46,7 +47,9 @@ export class AuthState implements OnDestroy {
 
     private router = inject(Router);
 
-    private wooApi = inject(AuthService);
+    private wooApiAuth = inject(AuthService);
+
+    private wooApiCustomer = inject(WoocommerceCustomerService);
 
     private ionStorage = inject(IonStorageService);
 
@@ -75,35 +78,28 @@ export class AuthState implements OnDestroy {
      * Register
     */
     @Action(AuthActions.Register)
-    async register(ctx: StateContext<IAuthStateModel>, { registerData }: AuthActions.Register) {
+    async register(ctx: StateContext<IAuthStateModel>, { customer }: AuthActions.Register) {
         await this.loadingService.simpleLoader();
-        this.wooApi.register(registerData)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                catchError(async (e: any) => {
-                    ctx.patchState({
-                        isLoggedIn: false,
-                        registerPasswordResponseCode: e.code,
-                        registerPasswordResponseMessage: e.message
-                    });
-                    const error = new Error(e.message);
-                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
-                    await this.loadingService.dismissLoader();
-                    return new Observable(obs => obs.error(e));
-                })
-            )
-            .subscribe(async (response: WordpressWpUserResponsePayload) => {
-                if (response.code === 200) {
+        const custs = await lastValueFrom(of(this.wooApiCustomer.createCustomer(customer)));
+        custs.subscribe(async (res) => {
+            setTimeout(async () => {
+                if (res) {
                     const loginPaylod: LoginPayload = {
-                        username: registerData.email,
-                        password: registerData.password,
+                        username: customer.email,
+                        password: customer.password,
                     };
-                    this.store.dispatch(new AuthActions.GetAuthToken(loginPaylod));
+                    this.store.dispatch(new AuthActions.GetAuthToken(loginPaylod))
+                        .subscribe(async () => {
+                            this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.billing));
+                            this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.shipping));
+                            // this.store.dispatch(new CustomerActions.CreateCustomer(customer));
+                        });
                     await this.loadingService.dismissLoader();
                 } else {
                     await this.loadingService.dismissLoader();
                 }
-            });
+            }, 4000);
+        });
     }
 
     /* 
@@ -111,6 +107,7 @@ export class AuthState implements OnDestroy {
     */
     @Action(AuthActions.Login)
     async Login(ctx: StateContext<IAuthStateModel>, { loginPayload }: AuthActions.Login) {
+        await this.loadingService.simpleLoader();
         this.store.dispatch(new AuthActions.GetAuthToken(loginPayload));
     }
 
@@ -119,8 +116,7 @@ export class AuthState implements OnDestroy {
     */
     @Action(AuthActions.GetAuthToken)
     getAuthToken(ctx: StateContext<IAuthStateModel>, { loginPayload }: AuthActions.GetAuthToken) {
-        this.loadingService.simpleLoader();
-        this.wooApi.getAuthToken(loginPayload)
+        this.wooApiAuth.getAuthToken(loginPayload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 catchError(e => {
@@ -132,15 +128,15 @@ export class AuthState implements OnDestroy {
                     return new Observable(obs => obs.error(e));
                 })
             )
-            .subscribe((user: IUserResponseModel) => {
+            .subscribe((user: UserResponse) => {
                 if (user) {
-                    this.wooApi.setUser({
+                    this.wooApiAuth.setUser({
                         token: user?.token,
                         user_display_name: user?.user_display_name,
                         user_email: user?.user_email,
                         user_nicename: user?.user_nicename,
                     }).then(() => {
-                        this.router.navigateByUrl('product-list').then(() => {
+                        this.router.navigateByUrl('home').then(() => {
                             return ctx.patchState({
                                 user: {
                                     token: user?.token,
@@ -163,7 +159,7 @@ export class AuthState implements OnDestroy {
     @Action(AuthActions.GenerateAuthCookie)
     generateAuthCookie(ctx: StateContext<IAuthStateModel>, { loginPayload }: AuthActions.GenerateAuthCookie) {
         // console.log(data);
-        this.wooApi.generateAuthCookie(loginPayload)
+        this.wooApiAuth.generateAuthCookie(loginPayload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 tap((user: IUserResponseModel) => {
@@ -182,7 +178,7 @@ export class AuthState implements OnDestroy {
     @Action(AuthActions.RetrievePassword)
     async RetrievePassword(ctx: StateContext<IAuthStateModel>, { payload }: AuthActions.RetrievePassword) {
         await this.loadingService.simpleLoader();
-        this.wooApi.retrievePassword(payload.username)
+        this.wooApiAuth.retrievePassword(payload.username)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 catchError(async (e: any) => {
@@ -265,7 +261,7 @@ export class AuthState implements OnDestroy {
 
     @Action(AuthActions.CreateNonceAction)
     createNonceAction(ctx: StateContext<IAuthStateModel>, { payload }: AuthActions.CreateNonceAction) {
-        this.wooApi.createNonce(payload)
+        this.wooApiAuth.createNonce(payload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 catchError(e => {

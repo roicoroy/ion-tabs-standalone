@@ -186,22 +186,24 @@ export interface Up {
 }
 
 export interface Customer {
-  id: number;
-  date_created: Date;
-  date_created_gmt: Date;
-  date_modified: Date;
-  date_modified_gmt: Date;
+  id?: number;
+  date_created?: Date;
+  date_created_gmt?: Date;
+  date_modified?: Date;
+  date_modified_gmt?: Date;
   email: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  username: string;
-  billing: Billing;
-  shipping: Shipping;
-  is_paying_customer: boolean;
-  avatar_url: string;
-  meta_data: MetaData[];
-  _links: Links;
+  first_name?: string;
+  last_name?: string;
+  role?: string;
+  username?: string;
+  billing?: Billing;
+  shipping?: Shipping;
+  is_paying_customer?: boolean;
+  avatar_url?: string;
+  meta_data?: MetaData[];
+  _links?: Links;
+  password?: string;
+  phone?: string;
 }
 
 export interface Order {
@@ -212,14 +214,14 @@ export interface Order {
   created_via?: string;
   version?: string;
   status?:
-    | "pending"
-    | "processing"
-    | "on-hold"
-    | "completed"
-    | "cancelled"
-    | "refunded"
-    | "failed"
-    | "trash";
+  | "pending"
+  | "processing"
+  | "on-hold"
+  | "completed"
+  | "cancelled"
+  | "refunded"
+  | "failed"
+  | "trash";
   currency?: string;
   date_created?: Date;
   date_created_gmt?: Date;
@@ -267,28 +269,29 @@ export interface Links {
 export interface Billing {
   first_name: string;
   last_name: string;
-  company: string;
+  company?: string;
   address_1: string;
   address_2: string;
   city: string;
   state: string;
   postcode: string;
   country: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface Shipping {
   first_name: string;
   last_name: string;
-  company: string;
+  company?: string;
   address_1: string;
   address_2: string;
   city: string;
   state: string;
   postcode: string;
   country: string;
-  email: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface Variation {

@@ -21,7 +21,7 @@ export class LoadingService {
   async dismissLoader() {
     await this.loadingController.dismiss().then((response) => {
     }).catch((err) => {
-      console.log('Error occured : ', err);
+      // console.log('Error occured : ', err);
     });
   }
   

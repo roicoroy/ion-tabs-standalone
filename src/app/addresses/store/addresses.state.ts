@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { ICheckoutTabsStateModel } from 'src/app/checkout-tabs/checkout-store/checkout.state';
-import { Shipping, Billing } from 'src/app/shared/wooApi';
+import { Shipping, Billing, Address } from 'src/app/shared/wooApi';
 import { AddressesActions } from './addresses.actions';
 
 export class IAddressesStateModel {
-    billing_address?: Billing | null;
-    shipping_address?: Shipping | null;
+    billing_address!: Billing | null;
+    shipping_address!: Shipping | null;
+    saved_addresses!: Address[];
 }
 
 @State<IAddressesStateModel>({
@@ -14,6 +14,7 @@ export class IAddressesStateModel {
     defaults: {
         shipping_address: null,
         billing_address: null,
+        saved_addresses: [],
         // shipping_address: {
         //     email: null,
         //     first_name: null,

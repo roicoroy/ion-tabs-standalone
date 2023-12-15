@@ -1,4 +1,4 @@
-import { Customer } from '../../shared/wooApi';
+import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export namespace CustomerActions {
     export class CreateCustomers {

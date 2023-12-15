@@ -8,6 +8,7 @@ export const environment = {
   wordpressShopUrlLocal: 'http://localhost:8887/shop',
   origin: 'https://fae.zra.mybluehost.me',
   wcEndpoint: '/wp-json/wc/v2',
+  wc3Endpoint:'/wp-json/wc/v3',
   woocommerce: {
     consumer_key: "ck_9d03eb62b6399886342fe629ce39a162593d74c7",
     consumer_secret: "cs_f420b92d90138bfa9f2ef6c5e9dcf8dcae386b3b"

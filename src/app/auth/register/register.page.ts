@@ -15,6 +15,7 @@ import { IAuthHeader } from '../interfaces';
 import { KeypadModule } from 'src/app/shared/native/keyboard/keypad.module';
 import { scaleHeight } from 'src/app/shared/animations/animations';
 import { AuthActions } from '../store/auth.actions';
+import { Customer } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 
 @Component({
   selector: 'app-register',
@@ -43,12 +44,14 @@ export class RegisterPage implements OnInit, OnDestroy {
     title: 'Register',
     subtitle: 'Join the club'
   }
-  
+
   pageTitle = 'Register';
 
   signupForm: FormGroup;
 
   matching_passwords_group: FormGroup;
+
+  addressForm: FormGroup;
 
   validation_messages = {
     'email': [
@@ -70,6 +73,33 @@ export class RegisterPage implements OnInit, OnDestroy {
     ]
   };
 
+  address_validation_messages = {
+    'first_name': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'last_name': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'address_1': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'address_2': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'city': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'postcode': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'country': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+    'phone': [
+      { type: 'required', message: 'Name is required.' }
+    ],
+  };
+
   private store = inject(Store);
 
   private modalService = inject(ModalService);
@@ -81,24 +111,39 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   constructor() {
     this.matching_passwords_group = new FormGroup({
-      'password': new FormControl('', Validators.compose([
+      'password': new FormControl('Rwbento123!', Validators.compose([
         Validators.minLength(5),
         Validators.required
       ])),
-      'confirm_password': new FormControl('', Validators.required)
+      'confirm_password': new FormControl('Rwbento123!', Validators.required)
     }, (formGroup: FormGroup | any) => {
       return PasswordValidator.areNotEqual(formGroup);
     });
 
+    this.addressForm = new FormGroup({
+      first_name: new FormControl('test', Validators.required),
+      last_name: new FormControl('test', Validators.required),
+      address_1: new FormControl('test', Validators.required),
+      address_2: new FormControl('test', Validators.required),
+      city: new FormControl('Edinburgh', Validators.required),
+      postcode: new FormControl('ED88UJ', Validators.required),
+      country: new FormControl('UK'),
+      company: new FormControl('AMIGO'),
+      phone: new FormControl('+7512345678', Validators.compose([
+        Validators.required,
+      ])),
+    });
+
     this.signupForm = new FormGroup({
-      'email': new FormControl('', Validators.compose([
+      'email': new FormControl('test01@email.com', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      'username': new FormControl('', Validators.compose([
+      'username': new FormControl('test01', Validators.compose([
         Validators.required
       ])),
-      'matching_passwords': this.matching_passwords_group
+      'matching_passwords': this.matching_passwords_group,
+      'address': this.addressForm
     });
   }
 
@@ -106,13 +151,81 @@ export class RegisterPage implements OnInit, OnDestroy {
     this.menu.enable(false);
   }
 
-  doRegister(): void {
+  async doRegister(): Promise<void> {
     const payload: RegisterWpUserPayload = {
       username: this.signupForm.value.username,
       email: this.signupForm.value.email,
       password: this.signupForm.value.matching_passwords.confirm_password,
     }
-    this.store.dispatch(new AuthActions.Register(payload));
+    // console.log(this.signupForm.value);
+    const payloadRegister: Customer = {
+      "email": this.signupForm.value.email,
+      "first_name": this.signupForm.value.address.first_name,
+      "last_name": this.signupForm.value.address.last_name,
+      "username": this.signupForm.value.username,
+      "password": this.signupForm.value.matching_passwords.confirm_password,
+      "billing": {
+        "email": this.signupForm.value.email,
+        "first_name": this.signupForm.value.address.first_name,
+        "last_name": this.signupForm.value.address.last_name,
+        "company": this.signupForm.value.address.company,
+        "address_1": this.signupForm.value.address.address_1,
+        "address_2": this.signupForm.value.address.address_2,
+        "city": this.signupForm.value.address.city,
+        "state": this.signupForm.value.address.state,
+        "postcode": this.signupForm.value.address.postcode,
+        "country": this.signupForm.value.address.country,
+        "phone": this.signupForm.value.address.phone,
+      },
+      "shipping": {
+        "email": this.signupForm.value.email,
+        "first_name": this.signupForm.value.address.first_name,
+        "last_name": this.signupForm.value.address.last_name,
+        "company": this.signupForm.value.address.company,
+        "address_1": this.signupForm.value.address.address_1,
+        "address_2": this.signupForm.value.address.address_2,
+        "city": this.signupForm.value.address.city,
+        "state": this.signupForm.value.address.state,
+        "postcode": this.signupForm.value.address.postcode,
+        "country": this.signupForm.value.address.country,
+        "phone": this.signupForm.value.address.phone,
+      }
+    }
+    // const myMoc = {
+    //   "email": "joao61@example.com",
+    //   "first_name": "Jose",
+    //   "last_name": "Jose",
+    //   "username": "joao61",
+    //   "password": "Rwbento123!",
+    //   "billing": {
+    //     "email": "joao61@example.com",
+    //     "first_name": "Jose",
+    //     "last_name": "Jose",
+    //     "company": "",
+    //     "address_1": "969 asd",
+    //     "address_2": "",
+    //     "city": "San Francisco",
+    //     "state": "CA",
+    //     "postcode": "94103",
+    //     "country": "US",
+    //     "phone": "(555) 555-5555"
+    //   },
+    //   "shipping": {
+    //     "email": "joao61@example.com",
+    //     "first_name": "Jose",
+    //     "last_name": "Jose",
+    //     "company": "",
+    //     "address_1": "969 asd",
+    //     "address_2": "",
+    //     "city": "San Francisco",
+    //     "state": "CA",
+    //     "postcode": "94103",
+    //     "country": "US",
+    //     "phone": "(555) 555-5555"
+    //   }
+    // }
+    // console.log(payloadRegister);
+    await this.store.dispatch(new AuthActions.Register(payloadRegister));
   }
 
   async showTermsModal() {

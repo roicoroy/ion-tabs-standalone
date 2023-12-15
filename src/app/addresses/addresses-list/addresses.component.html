@@ -1,6 +1,5 @@
 <ion-grid>
   <ion-row>
-
     <ion-col size="6">
       Billing Address
       <div *ngIf="billing_address$ | async as address">
@@ -50,7 +49,6 @@
           </ion-label>
         </ion-item>
       </div>
-
       <ion-button (click)="openModalAddressPage('billing_address')" expand="block" fill="clear" shape="round">
         Add Billing Address
       </ion-button>
@@ -58,7 +56,6 @@
         Clear
       </ion-button>
     </ion-col>
-
     <ion-col size="6">
       Shipping Address
       <div *ngIf="shipping_address$ | async as address">
@@ -108,23 +105,12 @@
           </ion-label>
         </ion-item>
       </div>
-
       <ion-button (click)="openModalAddressPage('shipping_address')" expand="block" fill="clear" shape="round">
         Add Shipping Address
       </ion-button>
       <ion-button (click)="clear('shipping_address')" expand="block" fill="clear" shape="round">
         Clear
       </ion-button>
-
-    </ion-col>
-
-  </ion-row>
-
-  <ion-row>
-    <ion-col size="12">
-      <!-- <ion-button (click)="openModalAddressPage()" expand="block" fill="clear" shape="round">
-        Add Address Page
-      </ion-button> -->
     </ion-col>
   </ion-row>
 </ion-grid>

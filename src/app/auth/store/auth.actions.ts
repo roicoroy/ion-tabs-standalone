@@ -1,4 +1,5 @@
 import { CreateNonce, LoginPayload, RegisterPayload, RegisterWpUserPayload, RetrievePasswordPayload } from "src/app/shared/wooApi";
+import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export namespace AuthActions {
     export class CreateNonceAction {
@@ -11,7 +12,7 @@ export namespace AuthActions {
     }
     export class Register {
         static readonly type = '[AuthActions] Register';
-        constructor(public registerData: RegisterWpUserPayload) { }
+        constructor(public customer: Customer) { }
     }
     export class RetrievePassword {
         static readonly type = '[AuthActions] Retrieve Password';

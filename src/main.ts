@@ -41,6 +41,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 import { NgxStripeModule } from 'ngx-stripe';
+import { CustomerState } from './app/checkout-tabs/shipping/store/shipping.state';
 
 defineCustomElements(window);
 if (environment.production) {
@@ -80,25 +81,29 @@ bootstrapApplication(AppComponent, {
       KeypadModule,
       NgxsStoragePluginModule.forRoot({
         key: [
-          'checkoutTabs',
+          'auth',
+          'customer',
           'products',
+          'settings',
+          'errors',
+          'keyboard',
+          'checkoutTabs',
           'cart',
           'addresses',
-          'auth',
-          'keyboard'
         ]
       })),
     importProvidersFrom(
       NgxsModule.forRoot(
         [
-          CheckoutTabsState,
-          ProductsState,
-          CartState,
-          AddressesState,
           AuthState,
+          CustomerState,
+          ProductsState,
           SettingsState,
           ErrorsLoggingState,
           KeyboardState,
+          CheckoutTabsState,
+          CartState,
+          AddressesState,
         ],
         { developmentMode: false }
       ),

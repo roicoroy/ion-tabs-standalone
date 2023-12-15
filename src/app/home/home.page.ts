@@ -8,6 +8,7 @@ import { CartIconComponent } from '../shop/cart-icon/cart-icon.component';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../shop/store/products.actions';
 import { AddressesComponent } from '../addresses/addresses-list/addresses.component';
+import { AuthActions } from '../auth/store/auth.actions';
 
 @Component({
   selector: 'app-home',
@@ -52,5 +53,13 @@ export class HomePage implements OnInit {
   
   productsListPage() {
     this.navigationsService.navigateFlip('/product-list');
+  }
+  
+  profilePage() {
+    this.navigationsService.navigateFlip('/profile');
+  }
+  logout() {
+    this.store.dispatch(new AuthActions.AuthLogout());
+    this.navigationsService.navControllerDefault('login')
   }
 }

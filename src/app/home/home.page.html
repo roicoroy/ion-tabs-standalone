@@ -2,7 +2,12 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="loginPage()">
-        Products List
+        Login
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="logout()">
+        Logout
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="start">
@@ -32,6 +37,13 @@
       <!-- <ion-col size="12">
         <app-cart></app-cart>
       </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="profilePage()" expand="block" fill="solid" shape="round">
+          Profile
+        </ion-button>
+      </ion-col>
     </ion-row>
     <!-- <ion-row>
       <ion-col size="12">

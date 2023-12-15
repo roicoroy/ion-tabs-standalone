@@ -31,8 +31,30 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": []
+            "styles": [
+              "src/theme/variables.scss", 
+              "src/global.scss",
+              "src/assets/driver.css",
+              "src/assets/photoswipe.css",
+              "node_modules/ngx-lightbox/lightbox.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "@fancyapps/ui/dist/fancybox/fancybox.css",
+              "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/solid.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/regular.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/brands.scss"
+            ],
+            "scripts": [
+              "src/assets/lax/lax.min.js",
+              "node_modules/hammerjs/hammer.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/jarallax/dist/jarallax.js",
+              "node_modules/jarallax/dist/jarallax-video.js",
+              "node_modules/jarallax/dist/jarallax-element.js",
+              "src/assets/nd-graphics-landing-page/vendors/owl-carousel/js/owl.carousel.min.js",
+              "src/assets/nd-graphics-landing-page/vendors/aos/js/aos.js"
+            ]
           },
           "configurations": {
             "production": {
