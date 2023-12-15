@@ -41,6 +41,10 @@ export class HomePage implements OnInit {
   checkoutPage() {
     // this.navigationsService.navigateFlip('/checkout/cart-review');
   }
+
+  loginPage() {
+    this.navigationsService.navigateFlip('/login');
+  }
   
   addressesPage() {
     this.navigationsService.navigateFlip('/checkout/addresses');

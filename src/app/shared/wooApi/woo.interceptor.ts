@@ -39,42 +39,42 @@ export class WooInterceptor implements HttpInterceptor {
         let authRequest;
         let requestUrl = '';
 
-        // const token = this.store.selectSnapshot((state: IStoreSnapshoModel) => state.auth.user?.token);
+        const token = this.store.selectSnapshot((state: IStoreSnapshoModel) => state.auth.user?.token);
 
-        // if (request.url.includes('i18n')) {
-        //     authRequest = request.clone({
-        //         url: request.url
-        //     });
-        //     return next.handle(authRequest)
-        //         .pipe(
-        //             catchError(err => {
-        //                 if (err instanceof HttpErrorResponse && err.status === 0) {
-        //                     this.wooHelper.handleError(err);
-        //                 } else if (err instanceof HttpErrorResponse && err.status === 401) {
-        //                     this.wooHelper.handleError(err);
-        //                 }
-        //                 return throwError(err);
-        //             })
-        //         );
-        // }
-        // if (request.url.includes('simple-jwt-login')) {
-        //     requestUrl = `${environment.origin}/${request.url}`;
-        //     authRequest = request.clone({
-        //     });
-        // }
-        // if (request.url.includes('api') || request.url.includes('jwt') || request.url.includes('wp-json')) {
-        //     requestUrl = `${environment.origin}/${request.url}`;
-        //     if (token) {
-        //         authRequest = request.clone({
-        //             headers: new HttpHeaders({ "Authorization": "Bearer " + token }),
-        //             url: requestUrl
-        //         });
-        //     } else {
-        //         authRequest = request.clone({
-        //             url: requestUrl
-        //         });
-        //     }
-        // }
+        if (request.url.includes('i18n')) {
+            authRequest = request.clone({
+                url: request.url
+            });
+            return next.handle(authRequest)
+                .pipe(
+                    catchError(err => {
+                        if (err instanceof HttpErrorResponse && err.status === 0) {
+                            this.wooHelper.handleError(err);
+                        } else if (err instanceof HttpErrorResponse && err.status === 401) {
+                            this.wooHelper.handleError(err);
+                        }
+                        return throwError(err);
+                    })
+                );
+        }
+        if (request.url.includes('simple-jwt-login')) {
+            requestUrl = `${environment.origin}/${request.url}`;
+            authRequest = request.clone({
+            });
+        }
+        if (request.url.includes('api') || request.url.includes('jwt') || request.url.includes('wp-json')) {
+            requestUrl = `${environment.origin}/${request.url}`;
+            if (token) {
+                authRequest = request.clone({
+                    headers: new HttpHeaders({ "Authorization": "Bearer " + token }),
+                    url: requestUrl
+                });
+            } else {
+                authRequest = request.clone({
+                    url: requestUrl
+                });
+            }
+        }
         if (request.url.includes('products')) {
             requestUrl = `${environment.origin}${environment.wcEndpoint}/${request.url}${this.includeWooAuth(request.url)}`;
             authRequest = request.clone({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthState, IUserResponseModel } from 'src/app/store/auth/auth.state';
+import { IUserResponseModel, AuthState } from './auth/store/auth.state';
 
 export interface IAppFacadeModel {
     user: IUserResponseModel,

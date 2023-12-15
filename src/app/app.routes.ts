@@ -12,6 +12,18 @@ export const routes: Routes = [
   //   pathMatch: 'full',
   // },
   {
+    path: 'login',
+    loadComponent: () => import('./auth/login/login.page').then( m => m.LoginPage)
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./auth/register/register.page').then( m => m.RegisterPage)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./auth/forgot-password/forgot-password.page').then( m => m.ForgotPasswordPage)
+  },
+  {
     path: 'checkout',
     loadChildren: () => import('./checkout-tabs/checkout.routes').then((m) => m.routes),
   },
