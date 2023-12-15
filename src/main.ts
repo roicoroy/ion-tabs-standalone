@@ -41,7 +41,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 import { NgxStripeModule } from 'ngx-stripe';
-import { CustomerState } from './app/checkout-tabs/shipping/store/shipping.state';
+import { CustomerState } from './app/profile/store/customer.state';
 
 defineCustomElements(window);
 if (environment.production) {

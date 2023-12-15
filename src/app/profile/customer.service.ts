@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { WoocommerceHelperService } from '../helper.service';
+import { WoocommerceHelperService } from '../shared/wooApi/helper.service';
 import { Store } from '@ngxs/store';
-import { Customer } from '../../wordpress/utils/types/wooCommerceTypes';
+import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
 
 @Injectable({
   providedIn: 'root'

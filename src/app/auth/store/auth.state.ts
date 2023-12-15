@@ -9,6 +9,7 @@ import { AlertService } from "src/app/shared/utils/alert.service";
 import { LoadingService } from "src/app/shared/utils/loading.service";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
 import { AddressesActions } from "src/app/addresses/store/addresses.actions";
+import { CustomerActions } from "src/app/profile/store/customer.actions";
 
 export interface IUserResponseModel {
     token: string | null;
@@ -92,7 +93,7 @@ export class AuthState implements OnDestroy {
                         .subscribe(async () => {
                             this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.billing));
                             this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.shipping));
-                            // this.store.dispatch(new CustomerActions.CreateCustomer(customer));
+                            this.store.dispatch(new CustomerActions.CreateCustomer(customer));
                         });
                     await this.loadingService.dismissLoader();
                 } else {

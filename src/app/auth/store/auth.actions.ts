@@ -3,7 +3,7 @@ import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes"
 
 export namespace AuthActions {
     export class CreateNonceAction {
-        static readonly type = '[AuthActions] CreateNonceAction';
+        static readonly type = '[AuthActions] Create Nonce Action';
         constructor(public payload: CreateNonce) { }
     }
     export class Login {
@@ -23,7 +23,7 @@ export namespace AuthActions {
         constructor(public loginPayload: LoginPayload) { }
     }
     export class RefresUserState {
-        static readonly type = '[AuthActions] Refres User State';
+        static readonly type = '[AuthActions] Refresh User State';
     }
     export class GenerateAuthCookie {
         static readonly type = '[AuthActions] Generate Auth Cookie';

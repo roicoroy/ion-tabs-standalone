@@ -14,8 +14,8 @@ import { UserResponse } from '../shared/wooApi';
 import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
 import { AddressesComponent } from '../addresses/addresses-list/addresses.component';
 import { AddressesActions } from '../addresses/store/addresses.actions';
-import { CustomerState } from './customer/customer.state';
-import { CustomerActions } from './customer/customer.actions';
+import { CustomerState } from './store/customer.state';
+import { CustomerActions } from './store/customer.actions';
 
 @Component({
   selector: 'app-profile',
@@ -39,7 +39,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   @Select(AuthState.getUser) user$!: Observable<UserResponse>;
 
-  @Select(CustomerState) customer$!: Observable<Customer>;
+  @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
 
   pageTitle = 'Profile Page';
 
@@ -48,23 +48,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   private store = inject(Store);
 
   ionViewWillEnter() {
-    this.user$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1)
-      )
-      .subscribe({
-        next: (p: UserResponse) => {
-          // console.log('complete', p);
-          // this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
-          // this.store.dispatch(new CustomerActions.RetrieveCustomer(p.user_email));
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => { },
-      });
-
     this.customer$
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -72,10 +55,16 @@ export class ProfilePage implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (p: Customer) => {
-          this.store.dispatch(new AddressesActions.UpdateBillingAddress(p.billing));
-          this.store.dispatch(new AddressesActions.UpdateShippingAddress(p.shipping));
           console.log('complete', p);
-        }
+         if(p){
+          this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
+          this.store.dispatch(new CustomerActions.RetrieveCustomer(p.username ? p.username : ''));
+         }
+        },
+        error: (e) => {
+          console.error(e)
+        },
+        complete: () => { },
       });
   }
 

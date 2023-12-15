@@ -15,7 +15,7 @@ export interface IShippingStateModel {
 @Injectable({
     providedIn: 'root'
 })
-export class CustomerState implements OnDestroy {
+export class ShippingState implements OnDestroy {
 
     private readonly ngUnsubscribe = new Subject();
 
