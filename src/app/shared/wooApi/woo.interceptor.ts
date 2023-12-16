@@ -82,7 +82,14 @@ export class WooInterceptor implements HttpInterceptor {
                 });
             }
         }
-        if (request.url.includes('customers')) {
+        if (
+            request.url.includes('customers') ||
+            request.url.includes('shipping_methods') ||
+            request.url.includes('zones') ||
+            request.url.includes('classes') ||
+            request.url.includes('orders') ||
+            request.url.includes('payment_gateways')
+        ) {
             requestUrl = `${environment.origin}${environment.wc3Endpoint}/${request.url}${this.includeWooAuth(request.url)}`;
             authRequest = request.clone({
                 url: requestUrl

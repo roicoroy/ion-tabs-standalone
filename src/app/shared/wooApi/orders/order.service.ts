@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { WoocommerceHelperService } from '../helper.service';
 import { ListOrderParameters, IOrder } from './orders.interface';
+import { Order } from '../../wordpress/utils/types/wooCommerceTypes';
 
 
 @Injectable({
@@ -16,8 +17,8 @@ export class WoocommerceOrderService {
     private wooHelper: WoocommerceHelperService
   ) { }
 
-  createOrder(order: IOrder): Observable<IOrder> {
-    return this.httpClient.post<IOrder>(`orders`, order)
+  createOrder(order: Order): Observable<Order> {
+    return this.httpClient.post<Order>(`orders`, order)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
@@ -31,8 +32,8 @@ export class WoocommerceOrderService {
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  updateOrder(order: Partial<IOrder>): Observable<IOrder>  {
-    return this.httpClient.put<IOrder>(`orders/${order.id}`, order)
+  updateOrder(order: Partial<Order>): Observable<Order>  {
+    return this.httpClient.put<Order>(`orders/${order.id}`, order)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 

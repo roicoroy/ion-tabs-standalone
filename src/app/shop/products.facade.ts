@@ -3,10 +3,12 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProductsState } from './store/products.state';
-import { Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { Order, Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { CartState } from './store';
 
 export interface IProductsFacadeModel {
     products: Product[];
+    cart: Order;
 }
 
 @Injectable({
@@ -15,26 +17,27 @@ export interface IProductsFacadeModel {
 export class ProductsFacade {
 
     @Select(ProductsState.getProducts) products$!: Observable<Product[]>;
-    
-    @Select(ProductsState.getSelectedProduct) product$!: Observable<Product>;
-    // product$!: Observable<Product>;
 
-    // private store = inject(Store);
-    
+    @Select(CartState.getCart) cart$!: Observable<Order>;
+
     readonly viewState$: Observable<IProductsFacadeModel>;
 
     constructor() {
-        // this.product$ = this.store.select(ProductsState.getSelectedProduct);
         this.viewState$ = combineLatest(
             [
                 this.products$,
+                this.cart$,
             ]
         )
             .pipe(
                 map((
-                    products,
+                    [
+                        products,
+                        cart
+                    ]
                 ) => ({
-                    products: products[0],
+                    products: products,
+                    cart
                 }))
             );
     }

@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Observable, Subject } from 'rxjs';
-import { CartItem, CartState } from '../store/cart.state';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { CartState } from '../store/cart.state';
 import { Select, Store } from '@ngxs/store';
 import { CartActions } from '../store/cart.actions';
 import { Router, RouterLink } from '@angular/router';
-import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+import { Order, Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 
 @Component({
   selector: 'app-cart',
@@ -23,11 +24,17 @@ import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 })
 export class CartComponent implements OnInit, OnDestroy {
 
-  @Select(CartState.cartItems) cart$!: Observable<(CartItem & Product)[]>;
+  // @Select(CartState.cartItems) cartItems$!: Observable<(Order & Product)[]>;
 
-  @Select(CartState.cartTotal) total$!: Observable<number>;
+  @Select(CartState.getCart) cart$!: Observable<(Order & Product)[]>;
 
-  cartItems$!: Observable<CartItem[]>;
+  // @Select(CartState.cartTotal) total$!: Observable<number>;
+
+  // cartItems$!: Observable<CartItem[]>;
+
+  viewState$: Observable<IProductsFacadeModel>;
+
+  private facade = inject(ProductsFacade);
 
   private store = inject(Store);
 
@@ -35,25 +42,42 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private readonly ngUnsubscribe = new Subject();
 
-  constructor() { }
+  constructor() {
+    this.viewState$ = this.facade.viewState$;
+    this.viewState$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1),
+      )
+      .subscribe({
+        next: (vs: any) => {
+          console.log('vs:::', vs.cart);
+        },
+        error: (e) => {
+          console.error(e)
+        },
+        complete: () => { },
+      });
+  }
 
   ngOnInit() {
-    this.cartItems$ = this.store.select(CartState.getCartItems);
+    // this.cartItems$ = this.store.select(CartState.getCartItems);
   }
 
   productDetails(id: number) {
-    this.router.navigate(['/product-details', id]);
+    console.log(id);
+    // this.router.navigate(['/product-details', id]);
   }
 
-  onDelete({ productId }: CartItem) {
-    console.log(productId);
-    this.store.dispatch(new CartActions.RemoveProductFromCart(productId));
-  }
+  // onDelete({ productId }: CartItem) {
+  //   // console.log(productId);
+  //   this.store.dispatch(new CartActions.RemoveProductFromCart(productId));
+  // }
 
-  removeFromList({ productId }: CartItem) {
-    console.log(productId);
-    this.store.dispatch(new CartActions.RemoveProductFromList(productId));
-  }
+  // removeFromList(productId: any) {
+  //   // console.log(productId);
+  //   this.store.dispatch(new CartActions.RemoveProductFromList(productId));
+  // }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

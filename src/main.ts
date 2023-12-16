@@ -42,6 +42,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 import { NgxStripeModule } from 'ngx-stripe';
 import { CustomerState } from './app/profile/store/customer.state';
+import { ShippingState } from './app/checkout-tabs/shipping/store/shipping.state';
 
 defineCustomElements(window);
 if (environment.production) {
@@ -90,6 +91,7 @@ bootstrapApplication(AppComponent, {
           'checkoutTabs',
           'cart',
           'addresses',
+          'shipping'
         ]
       })),
     importProvidersFrom(
@@ -104,6 +106,7 @@ bootstrapApplication(AppComponent, {
           CheckoutTabsState,
           CartState,
           AddressesState,
+          ShippingState
         ],
         { developmentMode: false }
       ),

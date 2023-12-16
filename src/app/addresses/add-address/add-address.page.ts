@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Shipping, Billing } from 'src/app/shared/wooApi';
 import { NgxsFormPluginModule, SetFormDirty, UpdateFormValue } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
@@ -12,6 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 import { AddressesActions } from '../store/addresses.actions';
 import { EAddresses } from '../addresses-list/addresses.component';
 import { CheckoutTabsService } from 'src/app/checkout-tabs/checkout-tabs.service';
+import { IAddressesFacadeModel, AddressesFacade } from '../addresses.facade';
+import { AuthActions } from 'src/app/auth/store/auth.actions';
+import { CustomerActions } from 'src/app/profile/store/customer.actions';
 
 @Component({
   selector: 'app-add-address',
@@ -40,7 +43,7 @@ export class AddAddressPage implements OnInit, OnDestroy {
 
   billing_address$!: Observable<Billing>;
 
-  validation_messages = {
+  address_validation_messages = {
     'email': [
       { type: 'required', message: 'Name is required.' }
     ],
@@ -70,14 +73,35 @@ export class AddAddressPage implements OnInit, OnDestroy {
     ],
   };
 
+  viewState$: Observable<IAddressesFacadeModel>;
+
+  private facade = inject(AddressesFacade);
+
   private formBuilder = inject(FormBuilder);
+
+  private store = inject(Store);
+
+  customerId: string;
 
   private readonly ngUnsubscribe = new Subject();
 
   constructor(
     private modalController: ModalController,
-    private store: Store,
   ) {
+
+    this.viewState$ = this.facade.viewState$;
+
+    this.viewState$.pipe(
+      takeUntil(this.ngUnsubscribe),
+      take(1),
+    )
+      .subscribe({
+        next: (res: any) => {
+          // console.log('user', res.customer.id);
+          this.customerId = res.customer.id
+        },
+      });
+
     this.addressForm = this.formBuilder.group({
       email: new FormControl(null, Validators.required),
       first_name: new FormControl(null, Validators.required),
@@ -94,34 +118,35 @@ export class AddAddressPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    // console.log(this.address);
-    // console.log(this.addressType);
-    this.store.dispatch([
-      new UpdateFormValue({
-        path: "addresses.addressForm",
-        value: {
-          email: this.address.email,
-          first_name: this.address.first_name,
-          last_name: this.address.last_name,
-          address_1: this.address.address_1,
-          address_2: this.address.address_2,
-          city: this.address.city,
-          postcode: this.address.postcode,
-          country: this.address.country,
-          phone: this.address.phone,
-        },
-      }),
-      new SetFormDirty("addresses.addressForm")
-    ]);
+    if (this.address) {
+      this.store.dispatch([
+        new UpdateFormValue({
+          path: "addresses.addressForm",
+          value: {
+            email: this.address.email,
+            first_name: this.address.first_name,
+            last_name: this.address.last_name,
+            address_1: this.address.address_1,
+            address_2: this.address.address_2,
+            city: this.address.city,
+            postcode: this.address.postcode,
+            country: this.address.country,
+            phone: this.address.phone,
+          },
+        }),
+        new SetFormDirty("addresses.addressForm")
+      ]);
+    }
   }
 
   ngOnInit() {
   }
 
   async updateBilling() {
-    if (this.addressForm.valid) {
+    if (this.addressForm.valid && this.customerId) {
       const updated: string = "Billing Address Updated";
       this.store.dispatch(new AddressesActions.UpdateBillingAddress(this.addressForm.value));
+      this.store.dispatch(new CustomerActions.UpdateCustomerAddress(this.customerId, this.addressForm.value, this.addressType));
       await this.modalController.dismiss(updated);
     } else {
       const updated: string = "Billing Address NOT Updated";
@@ -130,9 +155,10 @@ export class AddAddressPage implements OnInit, OnDestroy {
   }
 
   async updateShipping() {
-    if (this.addressForm.valid) {
+    if (this.addressForm.valid && this.customerId) {
       const updated: string = "Shipping Address Updated";
       this.store.dispatch(new AddressesActions.UpdateShippingAddress(this.addressForm.value));
+      this.store.dispatch(new CustomerActions.UpdateCustomerAddress(this.customerId, this.addressForm.value, this.addressType));
       await this.modalController.dismiss(updated);
     } else {
       const updated: string = "Shipping Address NOT Updated";

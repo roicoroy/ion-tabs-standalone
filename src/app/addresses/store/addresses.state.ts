@@ -54,6 +54,11 @@ export class AddressesState {
         return state.billing_address;
     }
 
+    @Selector()
+    static getSavedList(state: IAddressesStateModel): Address[] | undefined | null {
+        return state.saved_addresses;
+    }
+
     @Action(AddressesActions.UpdateBillingAddress)
     updateBillingAddress(ctx: StateContext<IAddressesStateModel>, { billing_address }: AddressesActions.UpdateBillingAddress) {
         const state = ctx.getState();
@@ -77,7 +82,6 @@ export class AddressesState {
     @Action(AddressesActions.UpdateShippingAddress)
     updateShippingAddress(ctx: StateContext<IAddressesStateModel>, { shipping_address }: AddressesActions.UpdateShippingAddress) {
         const state = ctx.getState();
-        // console.log(shipping_address);
         if (shipping_address) {
             return ctx.patchState({
                 ...state,
@@ -93,6 +97,23 @@ export class AddressesState {
             ...state,
             shipping_address: null
         });
+    }
+
+    @Action(AddressesActions.AddAddressToSavedList)
+    addAddressToSavedList(ctx: StateContext<IAddressesStateModel>, { address }: AddressesActions.AddAddressToSavedList) {
+        console.log(address);
+        let addressesList = [];
+        addressesList.push(address);
+        return ctx.patchState({
+            saved_addresses: addressesList,
+        });
+    }
+
+    @Action(AddressesActions.RemoveAddressFromSavedList)
+    removeAddressFromSavedList(ctx: StateContext<IAddressesStateModel>, { address }: AddressesActions.RemoveAddressFromSavedList) {
+        console.log(address);
+        // ctx.patchState({
+        // });
     }
 
 }

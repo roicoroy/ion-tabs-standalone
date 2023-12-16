@@ -119,14 +119,14 @@ export interface LineItem {
 }
 
 export interface ShippingLine {
-  id: number;
-  method_title: string;
-  method_id: string;
-  instance_id: string;
-  total: string;
-  total_tax: string;
-  taxes: any[];
-  meta_data: any[];
+  id?: number;
+  method_title?: string;
+  method_id?: string;
+  instance_id?: string;
+  total?: string;
+  total_tax?: string;
+  taxes?: any[];
+  meta_data?: any[];
 }
 
 export interface Meta_Data_Line_Item {
@@ -191,12 +191,12 @@ export interface Customer {
   date_created_gmt?: Date;
   date_modified?: Date;
   date_modified_gmt?: Date;
-  email: string;
+  email?: string;
   first_name?: string;
   last_name?: string;
   role?: string;
-  username?: string;
-  billing?: Billing;
+  username?: string | any;
+  billing?: Billing | any;
   shipping?: Shipping;
   is_paying_customer?: boolean;
   avatar_url?: string;
@@ -233,6 +233,7 @@ export interface Order {
   shipping_tax?: string;
   cart_tax?: string;
   total?: string;
+  quantity?: string;
   total_tax?: string;
   prices_include_tax?: boolean;
   customer_id?: number;
@@ -241,8 +242,8 @@ export interface Order {
   customer_note?: string;
   billing?: Billing;
   shipping?: Shipping;
-  payment_method: string;
-  payment_method_title: string;
+  payment_method?: string;
+  payment_method_title?: string;
   transaction_id?: string;
   date_paid?: Date;
   date_paid_gmt?: Date;
@@ -250,13 +251,13 @@ export interface Order {
   date_completed_gmt?: Date;
   cart_hash?: string;
   meta_data?: any[];
-  line_items: LineItem[];
+  line_items?: LineItem[] | any;
   tax_lines?: any[]; // TODO define tax lines properties
   shipping_lines?: ShippingLine[];
   fee_lines?: any[]; // TODO define fee lines properties
   coupon_lines?: any[]; // TODO define coupon lines properties
   refunds?: any[]; // TODO define refunds properties
-  set_paid: boolean;
+  set_paid?: boolean;
   _links?: Links;
 }
 
@@ -276,20 +277,20 @@ export interface Billing {
   state: string;
   postcode: string;
   country: string;
-  email?: string;
+  email?: string | null;
   phone?: string;
 }
 
 export interface Shipping {
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   company?: string;
-  address_1: string;
-  address_2: string;
-  city: string;
-  state: string;
-  postcode: string;
-  country: string;
+  address_1?: string;
+  address_2?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
   email?: string;
   phone?: string;
 }

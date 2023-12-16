@@ -10,6 +10,8 @@ import { LoadingService } from "src/app/shared/utils/loading.service";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
 import { AddressesActions } from "src/app/addresses/store/addresses.actions";
 import { CustomerActions } from "src/app/profile/store/customer.actions";
+import { CustomerState } from "src/app/profile/store/customer.state";
+import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export interface IUserResponseModel {
     token: string | null;
@@ -50,11 +52,7 @@ export class AuthState implements OnDestroy {
 
     private wooApiAuth = inject(AuthService);
 
-    private wooApiCustomer = inject(WoocommerceCustomerService);
-
     private ionStorage = inject(IonStorageService);
-
-    private alertService = inject(AlertService);
 
     private loadingService = inject(LoadingService);
 
@@ -81,8 +79,9 @@ export class AuthState implements OnDestroy {
     @Action(AuthActions.Register)
     async register(ctx: StateContext<IAuthStateModel>, { customer }: AuthActions.Register) {
         await this.loadingService.simpleLoader();
-        const custs = await lastValueFrom(of(this.wooApiCustomer.createCustomer(customer)));
-        custs.subscribe(async (res) => {
+        const obs$ = this.store.dispatch(new CustomerActions.CreateCustomer(customer));
+        obs$
+        .subscribe(async (res: Customer) => {
             setTimeout(async () => {
                 if (res) {
                     const loginPaylod: LoginPayload = {
@@ -90,16 +89,16 @@ export class AuthState implements OnDestroy {
                         password: customer.password,
                     };
                     this.store.dispatch(new AuthActions.GetAuthToken(loginPaylod))
-                        .subscribe(async () => {
+                        .subscribe(async (user: UserResponse) => {
+                            console.log(user);
                             this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.billing));
                             this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer.shipping));
-                            this.store.dispatch(new CustomerActions.CreateCustomer(customer));
                         });
                     await this.loadingService.dismissLoader();
                 } else {
                     await this.loadingService.dismissLoader();
                 }
-            }, 4000);
+            }, 1000);
         });
     }
 
@@ -109,7 +108,15 @@ export class AuthState implements OnDestroy {
     @Action(AuthActions.Login)
     async Login(ctx: StateContext<IAuthStateModel>, { loginPayload }: AuthActions.Login) {
         await this.loadingService.simpleLoader();
-        this.store.dispatch(new AuthActions.GetAuthToken(loginPayload));
+        this.store.dispatch(new AuthActions.GetAuthToken(loginPayload))
+            // .subscribe(async (user: UserResponse) => {
+            //     const customer: any = this.store.selectSnapshot(CustomerState.getCustomer);
+            //     console.log(user);
+            //     if(customer){
+            //         this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer?.billing));
+            //         this.store.dispatch(new AddressesActions.UpdateBillingAddress(customer?.shipping));
+            //     }
+            // });
     }
 
     /* 
@@ -124,9 +131,8 @@ export class AuthState implements OnDestroy {
                     ctx.patchState({
                         isLoggedIn: false
                     });
-                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
                     this.loadingService.dismissLoader();
-                    return new Observable(obs => obs.error(e));
+                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
                 })
             )
             .subscribe((user: UserResponse) => {
@@ -138,6 +144,7 @@ export class AuthState implements OnDestroy {
                         user_nicename: user?.user_nicename,
                     }).then(() => {
                         this.router.navigateByUrl('home').then(() => {
+                            this.loadingService.dismissLoader();
                             return ctx.patchState({
                                 user: {
                                     token: user?.token,
@@ -148,8 +155,7 @@ export class AuthState implements OnDestroy {
                                 isLoggedIn: true
                             });
                         });
-                    });
-                    this.loadingService.dismissLoader();
+                    }); 
                 } else {
                     this.loadingService.dismissLoader();
                 }
@@ -163,12 +169,8 @@ export class AuthState implements OnDestroy {
         this.wooApiAuth.generateAuthCookie(loginPayload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                tap((user: IUserResponseModel) => {
-                    console.log(user);
-                }),
                 catchError(e => {
-                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
-                    return new Observable(obs => obs.error(e));
+                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
                 })
             )
             .subscribe((response) => {

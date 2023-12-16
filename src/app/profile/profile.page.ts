@@ -13,7 +13,6 @@ import { UserResponse } from '../shared/wooApi';
 
 import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
 import { AddressesComponent } from '../addresses/addresses-list/addresses.component';
-import { AddressesActions } from '../addresses/store/addresses.actions';
 import { CustomerState } from './store/customer.state';
 import { CustomerActions } from './store/customer.actions';
 
@@ -47,19 +46,37 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   private store = inject(Store);
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+
     this.customer$
       .pipe(
         takeUntil(this.ngUnsubscribe),
         take(1)
       )
       .subscribe({
-        next: (p: Customer) => {
-          console.log('complete', p);
-         if(p){
-          this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
-          this.store.dispatch(new CustomerActions.RetrieveCustomer(p.username ? p.username : ''));
-         }
+        next: (p: any) => {
+          // console.log('complete', p);
+          if (p) {
+            this.store.dispatch(new CustomerActions.RetrieveCustomer(p));
+          } else {
+            this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
+          }
+        },
+        error: (e) => {
+          console.error(e)
+        },
+        complete: () => { },
+      });
+
+    this.user$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1)
+      )
+      .subscribe({
+        next: (p: any) => {
+          // console.log('user', p);
+          this.store.dispatch(new CustomerActions.RetrieveCustomer(p));
         },
         error: (e) => {
           console.error(e)
@@ -69,9 +86,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-  }
-
-  ionViewDidEnter() {
   }
 
   ngOnDestroy(): void {

@@ -1,15 +1,27 @@
-<!-- <div *ngIf="(cartItems$ | async) as cartItems" class="card product">
-  <div class="card-body">
-    {{ cartItems | json }}
-  </div>
-</div> -->
+<div *ngIf="(viewState$ | async) as vs" class="card product">
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of vs.cart.line_items">
+      <ion-item (click)="productDetails(item.id)">
+        <ion-label>{{item.name}}</ion-label>
+        <ion-label>{{item.quantity}} x {{ item.price | currency:'GBP' }}</ion-label>
+        <!-- {{(item.quantity * item.price) | currency }} -->
+        <!-- <ion-button (click)="onDelete(item)" expand="block" fill="outline" shape="round">
+          <ion-icon slot="icon-only" name="remove"></ion-icon>
+        </ion-button> -->
+      </ion-item>
+      <!--   
+      <ion-item-options side="end">
+        <ion-item-option side="start" color="danger" (click)="removeFromList(item)">
+          <ion-icon class="fa fa-trash-o"></ion-icon>
+          Remove from List
+        </ion-item-option>
+      </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
+</div>
 
-
-
-
-
-<ion-list>
-  <ion-item-sliding *ngFor="let item of (cart$ | async)">
+<!-- <ion-list>
+  <ion-item-sliding *ngFor="let item of (cartItems$ | async)">
     <ion-item (click)="productDetails(item.id)">
       <ion-label>{{item.name}}</ion-label>
       <ion-label>{{item.quantity}} x</ion-label>
@@ -29,9 +41,10 @@
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
-</ion-list>
+</ion-list> -->
 
-<ion-list>
+
+<!-- <ion-list>
   <ion-item>
     <ion-label>
       <div class="col-9">
@@ -42,5 +55,4 @@
       </div>
     </ion-label>
   </ion-item>
-</ion-list>
-
+</ion-list> -->

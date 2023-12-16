@@ -13,6 +13,7 @@ import { CartActions } from '../store/cart.actions';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+import { AddToCartComponent } from '../add-to-cart/add-to-cart.component';
 
 @Component({
   selector: 'app-product-details',
@@ -24,13 +25,12 @@ import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
     CommonModule,
     FormsModule,
     CartComponent,
-    CartIconComponent
+    CartIconComponent,
+    AddToCartComponent,
   ]
 })
 export class ProductDetailsPage implements OnInit, OnDestroy {
-
-  // @Select(ProductsState.getSelectedProduct) product$!: Observable<Product>;
-
+  
   product$!: Observable<Product>;
   
   private activatedRoute = inject(ActivatedRoute);
@@ -43,10 +43,6 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
   
   private readonly ngUnsubscribe = new Subject();
 
-  constructor() {
-    // this.viewState$ = this.facade.viewState$;
-  }
-
   async ngOnInit() {
     const loading = await this.loadingController.create();
     await loading.present();
@@ -54,34 +50,20 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
     this.store.dispatch(new ProductsActions.GetProductById(id));
     this.product$ = this.store.select(ProductsState.getSelectedProduct);
     await loading.dismiss();
-    // this.product$
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe({
-    //     next: (p: Product) => {
-    //       console.log('complete', p);
-    //     },
-    //     error: (e) => {
-    //       console.error(e)
-    //     },
-    //     complete: () => {
-    //       // console.info('complete')
-    //     },
-    //   });
   }
 
   sanitise(content:any){
     return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 
-  addToCart(id: number) {
-    console.log(id);
-    this.store.dispatch(new CartActions.AddProductToCart(id));
-  }
+  // addToCart(id: number) {
+  //   this.store.dispatch(new CartActions.AddProductToCart(id));
+  // }
 
-  removeFromCart(id: number) {
-    console.log(id);
-    this.store.dispatch(new CartActions.RemoveProductFromCart(id));
-  }
+  // removeFromCart(id: number) {
+  //   // console.log(id);
+  //   this.store.dispatch(new CartActions.RemoveProductFromCart(id));
+  // }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

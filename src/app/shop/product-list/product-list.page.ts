@@ -71,13 +71,7 @@ export class ProductListPage implements OnInit, OnDestroy {
       .subscribe({
         next: (p: IProductsFacadeModel) => {
           this.productsList = p.products;
-          console.log('complete', p);
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => {
-          // console.info('complete')
+          // console.log('complete', p);
         },
       });
   }

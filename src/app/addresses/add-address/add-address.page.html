@@ -14,19 +14,149 @@
 <ion-content [fullscreen]="false">
   <!-- {{ addressType }} -->
   <form [formGroup]="addressForm" ngxsForm="addresses.addressForm">
-    <ion-item>
-      <ion-label position="floating" color="primary">First Name</ion-label>
-      <ion-input aria-label="first_name" type="text" formControlName="first_name" clearInput
-        autocapitalize="off"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.first_name">
-        <div class="error-message"
-          *ngIf="addressForm.get('first_name')?.hasError(validation.type) && (addressForm.get('first_name')?.dirty || addressForm.get('first_name')?.touched)">
-          <ion-icon name="information-circle-outline"></ion-icon>
-          {{ validation.message }}
-        </div>
-      </ng-container>
+    <div class="form-container">
+      <ion-item class="input-item">
+        <ion-label position="floating">
+          Email
+        </ion-label>
+        <ion-input type="email" placeholder="Email" formControlName="email" clearInput autocapitalize="off"
+          inputmode="email"></ion-input>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of address_validation_messages.email">
+          <div class="error-message"
+            *ngIf="addressForm.get('email')?.hasError(validation.type) && (addressForm.get('email')?.dirty || addressForm.get('email')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">First Name</ion-label>
+        <ion-input aria-label="first_name" type="text" formControlName="first_name" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.first_name">
+          <div class="error-message"
+            *ngIf="addressForm.get('first_name')?.hasError(validation.type) && (addressForm.get('first_name')?.dirty || addressForm.get('first_name')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">Last Name</ion-label>
+        <ion-input aria-label="last_name" type="text" formControlName="last_name" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.last_name">
+          <div class="error-message"
+            *ngIf="addressForm.get('last_name')?.hasError(validation.type) && (addressForm.get('last_name')?.dirty || addressForm.get('last_name')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">address_1</ion-label>
+        <ion-input aria-label="address_1" type="text" formControlName="address_1" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.address_1">
+          <div class="error-message"
+            *ngIf="addressForm.get('address_1')?.hasError(validation.type) && (addressForm.get('address_1')?.dirty || addressForm.get('address_1')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">address_2</ion-label>
+        <ion-input aria-label="address_2" type="text" formControlName="address_2" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.address_2">
+          <div class="error-message"
+            *ngIf="addressForm.get('address_2')?.hasError(validation.type) && (addressForm.get('address_2')?.dirty || addressForm.get('address_2')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">city</ion-label>
+        <ion-input aria-label="city" type="text" formControlName="city" clearInput autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.city">
+          <div class="error-message"
+            *ngIf="addressForm.get('city')?.hasError(validation.type) && (addressForm.get('city')?.dirty || addressForm.get('city')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">postcode</ion-label>
+        <ion-input aria-label="postcode" type="text" formControlName="postcode" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.postcode">
+          <div class="error-message"
+            *ngIf="addressForm.get('postcode')?.hasError(validation.type) && (addressForm.get('postcode')?.dirty || addressForm.get('postcode')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">country</ion-label>
+        <ion-input aria-label="country" type="text" formControlName="country" clearInput
+          autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.country">
+          <div class="error-message"
+            *ngIf="addressForm.get('country')?.hasError(validation.type) && (addressForm.get('country')?.dirty || addressForm.get('country')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating" color="primary">phone</ion-label>
+        <ion-input aria-label="phone" type="text" formControlName="phone" clearInput autocapitalize="off"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of address_validation_messages.phone">
+          <div class="error-message"
+            *ngIf="addressForm.get('phone')?.hasError(validation.type) && (addressForm.get('phone')?.dirty || addressForm.get('phone')?.touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
     </div>
   </form>
   <ion-row>

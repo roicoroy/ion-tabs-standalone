@@ -30,11 +30,13 @@ export class CheckoutTabsFacade {
         )
             .pipe(
                 map((
-                    tabsState,
-                    selectedTab
+                    [
+                        tabsState,
+                        selectedTab
+                    ]
                 ) => (
                     {
-                        tabsState: tabsState[0],
+                        tabsState: tabsState,
                         selectedTab,
                     }))
             ) as unknown as any;

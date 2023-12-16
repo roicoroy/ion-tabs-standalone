@@ -1,111 +1,43 @@
 <ion-grid>
-  <ion-row>
-    <ion-col size="6">
+  <ion-row *ngIf="viewState$ | async as vs">
+    <ion-col>
       Billing Address
-      <div *ngIf="billing_address$ | async as address">
-        <ion-item>
-          <ion-label>
-            Email: {{ address.email }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            First name: {{ address.first_name }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Last name: {{ address.last_name }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            First line address : {{ address.address_1 }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Second line address: {{ address.address_2 }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Postcode: {{ address.postcode }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            City: {{ address.city }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Country: {{ address.country }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Phone: {{ address.phone }}
-          </ion-label>
-        </ion-item>
-      </div>
-      <ion-button (click)="openModalAddressPage('billing_address')" expand="block" fill="clear" shape="round">
+      <p *ngIf="vs.billing_address">
+        Email: {{ vs.billing_address.email }}
+        First name: {{ vs.billing_address.first_name }}
+        Last name: {{ vs.billing_address.last_name }}
+        First line address : {{ vs.billing_address.address_1 }}
+        Second line address: {{ vs.billing_address.address_2 }}
+        Postcode: {{ vs.billing_address.postcode }}
+        City: {{ vs.billing_address.city }}
+        Country: {{ vs.billing_address.country }}
+        Phone: {{ vs.billing_address.phone }}
+      </p>
+      <ion-button (click)="openModalAddressPage('billing_address', vs.billing_address)" expand="block" fill="clear"
+        shape="round">
         Add Billing Address
       </ion-button>
       <ion-button (click)="clear('billing_address')" expand="block" fill="clear" shape="round">
         Clear
       </ion-button>
     </ion-col>
-    <ion-col size="6">
+    <ion-col>
       Shipping Address
-      <div *ngIf="shipping_address$ | async as address">
-        <ion-item>
-          <ion-label>
-            Email: {{ address.email }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            First name: {{ address.first_name }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Last name: {{ address.last_name }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            First line address : {{ address.address_1 }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Second line address: {{ address.address_2 }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Postcode: {{ address.postcode }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            City: {{ address.city }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Country: {{ address.country }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            Phone: {{ address.phone }}
-          </ion-label>
-        </ion-item>
-      </div>
-      <ion-button (click)="openModalAddressPage('shipping_address')" expand="block" fill="clear" shape="round">
+
+      <p *ngIf="vs.shipping_address">
+        Email: {{ vs.shipping_address.email }}
+        First name: {{ vs.shipping_address.first_name }}
+        Last name: {{ vs.shipping_address.last_name }}
+        First line address : {{ vs.shipping_address.address_1 }}
+        Second line address: {{ vs.shipping_address.address_2 }}
+        Postcode: {{ vs.shipping_address.postcode }}
+        City: {{ vs.shipping_address.city }}
+        Country: {{ vs.shipping_address.country }}
+        Phone: {{ vs.shipping_address.phone }}
+      </p>
+
+      <ion-button (click)="openModalAddressPage('shipping_address', vs.shipping_address)" expand="block" fill="clear"
+        shape="round">
         Add Shipping Address
       </ion-button>
       <ion-button (click)="clear('shipping_address')" expand="block" fill="clear" shape="round">

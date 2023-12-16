@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
-import { Billing, Shipping } from 'src/app/shared/wooApi';
+import { Billing, Shipping, UserResponse } from 'src/app/shared/wooApi';
 import { AddressesState } from './store/addresses.state';
+import { CustomerActions } from '../profile/store/customer.actions';
+import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { CustomerState } from '../profile/store/customer.state';
 
 export interface IAddressesFacadeModel {
     shipping_address: Shipping;
     billing_address: Billing;
+    customer: any
 }
 
 @Injectable({
@@ -18,6 +22,8 @@ export class AddressesFacade {
 
     @Select(AddressesState.getBilling) billing_address$!: Observable<Billing>;
 
+    @Select(CustomerState.getCustomer) customer$!: Observable<any>;
+
     readonly viewState$: Observable<IAddressesFacadeModel>;
 
     constructor() {
@@ -25,15 +31,20 @@ export class AddressesFacade {
             [
                 this.shipping_address$,
                 this.billing_address$,
+                this.customer$,
             ]
         )
             .pipe(
                 map((
-                    shipping_address,
-                    billing_address
+                    [
+                        shipping_address,
+                        billing_address,
+                        customer,
+                    ]
                 ) => ({
-                    shipping_address,
-                    billing_address: billing_address
+                    shipping_address: shipping_address,
+                    billing_address: billing_address,
+                    customer: customer
                 }))
             ) as any;
     }

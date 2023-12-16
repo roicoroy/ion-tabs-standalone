@@ -1,0 +1,40 @@
+
+  <ion-col size="5">
+    <ion-button class="counter-icon" (click)="decrease()">
+      <ion-icon slot="icon-only" name="remove"></ion-icon>
+    </ion-button>
+  </ion-col>
+  <ion-col size="2" class="result">
+    {{ _counterValue }}
+  </ion-col>
+  <ion-col size="5">
+    <ion-button class="counter-icon" (click)="increase()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </ion-col>
+
+<!-- <ion-item>
+  <ion-button class="counter-icon" (click)="decrease()">
+    <ion-icon slot="icon-only" name="remove"></ion-icon>
+  </ion-button>
+  <ion-label>{{ _counterValue }}</ion-label>
+  <ion-button class="counter-icon" (click)="increase()">
+    <ion-icon slot="icon-only" name="add"></ion-icon>
+  </ion-button>
+</ion-item> -->
+<!-- 
+<div class="button-outer">
+  <div class="button-wrapper">
+    <ion-button class="counter-icon" (click)="decrease()">
+      <ion-icon slot="icon-only" name="remove"></ion-icon>
+    </ion-button>
+  </div>
+</div>
+<span class="counter-value">{{ _counterValue }}</span>
+<div class="button-outer">
+  <div class="button-wrapper">
+    <ion-button class="counter-icon" (click)="increase()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </div>
+</div> -->

@@ -22,7 +22,8 @@
     ],
     "useDefineForClassFields": false,
     "allowJs": true,
-    "noImplicitReturns": false
+    "noImplicitReturns": false,
+    "strictNullChecks":false,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

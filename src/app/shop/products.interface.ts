@@ -1,13 +1,13 @@
-import { Product } from "../shared/wordpress/utils/types/wooCommerceTypes";
-import { CartItem } from "./store/cart.state";
+import { Order, Product } from "../shared/wordpress/utils/types/wooCommerceTypes";
+// import { CartItem } from "./store/cart.state";
 
-export function joinItems(cartItems: CartItem[], products: Product[]) {
+export function joinItems(cartItems: Order[], products: Product[]) {
   return cartItems.map(cartItem => {
-    const product = products.find(p => p.id === cartItem.productId);
+    const product = products.find(p => p.id === cartItem.id);
     return {
       ...cartItem,
       ...product,
-      total: cartItem.quantity * Number(product?.price),
+      // total: cartItem.q * Number(product?.price),
     };
   });
 }

@@ -34,6 +34,9 @@ export class WoocommerceCustomerService {
   }
 
   updateCustomer(id: number, customer: Customer): Observable<Customer> {
+    
+    console.log(customer);
+
     return this.httpClient.put<Customer>(`customers/${id}`, customer)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }

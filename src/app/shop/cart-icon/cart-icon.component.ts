@@ -3,9 +3,10 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CartItem, CartState } from '../store';
+import { CartState } from '../store';
 import { Store } from '@ngxs/store';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
+import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 
 @Component({
   selector: 'cart-icon',
@@ -22,7 +23,7 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   numberOfCartItems!: number;
 
-  cartItems$!: Observable<CartItem[]>;
+  cartItems$!: Observable<Order[]>;
 
   private store = inject(Store);
 
@@ -33,19 +34,19 @@ export class CartIconComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    this.cartItems$ = this.store.select(CartState.getCartItems);
-    this.cartItems$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: (p: CartItem[]) => {
-          this.numberOfCartItems = p?.length;
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => {
-        },
-      });
+    // this.cartItems$ = this.store.select(CartState.getCartItems);
+    // this.cartItems$
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe({
+    //     next: (p: CartItem[]) => {
+    //       this.numberOfCartItems = p?.length;
+    //     },
+    //     error: (e) => {
+    //       console.error(e)
+    //     },
+    //     complete: () => {
+    //     },
+    //   });
   }
 
   openCart() {

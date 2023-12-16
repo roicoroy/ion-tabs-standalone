@@ -1,0 +1,13 @@
+counter-input {
+  --counter-background: #000;
+  --counter-color: red;
+  --counter-color-activated: #FFF;
+  --counter-border-color: #000;
+  --counter-border-radius-outer: 50%;
+  --counter-border-radius-inner: 50%;
+  --counter-size: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
