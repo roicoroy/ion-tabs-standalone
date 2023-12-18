@@ -19,7 +19,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { CheckoutTabsState } from './app/shop/checkout/checkout.state';
 import { ProductsState } from './app/store/shop/products.state';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { WooInterceptor } from './app/shared/wooApi/woo.interceptor';
+import { WooInterceptor } from './app/shared/woo.interceptor';
 import { register } from 'swiper/element/bundle';
 import { CartState } from './app/store/shop/cart.state';
 import { AddressesState } from './app/components/addresses/store/addresses.state';

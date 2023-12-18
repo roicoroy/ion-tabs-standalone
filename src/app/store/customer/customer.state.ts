@@ -5,6 +5,7 @@ import { CustomerActions } from "./customer.actions";
 import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 import { Subject, catchError, takeUntil } from "rxjs";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
+import { AuthState } from "src/app/auth/store/auth.state";
 
 export interface ICustomerStateModel {
     customer: Customer | null;
@@ -60,6 +61,7 @@ export class CustomerState implements OnDestroy {
 
     @Action(CustomerActions.RetrieveAllCustomers)
     RetrieveAllCustomers(ctx: StateContext<ICustomerStateModel>) {
+        const user = this.store.selectSnapshot(AuthState.getUser);
         this.wooApiCustomer.retrieveAllCustomers()
             .pipe(
                 takeUntil(this.ngUnsubscribe),
@@ -68,28 +70,18 @@ export class CustomerState implements OnDestroy {
                 })
             )
             .subscribe((customers: Customer[]) => {
-                console.log(customers);
-                return ctx.patchState({
-                    customers
-                });
+                this.store.dispatch(new CustomerActions.RetrieveCustomer(user));
+                    ctx.patchState({
+                        customers
+                    });
             });
     }
 
     @Action(CustomerActions.RetrieveCustomer)
     retrieveCustomers(ctx: StateContext<ICustomerStateModel>, { user }: CustomerActions.RetrieveCustomer) {
         const state = ctx.getState();
-        // console.log(user);
         const customers = this.store.selectSnapshot(CustomerState.getCustomers);
-        console.log(customers);
         const results = customers?.filter((customer: any) => customer.email === user.user_email && customer.username === user.user_nicename);
-        // console.log(results[0]?.billing);
-        // const billing = this.store.selectSnapshot(AddressesState.getBilling);
-        // const shipping = this.store.selectSnapshot(AddressesState.getShipping);
-        // const savedAddressesList = this.store.selectSnapshot(AddressesState.getSavedList);
-        // console.log(savedAddressesList);
-        // if (savedAddressesList) {
-        //     // this.store.dispatch(new CustomerActions.AddAddressToSavedList(results[0]?.billing));
-        // }
         results?.forEach(result => {
             if (result.email === user.user_email) {
                 // console.log(result);

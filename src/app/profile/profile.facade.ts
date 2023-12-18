@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthState, IUserResponseModel } from '../auth/store/auth.state';
+import { AuthState } from '../auth/store/auth.state';
 import { UserResponse } from '../shared/wooApi';
 import { CustomerState } from '../store/customer/customer.state';
 import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
@@ -27,7 +27,6 @@ export class ProfileFacade {
     readonly viewState$: Observable<IProfileFacade>;
 
     constructor() {
-        // this.user$.subscribe((c)=> console.log(c));
         this.viewState$ = combineLatest(
             [
                 this.isLoggedIn$,
@@ -47,6 +46,6 @@ export class ProfileFacade {
                     user: b,
                     customer
                 }))
-            ) as any;
+            );
     }
 }

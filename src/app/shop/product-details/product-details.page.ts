@@ -6,7 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../../store/shop/products.actions';
-import { ProductsState } from '../../store/shop/products.state';
 import { LoadingController } from '@ionic/angular';
 import { CartComponent } from '../cart/cart.component';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
@@ -48,28 +47,12 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
   private readonly ngUnsubscribe = new Subject();
 
   async ngOnInit() {
-    const loading = await this.loadingController.create();
-    await loading.present();
     this.viewState$ = this.facade.viewState$;
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-
-    this.viewState$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1)
-      )
-      .subscribe({
-        next: async (vs: IProductsFacadeModel) => {
-          console.log('complete', vs.product);
-          if (id && !vs.product) {
-            this.store.dispatch(new ProductsActions.GetProductById(id));
-            await loading.dismiss();
-          } else {
-            await loading.dismiss();
-          }
-        },
-      });
-    // this.product$ = this.store.select(ProductsState.getSelectedProduct);
+    console.log(id);
+    if (id) {
+      this.store.dispatch(new ProductsActions.GetProductById(id));
+    }
   }
 
   sanitise(content: any) {

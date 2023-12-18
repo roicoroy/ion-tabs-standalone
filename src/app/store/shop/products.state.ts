@@ -52,17 +52,18 @@ export class ProductsState implements OnDestroy {
     @Action(ProductsActions.GetProductById)
     loadData(ctx: StateContext<IProductsStateModel>, { id }: ProductsActions.GetProductById) {
         const state = ctx.getState();
-        // console.log(id);
-        return this.wooProducts.retrieveProduct(id)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                tap((payload: Product) => {
-                    ctx.patchState({
-                        ...state,
-                        product: payload,
-                    });
-                })
-            );
+        if (id) {
+            return this.wooProducts.retrieveProduct(id)
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    tap((product: Product) => {
+                        ctx.patchState({
+                            ...state,
+                            product,
+                        });
+                    })
+                );
+        }
     }
 
     @Action(ProductsActions.RemoveSelectedProduct)

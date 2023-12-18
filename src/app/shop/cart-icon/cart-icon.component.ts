@@ -28,7 +28,6 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   viewState$: Observable<IProductsFacadeModel>;
 
-  private store = inject(Store);
 
   private navitagion = inject(NavigationService);
 
@@ -42,27 +41,27 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.cartItems$ = this.store.select(CartState.getCart);
-    this.viewState$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1)
-        )
-      .subscribe({
-        next: (vs: any) => {
-          // this.numberOfCartItems = p?.length;
-          console.log('open Cart icon', vs);
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => {
-        },
-      });
+    // this.viewState$
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     take(1)
+    //     )
+    //   .subscribe({
+    //     next: (vs: any) => {
+    //       // this.numberOfCartItems = p?.length;
+    //       console.log('open Cart icon', vs);
+    //     },
+    //     error: (e) => {
+    //       console.error(e)
+    //     },
+    //     complete: () => {
+    //     },
+    //   });
   }
 
-  openCart() {
-    console.log('open Cart icon');
-  }
+  // openCart() {
+  //   console.log('open Cart icon');
+  // }
 
   checkout() {
     this.navitagion.navigateFlip('checkout/cart-review');

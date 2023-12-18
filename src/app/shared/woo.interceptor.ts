@@ -1,4 +1,4 @@
-import { Injectable, Injector, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     HttpRequest,
     HttpHandler,
@@ -7,13 +7,12 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { WoocommerceHelperService } from '.';
+import { WoocommerceHelperService } from './wooApi';
 import { Store } from '@ngxs/store';
-import { IStoreSnapshoModel } from '../../store/store.snapshot.interface';
+import { IStoreSnapshoModel } from '../store/store.snapshot.interface';
 
 @Injectable()
 export class WooInterceptor implements HttpInterceptor {
