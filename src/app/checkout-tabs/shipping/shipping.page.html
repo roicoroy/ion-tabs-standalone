@@ -1,6 +1,39 @@
 <checkout-header [pageTitle]="pageTitle"></checkout-header>
 
 <ion-content [fullscreen]="true">
+
+  <div *ngIf="viewState$ | async as vs">
+
+    :: {{ vs.cart.shipping_lines }}
+
+    <br/>
+    Shipping Methods | shipping_lines
+    <!-- <div *ngFor="let method of vs.shipping_methods">
+      <div>
+        {{ method.id }}
+      </div>
+    </div> -->
+
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="shipping_lines" (ionChange)="shippingLinesChange($event)" label="Shipping Methods">
+          <ion-select-option [value]="method.id" *ngFor="let method of vs.shipping_methods">
+            {{ method.title }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <!-- <div *ngIf="viewState$ | async as vs">
+    Shipping Zones
+    <div *ngFor="let zone of vs.shipping_zones">
+      <div *ngIf="zone.id != 0">
+        {{ zone.name }}
+      </div>
+    </div>
+  </div> -->
   <div>
     <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
     <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">

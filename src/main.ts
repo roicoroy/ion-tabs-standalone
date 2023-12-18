@@ -16,13 +16,13 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { CheckoutTabsState } from './app/checkout-tabs/checkout-store/checkout.state';
-import { ProductsState } from './app/shop/store/products.state';
+import { CheckoutTabsState } from './app/shop/checkout/checkout.state';
+import { ProductsState } from './app/store/shop/products.state';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { WooInterceptor } from './app/shared/wooApi/woo.interceptor';
 import { register } from 'swiper/element/bundle';
-import { CartState } from './app/shop/store/cart.state';
-import { AddressesState } from './app/addresses/store/addresses.state';
+import { CartState } from './app/store/shop/cart.state';
+import { AddressesState } from './app/components/addresses/store/addresses.state';
 import { AuthState } from './app/auth/store/auth.state';
 import { ErrorsLoggingState } from './app/store/errors-logging/errors-logging.state';
 import { KeyboardState } from './app/store/keyboard/keyboard.state';
@@ -41,8 +41,8 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 import { NgxStripeModule } from 'ngx-stripe';
-import { CustomerState } from './app/profile/store/customer.state';
-import { ShippingState } from './app/checkout-tabs/shipping/store/shipping.state';
+import { CustomerState } from './app/store/customer/customer.state';
+import { ShippingState } from './app/store/shipping/shipping.state';
 
 defineCustomElements(window);
 if (environment.production) {

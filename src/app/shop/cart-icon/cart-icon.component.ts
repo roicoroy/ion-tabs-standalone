@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { CartState } from '../store';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
 import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+import { CartState } from '../../store/shop/cart.state';
+import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 
 @Component({
   selector: 'cart-icon',
@@ -23,7 +24,9 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   numberOfCartItems!: number;
 
-  cartItems$!: Observable<Order[]>;
+  cartItems$!: Observable<any>;
+
+  viewState$: Observable<IProductsFacadeModel>;
 
   private store = inject(Store);
 
@@ -31,22 +34,30 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   private readonly ngUnsubscribe = new Subject();
 
-  constructor() { }
+  constructor(
+    private facade: ProductsFacade,
+  ) { 
+    this.viewState$ = this.facade.viewState$;
+  }
 
   ngOnInit() {
-    // this.cartItems$ = this.store.select(CartState.getCartItems);
-    // this.cartItems$
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe({
-    //     next: (p: CartItem[]) => {
-    //       this.numberOfCartItems = p?.length;
-    //     },
-    //     error: (e) => {
-    //       console.error(e)
-    //     },
-    //     complete: () => {
-    //     },
-    //   });
+    // this.cartItems$ = this.store.select(CartState.getCart);
+    this.viewState$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1)
+        )
+      .subscribe({
+        next: (vs: any) => {
+          // this.numberOfCartItems = p?.length;
+          console.log('open Cart icon', vs);
+        },
+        error: (e) => {
+          console.error(e)
+        },
+        complete: () => {
+        },
+      });
   }
 
   openCart() {

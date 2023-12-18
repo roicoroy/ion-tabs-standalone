@@ -3,9 +3,9 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
-import { CartState } from '../store/cart.state';
+import { CartState } from '../../store/shop/cart.state';
 import { Select, Store } from '@ngxs/store';
-import { CartActions } from '../store/cart.actions';
+import { CartActions } from '../../store/shop/cart.actions';
 import { Router, RouterLink } from '@angular/router';
 import { Order, Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
@@ -26,7 +26,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   // @Select(CartState.cartItems) cartItems$!: Observable<(Order & Product)[]>;
 
-  @Select(CartState.getCart) cart$!: Observable<(Order & Product)[]>;
+  // @Select(CartState.) cart$!: Observable<any>;
 
   // @Select(CartState.cartTotal) total$!: Observable<number>;
 
@@ -51,7 +51,7 @@ export class CartComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (vs: any) => {
-          console.log('vs:::', vs.cart);
+          // console.log('vs:::', vs.cart);
         },
         error: (e) => {
           console.error(e)
@@ -66,18 +66,18 @@ export class CartComponent implements OnInit, OnDestroy {
 
   productDetails(id: number) {
     console.log(id);
-    // this.router.navigate(['/product-details', id]);
+    this.router.navigate(['/product-details', id]);
   }
 
-  // onDelete({ productId }: CartItem) {
-  //   // console.log(productId);
-  //   this.store.dispatch(new CartActions.RemoveProductFromCart(productId));
-  // }
+  onDelete(productId: any) {
+    // console.log(productId);
+    this.store.dispatch(new CartActions.RemoveProductFromCart(productId));
+  }
 
-  // removeFromList(productId: any) {
-  //   // console.log(productId);
-  //   this.store.dispatch(new CartActions.RemoveProductFromList(productId));
-  // }
+  removeFromList(productId: any) {
+    // console.log(productId);
+    this.store.dispatch(new CartActions.RemoveProductFromList(productId));
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

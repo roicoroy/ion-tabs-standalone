@@ -12,9 +12,10 @@ import { AuthState } from '../auth/store/auth.state';
 import { UserResponse } from '../shared/wooApi';
 
 import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
-import { AddressesComponent } from '../addresses/addresses-list/addresses.component';
-import { CustomerState } from './store/customer.state';
-import { CustomerActions } from './store/customer.actions';
+import { AddressesComponent } from '../components/addresses/addresses-list/addresses.component';
+import { CustomerState } from '../store/customer/customer.state';
+import { CustomerActions } from '../store/customer/customer.actions';
+import { IProfileFacade, ProfileFacade } from './profile.facade';
 
 @Component({
   selector: 'app-profile',
@@ -36,28 +37,32 @@ import { CustomerActions } from './store/customer.actions';
 })
 export class ProfilePage implements OnInit, OnDestroy {
 
-  @Select(AuthState.getUser) user$!: Observable<UserResponse>;
+  // @Select(AuthState.getUser) user$!: Observable<UserResponse>;
 
-  @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
+  // @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
 
   pageTitle = 'Profile Page';
+
+  viewState$!: Observable<IProfileFacade>;
+  
+  private facade = inject(ProfileFacade);
 
   private readonly ngUnsubscribe = new Subject();
 
   private store = inject(Store);
 
   ionViewDidEnter() {
-
-    this.customer$
+    this.viewState$ = this.facade.viewState$;
+    this.viewState$
       .pipe(
         takeUntil(this.ngUnsubscribe),
         take(1)
       )
       .subscribe({
-        next: (p: any) => {
-          // console.log('complete', p);
-          if (p) {
-            this.store.dispatch(new CustomerActions.RetrieveCustomer(p));
+        next: (vs: any) => {
+          console.log('cvsss', vs);
+          if (vs.customer) {
+            this.store.dispatch(new CustomerActions.RetrieveCustomer(vs.customer));
           } else {
             this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
           }
@@ -68,21 +73,21 @@ export class ProfilePage implements OnInit, OnDestroy {
         complete: () => { },
       });
 
-    this.user$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1)
-      )
-      .subscribe({
-        next: (p: any) => {
-          // console.log('user', p);
-          this.store.dispatch(new CustomerActions.RetrieveCustomer(p));
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => { },
-      });
+    // this.user$
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     take(1)
+    //   )
+    //   .subscribe({
+    //     next: (p: any) => {
+    //       console.log('user', p);
+    //       this.store.dispatch(new CustomerActions.RetrieveCustomer(p));
+    //     },
+    //     error: (e) => {
+    //       console.error(e)
+    //     },
+    //     complete: () => { },
+    //   });
   }
 
   ngOnInit() {

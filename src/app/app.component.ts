@@ -11,11 +11,11 @@ import { AppFacade, IAppFacadeModel } from './app.facade';
 import { Platform } from '@ionic/angular';
 import { NavigationService } from './shared/utils/navigation.service';
 import { AuthActions } from './auth/store/auth.actions';
-import { ProductsActions } from './shop/store';
 import { FcmService } from './shared/fcm.service';
 import { LanguageService } from './shared/language/language.service';
 import { KeyboardService } from './shared/native/keyboard/keyboard.service';
 import { ThemeService } from './shared/utils/theme.service';
+import { ProductsActions } from './store/shop/products.actions';
 
 @Component({
   selector: 'app-root',

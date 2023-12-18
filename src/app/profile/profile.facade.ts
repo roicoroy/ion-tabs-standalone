@@ -4,9 +4,13 @@ import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthState, IUserResponseModel } from '../auth/store/auth.state';
 import { UserResponse } from '../shared/wooApi';
+import { CustomerState } from '../store/customer/customer.state';
+import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
 
 export interface IProfileFacade {
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    user: UserResponse,
+    customer: Customer
 }
 
 @Injectable({
@@ -18,6 +22,8 @@ export class ProfileFacade {
 
     @Select(AuthState.getUser) user$!: Observable<UserResponse>;
 
+    @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
+
     readonly viewState$: Observable<IProfileFacade>;
 
     constructor() {
@@ -26,15 +32,20 @@ export class ProfileFacade {
             [
                 this.isLoggedIn$,
                 this.user$,
+                this.customer$,
             ]
         )
             .pipe(
                 map((
-                    a,
-                    b
+                    [
+                        a,
+                        b,
+                        customer
+                    ]
                 ) => ({
-                    isLoggedIn: a[0],
-                    user: b
+                    isLoggedIn: a,
+                    user: b,
+                    customer
                 }))
             ) as any;
     }

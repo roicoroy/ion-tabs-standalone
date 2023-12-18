@@ -1,4 +1,4 @@
-import { Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
+import { LineItem, Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export namespace CartActions {
     export class LoadCartItems {
@@ -16,12 +16,16 @@ export namespace CartActions {
         static readonly type = '[CartActions] Remove Product From List';
         constructor(public productId: number) { }
     }
-    export class CreateOrder {
-        static readonly type = '[CartActions] Create Order';
-        constructor(public payload: Order) { }
+    export class CreateCartOrder {
+        static readonly type = '[CartActions] Create Cart Order';
+        constructor(public lineItems: LineItem[], public cutomerId: number) { }
     }
     export class UpdateOrder {
         static readonly type = '[CartActions] Update Order';
-        constructor(public payload: Order) { }
+        constructor(public lineItems: LineItem[], public cutomerId: number) { }
+    }
+    export class UpdateCartOrder {
+        static readonly type = '[CartActions] Update Cart Order';
+        constructor(public order: Order) { }
     }
 }

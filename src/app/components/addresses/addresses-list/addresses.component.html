@@ -23,9 +23,8 @@
     </ion-col>
     <ion-col>
       Shipping Address
-
-      <p *ngIf="vs.shipping_address">
-        Email: {{ vs.shipping_address.email }}
+      <div *ngIf="vs.shipping_address">
+        .. Email: {{ vs.shipping_address?.email }}
         First name: {{ vs.shipping_address.first_name }}
         Last name: {{ vs.shipping_address.last_name }}
         First line address : {{ vs.shipping_address.address_1 }}
@@ -34,7 +33,7 @@
         City: {{ vs.shipping_address.city }}
         Country: {{ vs.shipping_address.country }}
         Phone: {{ vs.shipping_address.phone }}
-      </p>
+      </div>
 
       <ion-button (click)="openModalAddressPage('shipping_address', vs.shipping_address)" expand="block" fill="clear"
         shape="round">

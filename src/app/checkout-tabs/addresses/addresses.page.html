@@ -1,9 +1,128 @@
 <checkout-header [pageTitle]="pageTitle"></checkout-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" *ngIf="viewState$ | async as vs">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-text color="primary">
+          Cart Billing Address
+        </ion-text>
+        <span *ngIf="vs.cart.billing">
+          Email: {{ vs.cart.billing.email }} <br />
+          First name: {{ vs.cart.billing.first_name }} <br />
+          Last name: {{ vs.cart.billing.last_name }} <br />
+          First line address : {{ vs.cart.billing.address_1 }} <br />
+          Second line address: {{ vs.cart.billing.address_2 }} <br />
+          Postcode: {{ vs.cart.billing.postcode }} <br />
+          City: {{ vs.cart.billing.city }} <br />
+          Country: {{ vs.cart.billing.country }} <br />
+          Phone: {{ vs.cart.billing.phone }} <br />
+        </span>
+      </ion-col>
+      <ion-col size="6">
+        <ion-text color="primary">
+          Cart Shipping Address
+        </ion-text>
+        <span *ngIf="vs.cart.shipping">
+          Email: {{ vs.cart.shipping.email }} <br />
+          First name: {{ vs.cart.shipping.first_name }} <br />
+          Last name: {{ vs.cart.shipping.last_name }} <br />
+          First line address : {{ vs.cart.shipping.address_1 }} <br />
+          Second line address: {{ vs.cart.shipping.address_2 }} <br />
+          Postcode: {{ vs.cart.shipping.postcode }} <br />
+          City: {{ vs.cart.shipping.city }} <br />
+          Country: {{ vs.cart.shipping.country }} <br />
+          Phone: {{ vs.cart.shipping.phone }} <br />
+        </span>
+      </ion-col>
+    </ion-row>
 
-  <addresses-component></addresses-component>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="addNewAddressToList()" expand="block" fill="clear" shape="round">
+          Add New Address to list
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="vs.saved_addresses">
+      <ion-col *ngFor="let address of vs.saved_addresses">
+        <ion-button (click)="addBillingToCart(address)" expand="block" fill="solid" shape="round">
+          Add as Billing to Cart
+        </ion-button>
+        <ion-button (click)="addShippingToCart(address)" expand="block" fill="solid" shape="round">
+          Add as Shipping to Cart
+        </ion-button>
+        <br />
+        First name: {{ address?.first_name }} <br />
+        Last name: {{ address?.last_name }} <br />
+        First line address : {{ address?.address_1 }} <br />
+        Second line address: {{ address?.address_2 }} <br />
+        Postcode: {{ address?.postcode }} <br />
+        City: {{ address?.city }} <br />
+        Country: {{ address?.country }} <br />
+        Phone: {{ address?.phone }} <br /> <br />
+      </ion-col>
+    </ion-row>
+    <!-- <ion-col size="12">
+      <div *ngIf="vs.saved_addresses">
+        <ion-text color="secondary">
+          Save Addressese
+        </ion-text>
+        <br />
+        <span *ngFor="let address of vs.saved_addresses">
+          Email: {{ address?.email }} <br />
+          First name: {{ address?.first_name }} <br />
+          Last name: {{ address?.last_name }} <br />
+          First line address : {{ address?.address_1 }} <br />
+          Second line address: {{ address?.address_2 }} <br />
+          Postcode: {{ address?.postcode }} <br />
+          City: {{ address?.city }} <br />
+          Country: {{ address?.country }} <br />
+          Phone: {{ address?.phone }} <br /> <br />
+        </span>
+      </div>
+    </ion-col> -->
+
+    <!-- <ion-row>
+      <ion-col size="6">
+        <ion-text color="secondary">
+          Customer Billing Address
+        </ion-text>
+        <br />
+        <span *ngIf="vs.customer.billing">
+          Email: {{ vs.customer.billing.email }} <br />
+          First name: {{ vs.customer.billing.first_name }} <br />
+          Last name: {{ vs.customer.billing.last_name }} <br />
+          First line address : {{ vs.customer.billing.address_1 }} <br />
+          Second line address: {{ vs.customer.billing.address_2 }} <br />
+          Postcode: {{ vs.customer.billing.postcode }} <br />
+          City: {{ vs.customer.billing.city }} <br />
+          Country: {{ vs.customer.billing.country }} <br />
+          Phone: {{ vs.customer.billing.phone }} <br />
+        </span>
+      </ion-col>
+      <ion-col size="6">
+        <ion-text color="secondary">
+          Customer Shipping Address
+        </ion-text>
+        <br />
+        <span *ngIf="vs.customer.shipping">
+          Email: {{ vs.customer.shipping.email }} <br />
+          First name: {{ vs.customer.shipping.first_name }} <br />
+          Last name: {{ vs.customer.shipping.last_name }} <br />
+          First line address : {{ vs.customer.shipping.address_1 }} <br />
+          Second line address: {{ vs.customer.shipping.address_2 }} <br />
+          Postcode: {{ vs.customer.shipping.postcode }} <br />
+          City: {{ vs.customer.shipping.city }} <br />
+          Country: {{ vs.customer.shipping.country }} <br />
+          Phone: {{ vs.customer.shipping.phone }} <br />
+        </span>
+      </ion-col>
+    </ion-row> -->
+  </ion-grid>
 
 </ion-content>
+
+
 
 <checkout-footer [pageTitle]="pageTitle"></checkout-footer>

@@ -68,6 +68,7 @@ export class CustomerState implements OnDestroy {
                 })
             )
             .subscribe((customers: Customer[]) => {
+                console.log(customers);
                 return ctx.patchState({
                     customers
                 });
@@ -79,7 +80,7 @@ export class CustomerState implements OnDestroy {
         const state = ctx.getState();
         // console.log(user);
         const customers = this.store.selectSnapshot(CustomerState.getCustomers);
-        // console.log(customers);
+        console.log(customers);
         const results = customers?.filter((customer: any) => customer.email === user.user_email && customer.username === user.user_nicename);
         // console.log(results[0]?.billing);
         // const billing = this.store.selectSnapshot(AddressesState.getBilling);
@@ -114,6 +115,7 @@ export class CustomerState implements OnDestroy {
                 shipping: address
             };
         }
+        console.log(payload);
         this.wooApiCustomer.updateCustomer(Number(id), payload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),

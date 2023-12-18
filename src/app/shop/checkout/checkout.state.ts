@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { ICheckoutTabs, checkoutTabs } from '../checkout-tabs.config';
+import { ICheckoutTabs, checkoutTabs } from '../../checkout-tabs/checkout-tabs.config';
 import { CheckoutActions } from './checkout.actions';
 
 export class ICheckoutTabsStateModel {

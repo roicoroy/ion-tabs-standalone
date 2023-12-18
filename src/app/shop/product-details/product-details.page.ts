@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { ProductsActions } from '../store/products.actions';
-import { ProductsState } from '../store/products.state';
+import { ProductsActions } from '../../store/shop/products.actions';
+import { ProductsState } from '../../store/shop/products.state';
 import { LoadingController } from '@ionic/angular';
 import { CartComponent } from '../cart/cart.component';
-import { CartActions } from '../store/cart.actions';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
 import { AddToCartComponent } from '../add-to-cart/add-to-cart.component';
+import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 
 @Component({
   selector: 'app-product-details',
@@ -30,42 +30,54 @@ import { AddToCartComponent } from '../add-to-cart/add-to-cart.component';
   ]
 })
 export class ProductDetailsPage implements OnInit, OnDestroy {
-  
+
   product$!: Observable<Product>;
-  
+
+  viewState$: Observable<IProductsFacadeModel>;
+
   private activatedRoute = inject(ActivatedRoute);
 
   private store = inject(Store);
 
   private loadingController = inject(LoadingController);
-  
+
+  private facade = inject(ProductsFacade);
+
   private sanitizer = inject(DomSanitizer);
-  
+
   private readonly ngUnsubscribe = new Subject();
 
   async ngOnInit() {
     const loading = await this.loadingController.create();
     await loading.present();
+    this.viewState$ = this.facade.viewState$;
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.store.dispatch(new ProductsActions.GetProductById(id));
-    this.product$ = this.store.select(ProductsState.getSelectedProduct);
-    await loading.dismiss();
+
+    this.viewState$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1)
+      )
+      .subscribe({
+        next: async (vs: IProductsFacadeModel) => {
+          console.log('complete', vs.product);
+          if (id && !vs.product) {
+            this.store.dispatch(new ProductsActions.GetProductById(id));
+            await loading.dismiss();
+          } else {
+            await loading.dismiss();
+          }
+        },
+      });
+    // this.product$ = this.store.select(ProductsState.getSelectedProduct);
   }
 
-  sanitise(content:any){
+  sanitise(content: any) {
     return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 
-  // addToCart(id: number) {
-  //   this.store.dispatch(new CartActions.AddProductToCart(id));
-  // }
-
-  // removeFromCart(id: number) {
-  //   // console.log(id);
-  //   this.store.dispatch(new CartActions.RemoveProductFromCart(id));
-  // }
-
   ngOnDestroy(): void {
+    this.store.dispatch(new ProductsActions.RemoveSelectedProduct);
     this.ngUnsubscribe.next(null);
     this.ngUnsubscribe.complete();
   }

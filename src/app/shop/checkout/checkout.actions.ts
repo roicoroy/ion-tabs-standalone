@@ -1,4 +1,4 @@
-import { ICheckoutTabs } from "../checkout-tabs.config";
+import { ICheckoutTabs } from "../../checkout-tabs/checkout-tabs.config";
 
 export namespace CheckoutActions {
     export class UpdateCheckoutTabsState {

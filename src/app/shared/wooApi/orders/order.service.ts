@@ -27,17 +27,18 @@ export class WoocommerceOrderService {
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  listAllOrders(params?: ListOrderParameters): Observable<IOrder[]>  {
-    return this.httpClient.get<IOrder[]>(`orders`, {params: params as HttpParams || {}})
+  listAllOrders(params?: ListOrderParameters): Observable<IOrder[]> {
+    return this.httpClient.get<IOrder[]>(`orders`, { params: params as HttpParams || {} })
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  updateOrder(order: Partial<Order>): Observable<Order>  {
+  updateOrder(order: Partial<Order>): Observable<Order> {
+    // console.log(order);
     return this.httpClient.put<Order>(`orders/${order.id}`, order)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  deleteOrder(id: string): Observable<IOrder>  {
+  deleteOrder(id: string): Observable<IOrder> {
     return this.httpClient.delete<IOrder>(`orders/${id}`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }

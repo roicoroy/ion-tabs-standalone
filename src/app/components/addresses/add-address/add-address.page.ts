@@ -14,7 +14,7 @@ import { EAddresses } from '../addresses-list/addresses.component';
 import { CheckoutTabsService } from 'src/app/checkout-tabs/checkout-tabs.service';
 import { IAddressesFacadeModel, AddressesFacade } from '../addresses.facade';
 import { AuthActions } from 'src/app/auth/store/auth.actions';
-import { CustomerActions } from 'src/app/profile/store/customer.actions';
+import { CustomerActions } from 'src/app/store/customer/customer.actions';
 
 @Component({
   selector: 'app-add-address',

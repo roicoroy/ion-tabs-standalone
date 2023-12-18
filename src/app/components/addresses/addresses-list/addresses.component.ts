@@ -12,7 +12,7 @@ import { ModalController } from '@ionic/angular';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressesFacade, IAddressesFacadeModel } from '../addresses.facade';
 import { AddressesActions } from '../store/addresses.actions';
-import { CustomerActions } from 'src/app/profile/store/customer.actions';
+import { CustomerActions } from 'src/app/store/customer/customer.actions';
 
 export enum EAddresses {
   billing_address,

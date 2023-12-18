@@ -51,30 +51,27 @@ export class ProductsState implements OnDestroy {
 
     @Action(ProductsActions.GetProductById)
     loadData(ctx: StateContext<IProductsStateModel>, { id }: ProductsActions.GetProductById) {
-        return this.wooProducts.retrieveProduct(id).pipe(
-            takeUntil(this.ngUnsubscribe),
-            tap((payload: Product) => {
-                // console.log('payload', payload);
-                ctx.patchState({
-                    product: payload,
-                });
-            })
-        );
+        const state = ctx.getState();
+        // console.log(id);
+        return this.wooProducts.retrieveProduct(id)
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                tap((payload: Product) => {
+                    ctx.patchState({
+                        ...state,
+                        product: payload,
+                    });
+                })
+            );
     }
 
-    // @Action(ProductsActions.GetProductById)
-    // getProductById(ctx: StateContext<IProductsStateModel>, { id }: ProductsActions.GetProductById) {
-    //     const state = ctx.getState();
-    //     // console.log(id);
-    //     this.wooProducts.retrieveProduct(id)
-    //         .subscribe((product) => {
-    //             console.log(product);
-    //             return ctx.patchState({
-    //                 ...state,
-    //                 product,
-    //             });
-    //         });
-    // }
+    @Action(ProductsActions.RemoveSelectedProduct)
+    removeSelectedProducts(ctx: StateContext<IProductsStateModel>) {
+        // console.log('response');
+        return ctx.patchState({
+            product: null,
+        });
+    }
 
     ngOnDestroy(): void {
         this.ngUnsubscribe.next(null);

@@ -2,9 +2,9 @@ import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CheckoutTabsState } from './checkout-store/checkout.state';
+import { CheckoutTabsState } from '../shop/checkout/checkout.state';
 import { ICheckoutTabs } from './checkout-tabs.config';
-import { CheckoutActions } from './checkout-store/checkout.actions';
+import { CheckoutActions } from '../shop/checkout/checkout.actions';
 
 @Injectable({
   providedIn: 'root'

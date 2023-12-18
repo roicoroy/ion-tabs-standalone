@@ -7,7 +7,7 @@ import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { CheckoutTabsService } from '../checkout-tabs.service';
 import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.component';
 import { Store } from '@ngxs/store';
-import { ShippingActions } from './store/shipping.actions';
+import { ShippingActions } from '../../store/shipping/shipping.actions';
 import { IShippingFacadeModel, ShippingFacade } from './shipping.facade';
 
 @Component({
@@ -30,6 +30,8 @@ export class ShippingPage implements OnInit {
   buttonToggle: boolean = false;
 
   viewState$!: Observable<IShippingFacadeModel>;
+
+  shipping_lines: any;
 
   private facade = inject(ShippingFacade);
 
@@ -55,9 +57,14 @@ export class ShippingPage implements OnInit {
       take(1),
     )
       .subscribe({
-        next: (vs: any) => {
-          console.log(vs);
-        },
+        // next: (vs: IShippingFacadeModel) => {
+        //   console.log(vs.shipping_methods);
+        //   console.log(vs.shipping_classes);
+        //   console.log(vs.payment_gateways);
+        //   console.log(vs.shipping_zones);
+        //   console.log(vs.tax_classes);
+        //   console.log(vs.cart);
+        // },
       });
   }
 
@@ -70,6 +77,12 @@ export class ShippingPage implements OnInit {
 
   formReady(ready: boolean) {
     this.service.ready(ready);
+  }
+
+  shippingLinesChange($event: any) {
+    const methodId = $event.detail.value;
+    console.log($event.detail.value);
+    this.store.dispatch(new ShippingActions.UpdateCartShippingLines(methodId));
   }
 
   ngOnDestroy(): void {

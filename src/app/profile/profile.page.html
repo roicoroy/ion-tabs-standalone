@@ -16,33 +16,33 @@
 
   <ion-grid>
 
-    <!-- <ion-row>
+    <ion-row>
       <ion-col size="12">
         <addresses-component></addresses-component>
       </ion-col>
-    </ion-row> -->
+    </ion-row>
 
-    <ion-row *ngIf="customer$ | async as customer">
+    <ion-row *ngIf="viewState$ | async as vs">
       <ion-col size="12">
         <ion-card>
           <ion-card-header>
-            <ion-card-subtitle>{{ customer.email }}</ion-card-subtitle>
+            <ion-card-subtitle>{{ vs.customer?.email }}</ion-card-subtitle>
             <ion-card-title>
-              {{ customer.username }}
+              {{ vs.customer?.username }}
             </ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-img [src]="customer.avatar_url"></ion-img>
+            <ion-img [src]="vs.customer?.avatar_url"></ion-img>
           </ion-card-content>
         </ion-card>
       </ion-col>
       <ion-col size="6">
         Shipping Address
-        {{ customer.shipping | json }}
+        {{ vs.customer?.shipping | json }}
       </ion-col>
       <ion-col size="6">
         Billing Address
-        {{ customer.billing | json }}
+        {{ vs.customer?.billing | json }}
       </ion-col>
     </ion-row>
   </ion-grid>

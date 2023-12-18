@@ -12,7 +12,7 @@ export namespace ProductsActions {
         static readonly type = '[Result] Set Selected Products';
         constructor(public payload: Product) { }
     }
-    export class RemoveSelectedProducts {
-        static readonly type = '[Result] Remove Selected Products';
+    export class RemoveSelectedProduct {
+        static readonly type = '[Result] Remove Selected Product';
     }
 }

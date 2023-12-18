@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CheckoutHeaderComponent } from '../header/header.component';
-import { Observable, Subject, combineLatest, map, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, map, take, takeUntil, tap } from 'rxjs';
 import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.component';
 import { CheckoutTabsService } from '../checkout-tabs.service';
-import { AddressesComponent } from 'src/app/addresses/addresses-list/addresses.component';
-import { Select } from '@ngxs/store';
-import { AddressesState } from 'src/app/addresses/store/addresses.state';
+import { AddressesComponent } from 'src/app/components/addresses/addresses-list/addresses.component';
+import { Select, Store } from '@ngxs/store';
+import { AddressesState } from 'src/app/components/addresses/store/addresses.state';
 import { Address, Billing, Shipping } from 'src/app/shared/wooApi';
 import { LoadingController } from '@ionic/angular';
+import { IAddressesFacadeModel, AddressesFacade } from 'src/app/components/addresses/addresses.facade';
+import { CartAddressesFacade, ICartAddressesFacadeModel } from './cart-addresses.facade';
+import { AddressesActions } from 'src/app/components/addresses/store/addresses.actions';
 
 @Component({
   selector: 'app-addresses',
@@ -34,6 +37,12 @@ export class AddressesPage implements OnInit, OnDestroy {
 
   pageTitle = 'Cart Review Page';
 
+  viewState$: Observable<ICartAddressesFacadeModel>;
+
+  private store = inject(Store);
+
+  private facade = inject(CartAddressesFacade);
+
   private service = inject(CheckoutTabsService);
 
   private loadingController = inject(LoadingController);
@@ -44,58 +53,35 @@ export class AddressesPage implements OnInit, OnDestroy {
   private readonly ngUnsubscribe = new Subject();
 
   async ngOnInit() {
-    const loading = await this.loadingController.create();
-    await loading.present();
-    const obs$ = combineLatest([this.billing_address$, this.shipping_address$]).pipe(
-      map(([
-        billing_address$,
-        shipping_address$
-      ]) => ({
-        billing_address: billing_address$,
-        shipping_address: shipping_address$,
-      }))
-    );
+    // const loading = await this.loadingController.create();
+    // await loading.present();
+    this.viewState$ = this.facade.viewState$;
+    // this.viewState$
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     take(1)
+    //   )
+    //   .subscribe({
+    //     next: async (p: any) => {
+    //       // console.log(p.customer.billing);
+    //       // console.log(p.customer.shipping);
+    //       // this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.billing))
+    //       // this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.shipping))
+    //     },
+    //   });
+  }
 
-    obs$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        tap(async (p: any) => {
-          this.billing_address = p.billing_address;
-          this.shipping_address = p.shipping_address;
-          if ( p.billing_address && p.shipping_address) {
-            await this.service.ready(true);
-          }
-          else {
-            await this.service.ready(false);
-          }
-          await loading.dismiss();
-        })
-        )
-      .subscribe({
-        next: async (p: any) => {
-          this.billing_address = p.billing_address;
-          this.shipping_address = p.shipping_address;
-          if ( p.billing_address && p.shipping_address) {
-            await this.service.ready(true);
-          }
-          else {
-            await this.service.ready(false);
-          }
-          await loading.dismiss();
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: async () => {
-          if ( this.billing_address && this.shipping_address) {
-            await this.service.ready(true);
-          }
-          else {
-            await this.service.ready(false);
-          }
-          await loading.dismiss();
-        },
-      });
+  addNewAddressToList() {
+  }
+  
+  addBillingToCart(address: Address) {
+    // console.log(address);
+    this.store.dispatch(new AddressesActions.UpdateCartBillingAddress(address))
+  }
+
+  addShippingToCart(address: Address) {
+    // console.log(address);
+    this.store.dispatch(new AddressesActions.UpdateCartShippingAddress(address))
   }
 
   ngOnDestroy(): void {

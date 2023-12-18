@@ -1,12 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { Shipping, Billing, Address } from 'src/app/shared/wooApi';
+import { Shipping, Billing, Address, WoocommerceOrderService } from 'src/app/shared/wooApi';
 import { AddressesActions } from './addresses.actions';
+import { CartState, ICartStateModel } from 'src/app/store/shop/cart.state';
+import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
+import { CartActions } from 'src/app/store/shop/cart.actions';
 
 export class IAddressesStateModel {
     billing_address!: Billing | null;
     shipping_address!: Shipping | null;
-    saved_addresses!: Address[];
+    saved_addresses!: any[];
 }
 
 @State<IAddressesStateModel>({
@@ -44,6 +47,8 @@ export class AddressesState {
 
     private store = inject(Store);
 
+    private wooApiOrders = inject(WoocommerceOrderService);
+
     @Selector()
     static getShipping(state: IAddressesStateModel): Shipping | undefined | null {
         return state.shipping_address;
@@ -57,6 +62,40 @@ export class AddressesState {
     @Selector()
     static getSavedList(state: IAddressesStateModel): Address[] | undefined | null {
         return state.saved_addresses;
+    }
+
+    @Action(AddressesActions.UpdateCartBillingAddress)
+    updateCartBillingAddress(ctx: StateContext<ICartStateModel>, { billing_address }: AddressesActions.UpdateCartBillingAddress) {
+        const cart = this.store.selectSnapshot(CartState.getCart);
+        if (cart && billing_address != null) {
+            const newOrder: Order = {
+                id: cart.id,
+                customer_id: cart.customer_id,
+                billing: billing_address
+            }
+            // console.log(newOrder);
+            this.store.dispatch(new CartActions.UpdateCartOrder(newOrder))
+                // .subscribe((vs: any) => {
+                //     console.log('updated Order', vs);
+                // });
+        }
+    }
+
+    @Action(AddressesActions.UpdateCartShippingAddress)
+    UpdateCartShippingAddress(ctx: StateContext<IAddressesStateModel>, { shipping_address }: AddressesActions.UpdateCartShippingAddress) {
+        const cart = this.store.selectSnapshot(CartState.getCart);
+        if (cart && shipping_address != null) {
+            const newOrder: Order = {
+                id: cart.id,
+                customer_id: cart.customer_id,
+                shipping: shipping_address
+            }
+            // console.log(newOrder);
+            this.store.dispatch(new CartActions.UpdateCartOrder(newOrder))
+                // .subscribe((vs: any) => {
+                //     console.log('updated Order', vs);
+                // });
+        }
     }
 
     @Action(AddressesActions.UpdateBillingAddress)
@@ -99,14 +138,18 @@ export class AddressesState {
         });
     }
 
+    addressesList: any[];
+
     @Action(AddressesActions.AddAddressToSavedList)
     addAddressToSavedList(ctx: StateContext<IAddressesStateModel>, { address }: AddressesActions.AddAddressToSavedList) {
-        console.log(address);
-        let addressesList = [];
-        addressesList.push(address);
-        return ctx.patchState({
-            saved_addresses: addressesList,
-        });
+        // console.log(address);
+        if (address && this.addressesList) {
+            this.addressesList.push(address);
+            // console.log(this.addressesList);
+            return ctx.patchState({
+                saved_addresses: this.addressesList,
+            });
+        }
     }
 
     @Action(AddressesActions.RemoveAddressFromSavedList)

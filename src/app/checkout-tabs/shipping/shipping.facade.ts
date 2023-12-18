@@ -1,10 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Select } from "@ngxs/store";
 import { Observable, combineLatest, map } from "rxjs";
-import { ShippingState } from "./store/shipping.state";
+import { ShippingState } from "../../store/shipping/shipping.state";
+import { CartState } from "src/app/store/shop/cart.state";
+import { Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export class IShippingFacadeModel {
-    shippingMethods: any
+    shipping_methods: any;
+    shipping_classes: any;
+    payment_gateways: any;
+    shipping_zones: any;
+    tax_classes: any;
+    cart: Order;
 }
 
 @Injectable({
@@ -12,24 +19,49 @@ export class IShippingFacadeModel {
 })
 export class ShippingFacade {
 
-    @Select(ShippingState.getShipping) shippingMethods$!: Observable<any>;
+    @Select(ShippingState.getShippingMethods) shipping_methods$!: Observable<any>;
+
+    @Select(ShippingState.getShippingClasses) shipping_classes$!: Observable<any>;
+
+    @Select(ShippingState.getPaymentGateways) payment_gateways$!: Observable<any>;
+
+    @Select(ShippingState.getShippingZones) shipping_zones$!: Observable<any>;
+
+    @Select(ShippingState.getTaxClasses) tax_classes$!: Observable<any>;
+
+    @Select(CartState.getCart) cart$!: Observable<Order>;
 
     readonly viewState$: Observable<IShippingFacadeModel>;
 
     constructor() {
         this.viewState$ = combineLatest(
             [
-                this.shippingMethods$,
+                this.shipping_methods$,
+                this.shipping_classes$,
+                this.payment_gateways$,
+                this.shipping_zones$,
+                this.tax_classes$,
+                this.cart$,
             ]
         )
             .pipe(
                 map((
                     [
-                        shippingMethods,
+                        shipping_methods,
+                        shipping_classes,
+                        payment_gateways,
+                        shipping_zones,
+                        tax_classes,
+                        cart,
                     ]
                 ) => (
                     {
-                        shippingMethods,
+                        shipping_methods,
+                        shipping_classes,
+                        payment_gateways,
+                        shipping_zones,
+                        tax_classes,
+                        cart,
                     }
                 ))
             );

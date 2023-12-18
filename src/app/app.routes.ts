@@ -43,7 +43,7 @@ export const routes: Routes = [
   },
   {
     path: 'add-address/:address',
-    loadComponent: () => import('./addresses/add-address/add-address.page').then( m => m.AddAddressPage)
+    loadComponent: () => import('./components/addresses/add-address/add-address.page').then( m => m.AddAddressPage)
   },
   {
     path: 'profile',

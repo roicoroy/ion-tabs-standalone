@@ -8,9 +8,9 @@ import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/utils/alert.service";
 import { LoadingService } from "src/app/shared/utils/loading.service";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
-import { AddressesActions } from "src/app/addresses/store/addresses.actions";
-import { CustomerActions } from "src/app/profile/store/customer.actions";
-import { CustomerState } from "src/app/profile/store/customer.state";
+import { AddressesActions } from "src/app/components/addresses/store/addresses.actions";
+import { CustomerActions } from "src/app/store/customer/customer.actions";
+import { CustomerState } from "src/app/store/customer/customer.state";
 import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export interface IUserResponseModel {
