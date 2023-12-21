@@ -20,6 +20,11 @@ export class WoocommerceShippingService {
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
+  getAllShippingMethods(zoneId: string): Observable<any> {
+    return this.httpClient.get<any>(`shipping/zones/${zoneId}/methods`)
+      .pipe(catchError(err => this.wooHelper.handleError(err)));
+  }
+
   retrieveShippingMethods(): Observable<any> {
     return this.httpClient.get<any>(`shipping_methods`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));

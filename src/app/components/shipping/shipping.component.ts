@@ -63,38 +63,24 @@ export class ShippingComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe({
       next: (vs: any) => {
-        // console.log(vs.shipping_methods);
-        // // console.log(vs.shipping_classes);
-        // // console.log(vs.payment_gateways);
-        // console.log(vs.shipping_zones);
-        console.log(vs.selected_shipping_line);
         if (vs.selected_shipping_line) {
           this.selected_shipping_line = vs.selected_shipping_line;
         }
-        // console.log(vs.secret_key);
       },
     });
   }
 
-  shippingShippingZones($event: any) {
-    console.log('shipping zone', $event.target.value);
+  shippingZones($event: any) {
     this.zoneID = $event.target.value.id;
     console.log(this.zoneID);
+    this.store.dispatch(new ShippingActions.GetAllShippingMethods(this.zoneID));
   }
 
-  shippingLinesChange(selected_shipping_line: any) {
-    const method = selected_shipping_line;
-    this.methodId = method.id;
-
+  shippingLinesChange($event: any) {
+    this.methodId = $event.target.value.id;
     console.log('this.methodId', this.methodId);
+    // console.log('this.methodId', this.methodId);
     // this.store.dispatch(new ShippingActions.UpdateCartShippingLines(method));
-  }
-
-  getShippingDetails() {
-    // this.methodId = '';
-    // this.zoneID = '';
-    console.log(this.zoneID, this.methodId);
-    this.store.dispatch(new ShippingActions.GetShippingDetails(this.zoneID, this.methodId));
   }
 
   paymentGatewaysChange($event: any) {

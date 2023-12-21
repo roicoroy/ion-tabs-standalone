@@ -75,24 +75,24 @@ export class ShippingState implements OnDestroy {
         return state.selected_shipping_line;
     }
 
-    @Action(ShippingActions.RetrieveShippingMethods)
-    async retrieveShippingMethods(ctx: StateContext<IShippingStateModel>) {
-        // console.log('shipping_methods');
-        const state = ctx.getState();
-        this.wooApiSerice.retrieveShippingMethods()
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                catchError(e => {
-                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
-                })
-            )
-            .subscribe((shipping_methods: any) => {
-                return ctx.patchState({
-                    ...state,
-                    shipping_methods,
-                });
-            });
-    }
+    // @Action(ShippingActions.RetrieveShippingMethods)
+    // async retrieveShippingMethods(ctx: StateContext<IShippingStateModel>) {
+    //     // console.log('shipping_methods');
+    //     const state = ctx.getState();
+    //     this.wooApiSerice.retrieveShippingMethods()
+    //         .pipe(
+    //             takeUntil(this.ngUnsubscribe),
+    //             catchError(e => {
+    //                 return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
+    //             })
+    //         )
+    //         .subscribe((shipping_methods: any) => {
+    // return ctx.patchState({
+    //     ...state,
+    //     shipping_methods,
+    // });
+    //         });
+    // }
 
     @Action(ShippingActions.RetrieveShippingClasses)
     async retrieveShippingClasses(ctx: StateContext<IShippingStateModel>) {
@@ -146,7 +146,7 @@ export class ShippingState implements OnDestroy {
                 })
             )
             .subscribe((shipping_zones: any) => {
-                console.log(shipping_zones);
+                // console.log(shipping_zones);
                 return ctx.patchState({
                     ...state,
                     shipping_zones,
@@ -241,17 +241,42 @@ export class ShippingState implements OnDestroy {
         }
     }
 
-    @Action(ShippingActions.GetShippingDetails)
-    async getShippingDetails(ctx: StateContext<IShippingStateModel>, { zoneID, methodId }: CartActions.GetShippingDetails) {
-        await this.loadingService.simpleLoader();
-        console.log(zoneID, methodId);
+    @Action(ShippingActions.GetAllShippingMethods)
+    async getAllShippingMethods(ctx: StateContext<IShippingStateModel>, { zoneId }: ShippingActions.GetAllShippingMethods) {
+        // await this.loadingService.simpleLoader();
+        console.log('zoneID', zoneId,);
         const state = ctx.getState();
         try {
-            this.wooApiSerice.retrievePaymentGateways
-            await this.loadingService.simpleLoader();
+            this.wooApiSerice.getAllShippingMethods(zoneId)
+                .subscribe(async (shippingDetails: any) => {
+                    console.log(shippingDetails);
+                    return ctx.patchState({
+                        ...state,
+                        shipping_methods: shippingDetails,
+                    });
+                });
+            // await this.loadingService.simpleLoader();
         } catch (error: any) {
             this.wooHelper.handleError(error);
-            this.loadingService.dismissLoader();
+            // this.loadingService.dismissLoader();
+        }
+    }
+
+    @Action(ShippingActions.GetShippingDetails)
+    async getShippingDetails(ctx: StateContext<IShippingStateModel>, { zoneID, methodId }: ShippingActions.GetShippingDetails) {
+        // await this.loadingService.simpleLoader();
+        console.log('zoneID', zoneID,);
+        console.log('methodId', methodId);
+        const state = ctx.getState();
+        try {
+            // this.wooApiSerice.listAllShippingMethods(methodId)
+            //     .subscribe(async (shippingDetails: any) => {
+            //         console.log(shippingDetails);
+            //     });
+            // await this.loadingService.simpleLoader();
+        } catch (error: any) {
+            this.wooHelper.handleError(error);
+            // this.loadingService.dismissLoader();
         }
     }
 
