@@ -1,12 +1,13 @@
 
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
-import { Subject } from 'rxjs';
+import { Subject, catchError, takeUntil } from 'rxjs';
 import { CartActions } from './cart.actions';
 import { LineItem, Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { WoocommerceOrderService } from 'src/app/shared/wooApi';
-import { CustomerState } from 'src/app/store/customer/customer.state';
+import { WoocommerceHelperService, WoocommerceOrderService } from 'src/app/shared/wooApi';
 import { LoadingService } from 'src/app/shared/utils/loading.service';
+import { state } from '@angular/animations';
+import { ErrorLoggingActions } from '../errors-logging/errors-logging.actions';
 
 export interface ICartStateModel {
     cart: Order
@@ -27,6 +28,8 @@ export class CartState implements OnDestroy {
 
     private wooApiOrders = inject(WoocommerceOrderService);
 
+    private wooHelper = inject(WoocommerceHelperService)
+
     private loadingService = inject(LoadingService);
 
     private readonly ngUnsubscribe = new Subject();
@@ -35,29 +38,6 @@ export class CartState implements OnDestroy {
     static getCart(state: ICartStateModel): Order {
         return state.cart;
     }
-
-    // @Action(CartActions.AddProductToCart)
-    // addProductToCart(ctx: StateContext<ICartStateModel>, { productId, quantity }: CartActions.AddProductToCart) {
-    //     // console.log(productId, quantity);
-    //     const customer = this.store.selectSnapshot(CustomerState.getCustomer);
-    //     // console.log(customer.id);
-    //     const cart = this.store.selectSnapshot(CartState.getCart);
-    //     const line_items = [
-    //         {
-    //             product_id: productId,
-    //             quantity,
-    //         },
-    //     ]
-    //     if (cart && customer?.id) {
-    //         // update Cart items
-    //         this.store.dispatch(new CartActions.UpdateOrder(line_items, customer.id));
-    //     } else if (!cart && customer?.id) {
-    //         // Create cart
-    //         this.store.dispatch(new CartActions.CreateCartOrder(line_items, customer.id));
-    //     } else {
-    //         alert('login first')
-    //     }
-    // }
 
     @Action(CartActions.CreateCartOrder)
     CreateOrder(ctx: StateContext<ICartStateModel>, { lineItems, cutomerId }: CartActions.CreateCartOrder) {
@@ -82,7 +62,7 @@ export class CartState implements OnDestroy {
         if (order) {
             this.wooApiOrders.createOrder(order)
                 .subscribe((order: Order) => {
-                    // console.log('CartActions.CreateCart', order);
+                    console.log('Cart Created', order);
                     return ctx.patchState({
                         ...state,
                         cart: order
@@ -91,29 +71,33 @@ export class CartState implements OnDestroy {
         }
     }
 
-    @Action(CartActions.UpdateOrder)
-    updateOrder(ctx: StateContext<ICartStateModel>, { lineItems, cutomerId }: CartActions.UpdateOrder) {
+    @Action(CartActions.UpdateLineItems)
+    async updateLineItems(ctx: StateContext<ICartStateModel>, { lineItems, cutomerId }: CartActions.UpdateLineItems) {
+        await this.loadingService.simpleLoader();
         const state = ctx.getState();
-        // console.log('updateOrder', lineItems, cutomerId);
-        // console.log('updateOrder', payload.quantity);
         const cart = this.store.selectSnapshot(CartState.getCart);
-        // console.log(cart);
-        if (cart) {
-            const newOrder: Order = {
-                // ...cart,
-                id: cart.id,
-                customer_id: cart.customer_id,
-                line_items: sortLineItems(cart.line_items, lineItems[0]),
+        try {
+            if (cart) {
+                const newOrder: Order = {
+                    id: cart.id,
+                    customer_id: cart.customer_id,
+                    line_items: cart.line_items.length > 0 ? sortLineItems(cart.line_items, lineItems[0]) : lineItems,
+                }
+                if (newOrder) {
+                    this.wooApiOrders.updateOrder(newOrder)
+                        .subscribe((order: Order) => {
+                            console.log('updated Order', order);
+                            this.loadingService.dismissLoader();
+                            return ctx.patchState({
+                                ...state,
+                                cart: order
+                            });
+                        });
+                }
             }
-            console.log(newOrder);
-            this.wooApiOrders.updateOrder(newOrder)
-                .subscribe((order: Order) => {
-                    console.log('updated Order', order);
-                    return ctx.patchState({
-                        ...state,
-                        cart: order
-                    });
-                });
+        } catch (error: any) {
+            this.wooHelper.handleError(error);
+            this.loadingService.dismissLoader();
         }
     }
 
@@ -150,6 +134,33 @@ export class CartState implements OnDestroy {
     removeProductFromList(ctx: StateContext<ICartStateModel>, { productId }: CartActions.RemoveProductFromList) {
         console.log(productId);
     }
+
+    @Action(CartActions.GetCartByIdCart)
+    async getCartByIdCart(ctx: StateContext<ICartStateModel>, { cartId }: CartActions.GetCartByIdCart) {
+        await this.loadingService.simpleLoader();
+        const state = ctx.getState();
+        try {
+            this.wooApiOrders.retrieveOrder(cartId)
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    catchError(e => {
+                        return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
+                    })
+                )
+                .subscribe((order: Order) => {
+                    console.log('GetCartByIdCart', order);
+                    this.loadingService.dismissLoader();
+                    return ctx.patchState({
+                        ...state,
+                        cart: order,
+                    });
+                });
+        } catch (error: any) {
+            this.wooHelper.handleError(error);
+            this.loadingService.dismissLoader();
+        }
+    }
+
     ngOnDestroy(): void {
         this.ngUnsubscribe.next(null);
         this.ngUnsubscribe.complete();
@@ -157,7 +168,7 @@ export class CartState implements OnDestroy {
 }
 
 export const sortLineItems = (lineItems: LineItem[], lineItem: LineItem): LineItem[] => {
-    console.log(lineItems, lineItem);
+    // console.log(lineItems, lineItem);
     let line_items;
     lineItems.forEach((item: LineItem) => {
         if (item.product_id === lineItem.product_id) {

@@ -22,13 +22,13 @@ export const checkoutTabs: ICheckoutTabs[] = [
     buttonChecked: false,
     disabled: false,
   },
-  {
-    name: 'Shipping',
-    tab: 'shipping',
-    iconName: 'bicycle',
-    buttonChecked: false,
-    disabled: false,
-  },
+  // {
+  //   name: 'Shipping',
+  //   tab: 'shipping',
+  //   iconName: 'bicycle',
+  //   buttonChecked: false,
+  //   disabled: false,
+  // },
   {
     name: 'Payment',
     tab: 'payment',

@@ -14,6 +14,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { PaymentActions } from 'src/app/store/payment/payment.actions';
 import { PaymentComponent } from 'src/app/components/payment/payment.component';
+import { ShippingComponent } from 'src/app/components/shipping/shipping.component';
 
 @Component({
   selector: 'app-payment',
@@ -30,7 +31,8 @@ import { PaymentComponent } from 'src/app/components/payment/payment.component';
     NgxsModule,
     NgxsFormPluginModule,
     NgxsStoragePluginModule,
-    PaymentComponent
+    PaymentComponent,
+    ShippingComponent
   ]
 })
 export class PaymentPage implements OnInit {

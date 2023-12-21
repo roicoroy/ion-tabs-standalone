@@ -2,12 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
-import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { CartState } from '../../store/cart/cart.state';
-import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
+import { ICartComponentFacadeModel, CartComponentFacade } from '../cart.component.facade';
 
 @Component({
   selector: 'cart-icon',
@@ -26,16 +23,16 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   cartItems$!: Observable<any>;
 
-  viewState$: Observable<IProductsFacadeModel>;
+  viewState$: Observable<ICartComponentFacadeModel>;
 
+  private facade = inject(CartComponentFacade);
 
   private navitagion = inject(NavigationService);
 
   private readonly ngUnsubscribe = new Subject();
 
   constructor(
-    private facade: ProductsFacade,
-  ) { 
+  ) {
     this.viewState$ = this.facade.viewState$;
   }
 

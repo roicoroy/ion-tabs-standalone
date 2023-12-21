@@ -48,19 +48,21 @@ export class CustomerState implements OnDestroy {
 
     @Action(CustomerActions.CreateCustomer)
     createCustomers(ctx: StateContext<ICustomerStateModel>, { customer }: CustomerActions.CreateCustomer) {
-        return this.wooApiCustomer.createCustomer(customer)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                catchError((e: any) => {
-                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
-                })
-            )
-            .subscribe((customer: Customer) => {
-                return ctx.patchState({
-                    ...ctx.getState(),
-                    customer,
+        if (customer) {
+            return this.wooApiCustomer.createCustomer(customer)
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    catchError((e: any) => {
+                        return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
+                    })
+                )
+                .subscribe((customer: Customer) => {
+                    return ctx.patchState({
+                        ...ctx.getState(),
+                        customer,
+                    });
                 });
-            })
+        }
     }
 
     @Action(CustomerActions.RetrieveAllCustomers)

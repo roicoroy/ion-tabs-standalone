@@ -22,10 +22,10 @@ export class ErrorsLoggingState {
     async logErrorEntry(ctx: StateContext<unknown>, action: ErrorLoggingActions.LogErrorEntry): Promise<void> {
         if (action.error.error?.message != null) {
             await this.alertService.presentSimpleAlert(action.error.error.message);
-        } 
-        // else if (action.error) {
-        //     await this.alertService.presentSimpleAlert(JSON.stringify(action.error.error, ["message", "arguments", "type", "name"]) );
-        // }
+        }
+        if (action.error && !action.error.error) {
+            await this.alertService.presentSimpleAlert(JSON.stringify(action.error, ["message", "arguments", "type", "name"]));
+        }
         this.errorEntries.push(action.error);
         ctx.patchState({
             entries: this.errorEntries,

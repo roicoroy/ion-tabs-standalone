@@ -9,6 +9,8 @@ import { HttpClient } from "@angular/common/http";
 import { WoocommerceHelperService } from "src/app/shared/wooApi";
 import { Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 import { CartActions } from "../cart/cart.actions";
+import { CustomerState } from "../customer/customer.state";
+import { LoadingService } from "src/app/shared/utils/loading.service";
 
 export interface IShippingStateModel {
     shipping_methods: any;
@@ -16,8 +18,9 @@ export interface IShippingStateModel {
     payment_gateways: any;
     shipping_zones: any;
     tax_classes: any;
-    secret_key: string;
+    // secret_key: string;
     payment_gateway: string;
+    selected_shipping_line: any;
 }
 
 @State<IShippingStateModel>({
@@ -31,6 +34,8 @@ export class ShippingState implements OnDestroy {
     private readonly ngUnsubscribe = new Subject();
 
     private wooApiSerice = inject(WoocommerceShippingService);
+
+    private loadingService = inject(LoadingService);
 
     private store = inject(Store);
 
@@ -61,13 +66,13 @@ export class ShippingState implements OnDestroy {
     }
 
     @Selector()
-    static getSecretKey(state: IShippingStateModel): any {
-        return state.secret_key;
+    static getSelectedPaymentGateway(state: IShippingStateModel): any {
+        return state.payment_gateway;
     }
 
     @Selector()
-    static getSelectedPaymentGateway(state: IShippingStateModel): any {
-        return state.payment_gateway;
+    static getSelectedShippingLines(state: IShippingStateModel): any {
+        return state.selected_shipping_line;
     }
 
     @Action(ShippingActions.RetrieveShippingMethods)
@@ -82,7 +87,6 @@ export class ShippingState implements OnDestroy {
                 })
             )
             .subscribe((shipping_methods: any) => {
-                // console.log(shipping_methods);
                 return ctx.patchState({
                     ...state,
                     shipping_methods,
@@ -142,7 +146,7 @@ export class ShippingState implements OnDestroy {
                 })
             )
             .subscribe((shipping_zones: any) => {
-                // console.log(shipping_zones);
+                console.log(shipping_zones);
                 return ctx.patchState({
                     ...state,
                     shipping_zones,
@@ -162,7 +166,7 @@ export class ShippingState implements OnDestroy {
                 })
             )
             .subscribe((tax_classes: any) => {
-                // console.log(tax_classes);
+                console.log(tax_classes);
                 return ctx.patchState({
                     ...state,
                     tax_classes,
@@ -172,35 +176,82 @@ export class ShippingState implements OnDestroy {
 
     @Action(ShippingActions.UpdateCartShippingLines)
     async updateOrder(ctx: StateContext<IShippingStateModel>, { method }: ShippingActions.UpdateCartShippingLines) {
-        // console.log(method._links.self[0].href);
-        const postUrl = method._links.self[0]
-        const methodId = method.id;
-        console.log(method);
-        console.log(methodId);
+        if (method) {
+            ctx.patchState({
+                selected_shipping_line: method,
+            });
+        }
         const cart = this.store.selectSnapshot(CartState.getCart);
-        // this.httpClient.get<any>(`shipping_methods/${methodId}`,)
-        //     .pipe(catchError(err => this.wooHelper.handleError(err)))
-        //     .subscribe((cart) => {
-        //         console.log(cart);
-        //     });
+        const customer = this.store.selectSnapshot(CustomerState.getCustomer);
+        if (cart?.id) {
+            const order: Order = {
+                id: cart.id,
+                customer_id: cart.customer_id,
+                "shipping_lines": [
+                    {
+                        "method_title": method?.title,
+                        "method_id": method?.id,
+                        "total": "10.00",
+                    }
+                ],
+            };
+            this.store.dispatch(new CartActions.UpdateCartOrder(order));
+        } else {
+            const order: Order = {
+                customer_id: customer.id,
+                "shipping_lines": [
+                    {
+                        "method_title": method?.title,
+                        "method_id": method?.id,
+                    }
+                ],
+            };
+            this.store.dispatch(new CartActions.CreateCart(order));
+        }
     }
 
     @Action(ShippingActions.UpdateCartPaymentGateways)
     async UpdateCartPaymentGateways(ctx: StateContext<IShippingStateModel>, { paymentGateway }: ShippingActions.UpdateCartPaymentGateways) {
         const cart = this.store.selectSnapshot(CartState.getCart);
-        console.log('paymentGateway', paymentGateway);
-        const order: Order = {
-            id: cart.id,
-            customer_id: cart.customer_id,
-            payment_method: paymentGateway.id,
-            payment_method_title: "Card",
+        const customer = this.store.selectSnapshot(CustomerState.getCustomer);
+        try {
+            if (cart?.id) {
+                const order: Order = {
+                    id: cart.id,
+                    customer_id: cart.customer_id,
+                    payment_method: paymentGateway.id,
+                    payment_method_title: "Card",
+                }
+                this.store.dispatch(new CartActions.UpdateCartOrder(order));
+            } else {
+                const order: Order = {
+                    customer_id: customer.id,
+                    payment_method: paymentGateway.id,
+                    payment_method_title: "Card",
+                };
+                this.store.dispatch(new CartActions.CreateCart(order));
+            }
+            if (paymentGateway) {
+                ctx.patchState({
+                    payment_gateway: paymentGateway,
+                });
+            }
+        } catch (error: any) {
+            this.wooHelper.handleError(error)
         }
-        console.log('prder', order);
-        this.store.dispatch(new CartActions.UpdateCartOrder(order));
-        if (paymentGateway) {
-            ctx.patchState({
-                payment_gateway: paymentGateway,
-            });
+    }
+
+    @Action(ShippingActions.GetShippingDetails)
+    async getShippingDetails(ctx: StateContext<IShippingStateModel>, { zoneID, methodId }: CartActions.GetShippingDetails) {
+        await this.loadingService.simpleLoader();
+        console.log(zoneID, methodId);
+        const state = ctx.getState();
+        try {
+            this.wooApiSerice.retrievePaymentGateways
+            await this.loadingService.simpleLoader();
+        } catch (error: any) {
+            this.wooHelper.handleError(error);
+            this.loadingService.dismissLoader();
         }
     }
 

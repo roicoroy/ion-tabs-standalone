@@ -19,10 +19,7 @@
   </ion-row>
 
   <ion-row *ngIf="viewState$ | async as vs">
-
-    
     <ion-col>
-
       <div *ngIf="vs.payment_secret_key">
         <ngx-stripe-payment id="card-element" [clientSecret]="vs.payment_secret_key"></ngx-stripe-payment>
         <ion-row>

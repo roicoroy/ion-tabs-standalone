@@ -14,26 +14,32 @@ export class WoocommerceShippingService {
     private wooHelper: WoocommerceHelperService
   ) { }
 
+  getShippingDetails(zoneID: string, methodID: string): Observable<any> {
+    const url = `shipping/zones/${zoneID}/methods/${methodID}`;
+    return this.httpClient.get<any>(url)
+      .pipe(catchError(err => this.wooHelper.handleError(err)));
+  }
+
   retrieveShippingMethods(): Observable<any> {
     return this.httpClient.get<any>(`shipping_methods`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
-  
+
   retrieveShippingClasses(): Observable<any> {
     return this.httpClient.get<any>(`products/shipping_classes`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
-  
+
   retrievePaymentGateways(): Observable<any> {
     return this.httpClient.get<any>(`payment_gateways`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
-  
+
   retrieveShippingZones(): Observable<any> {
     return this.httpClient.get<any>(`shipping/zones`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
-  
+
   retrieveTaxesClasses(): Observable<any> {
     return this.httpClient.get<any>(`taxes/classes`)
       .pipe(catchError(err => this.wooHelper.handleError(err)));

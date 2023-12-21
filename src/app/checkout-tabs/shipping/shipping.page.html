@@ -2,32 +2,8 @@
 
 <ion-content [fullscreen]="true">
 
-  <div *ngIf="viewState$ | async as vs">
-    <br />
-    Shipping Methods | shipping_lines
-    <ion-list>
-      <ion-item>
-        <ion-select [(ngModel)]="shipping_lines" (ionChange)="shippingLinesChange($event)" label="Shipping Methods">
-          <ion-select-option [value]="method" *ngFor="let method of vs.shipping_methods">
-            {{ method.title }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-  </div>
+  <shipping-component></shipping-component>
 
-  <div *ngIf="viewState$ | async as vs">
-    <ion-list>
-      <ion-item>
-        <ion-select [(ngModel)]="payment_gateways" (ionChange)="paymentGatewaysChange($event)" label="Payment Gateways">
-          <ion-select-option [value]="payment_gateways" *ngFor="let payment of vs.payment_gateways">
-            {{ payment.id }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-  </div>
-  
 </ion-content>
 
 <checkout-footer></checkout-footer>

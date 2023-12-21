@@ -88,6 +88,7 @@ export class WooInterceptor implements HttpInterceptor {
             request.url.includes('classes') ||
             request.url.includes('orders') ||
             request.url.includes('create-payment-intent') ||
+            request.url.includes('shipping/zones') ||
             request.url.includes('payment_gateways')
         ) {
             requestUrl = `${environment.origin}${environment.wc3Endpoint}/${request.url}${this.includeWooAuth(request.url)}`;

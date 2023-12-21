@@ -5,9 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { OrdersActions } from '../store/orders/orders.actions';
-import { Observable, Subject, takeUntil, take } from 'rxjs';
-import { IShippingFacadeModel } from '../checkout-tabs/shipping/shipping.facade';
+import { Observable, Subject } from 'rxjs';
 import { IOrderReviewFacadeModel, OrderReviewFacade } from './order-review.facade';
+import { LoadingService } from '../shared/utils/loading.service';
 
 @Component({
   selector: 'app-order-review',
@@ -31,16 +31,22 @@ export class OrderReviewPage implements OnInit, OnDestroy {
 
   private facade = inject(OrderReviewFacade);
 
+  private loadingService = inject(LoadingService);
+
   private readonly ngUnsubscribe = new Subject();
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.loadingService.simpleLoader();
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.store.dispatch(new OrdersActions.GetCompletedOrder(id));
+      await this.loadingService.dismissLoader();
+    } else {
+      await this.loadingService.dismissLoader();
     }
   }
 

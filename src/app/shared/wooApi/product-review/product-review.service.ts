@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { WoocommerceHelperService } from '../helper.service';
-import { ProductReview } from '../../../shop/products.interface';
+import { ProductReview } from '../products/products.interface';
 
 @Injectable({
   providedIn: 'root'

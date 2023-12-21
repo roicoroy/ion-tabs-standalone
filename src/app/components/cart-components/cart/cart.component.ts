@@ -3,12 +3,13 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
-import { CartState } from '../../store/cart/cart.state';
+import { CartState } from '../../../store/cart/cart.state';
 import { Select, Store } from '@ngxs/store';
-import { CartActions } from '../../store/cart/cart.actions';
+import { CartActions } from '../../../store/cart/cart.actions';
 import { Router, RouterLink } from '@angular/router';
 import { Order, Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
+import { IProductsFacadeModel, ProductsFacade } from '../../../shop/products.facade';
+import { CartComponentFacade, ICartComponentFacadeModel } from '../cart.component.facade';
 
 @Component({
   selector: 'app-cart',
@@ -24,17 +25,9 @@ import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 })
 export class CartComponent implements OnInit, OnDestroy {
 
-  // @Select(CartState.cartItems) cartItems$!: Observable<(Order & Product)[]>;
+  viewState$: Observable<ICartComponentFacadeModel>;
 
-  // @Select(CartState.) cart$!: Observable<any>;
-
-  // @Select(CartState.cartTotal) total$!: Observable<number>;
-
-  // cartItems$!: Observable<CartItem[]>;
-
-  viewState$: Observable<IProductsFacadeModel>;
-
-  private facade = inject(ProductsFacade);
+  private facade = inject(CartComponentFacade);
 
   private store = inject(Store);
 
@@ -44,20 +37,20 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1),
-      )
-      .subscribe({
-        next: (vs: any) => {
-          // console.log('vs:::', vs.cart);
-        },
-        error: (e) => {
-          console.error(e)
-        },
-        complete: () => { },
-      });
+    // this.viewState$
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     take(1),
+    //   )
+    //   .subscribe({
+    //     next: (vs: any) => {
+    //       console.log('vs:::', vs.cart);
+    //     },
+    //     error: (e) => {
+    //       console.error(e)
+    //     },
+    //     complete: () => { },
+    //   });
   }
 
   ngOnInit() {
@@ -65,7 +58,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   productDetails(id: number) {
-    console.log(id);
+    // console.log(id);
     this.router.navigate(['/product-details', id]);
   }
 

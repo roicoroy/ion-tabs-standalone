@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CounterInputComponent } from 'src/app/components/counter-input/counter-input.component';
 import { Observable, Subject } from 'rxjs';
-import { IAddToCartFacadeModel, AddToCartFacade } from './add-to-cart.facade';
+import { ICartComponentFacadeModel, CartComponentFacade } from '../cart.component.facade';
 
 @Component({
   selector: 'add-to-cart',
@@ -24,14 +24,15 @@ export class AddToCartComponent implements OnInit, OnDestroy {
 
   @Input('product_id') product_id: number;
 
-  viewState$: Observable<IAddToCartFacadeModel>;
+  viewState$: Observable<ICartComponentFacadeModel>;
 
-  private facade = inject(AddToCartFacade);
+  private facade = inject(CartComponentFacade);
 
   private readonly ngUnsubscribe = new Subject();
 
   ngOnInit() {
     this.viewState$ = this.facade.viewState$;
+    this.facade.getCartById();
   }
 
   addToCart() {

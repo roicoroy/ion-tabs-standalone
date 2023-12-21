@@ -1,0 +1,5 @@
+<div *ngIf="viewState$ | async as vs">
+  <ion-badge color="success" (click)="checkout()" *ngIf="vs.cart?.line_items.length > 0">
+    {{ vs.cart?.line_items.length }}
+  </ion-badge>
+</div>

@@ -1,26 +1,25 @@
-import { Injectable, inject } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LineItem, Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { CustomerState } from 'src/app/store/customer/customer.state';
-import { CartActions } from 'src/app/store/cart/cart.actions';
-import { CartState } from 'src/app/store/cart/cart.state';
+import { Injectable, inject } from "@angular/core";
+import { Select, Store } from "@ngxs/store";
+import { Observable, combineLatest, map } from "rxjs";
+import { CartState } from "src/app/store/cart/cart.state";
+import { LineItem, Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
+import { CartActions } from "src/app/store/cart/cart.actions";
+import { CustomerState } from "src/app/store/customer/customer.state";
 
-export interface IAddToCartFacadeModel {
+export class ICartComponentFacadeModel {
     cart: Order;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class AddToCartFacade {
+export class CartComponentFacade {
 
     @Select(CartState.getCart) cart$!: Observable<Order>;
 
     private store = inject(Store);
 
-    readonly viewState$: Observable<IAddToCartFacadeModel>;
+    readonly viewState$: Observable<ICartComponentFacadeModel>;
 
     constructor() {
         this.viewState$ = combineLatest(
@@ -31,14 +30,21 @@ export class AddToCartFacade {
             .pipe(
                 map((
                     [
-                        cart
+                        cart,
                     ]
                 ) => (
                     {
-                        cart
+                        cart,
                     }
                 ))
             );
+    }
+
+    getCartById() {
+        const cart = this.store.selectSnapshot(CartState.getCart);
+        if (cart?.id) {
+            this.store.dispatch(new CartActions.GetCartByIdCart(cart.id));
+        }
     }
 
     updateCart(productId: number, counterValue: number) {
@@ -60,7 +66,8 @@ export class AddToCartFacade {
                 "product_id": productId,
                 "quantity": counterValue,
             }];
-            this.store.dispatch(new CartActions.UpdateOrder(lineItems, customer.id));
+            this.store.dispatch(new CartActions.UpdateLineItems(lineItems, customer.id));
         }
     }
+
 }

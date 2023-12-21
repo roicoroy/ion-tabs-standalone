@@ -23,4 +23,8 @@ export namespace ShippingActions {
         static readonly type = '[ShippingActions] Update Cart Payment Gateways';
         constructor(public paymentGateway: any) { }
     }
+    export class GetShippingDetails {
+        static readonly type = '[CartActions] Get Shipping Details';
+        constructor(public methodId: string, public zoneID: string) { }
+    }
 }

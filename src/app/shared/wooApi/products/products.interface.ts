@@ -1,4 +1,4 @@
-import { Order, Product } from "../shared/wordpress/utils/types/wooCommerceTypes";
+import { Order, Product } from "../../wordpress/utils/types/wooCommerceTypes";
 // import { CartItem } from "./store/cart.state";
 
 export function joinItems(cartItems: Order[], products: Product[]) {

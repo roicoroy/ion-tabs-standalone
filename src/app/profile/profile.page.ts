@@ -43,10 +43,10 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   private store = inject(Store);
 
-  ionViewWillEnter(){
-    this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
-    this.store.dispatch(new CustomerActions.GetCustomerOrders());
-  }
+  // ionViewWillEnter(){
+  //   this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
+  //   this.store.dispatch(new CustomerActions.GetCustomerOrders());
+  // }
 
   ngOnInit() {
     this.viewState$ = this.facade.viewState$;

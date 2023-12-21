@@ -7,11 +7,11 @@ import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../../store/products/products.actions';
 import { LoadingController } from '@ionic/angular';
-import { CartComponent } from '../cart/cart.component';
-import { CartIconComponent } from '../cart-icon/cart-icon.component';
+import { CartComponent } from '../../components/cart-components/cart/cart.component';
+import { CartIconComponent } from '../../components/cart-components/cart-icon/cart-icon.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Product } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { AddToCartComponent } from '../add-to-cart/add-to-cart.component';
+import { AddToCartComponent } from '../../components/cart-components/add-to-cart/add-to-cart.component';
 import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 
 @Component({

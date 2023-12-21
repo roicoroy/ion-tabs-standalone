@@ -9,8 +9,8 @@ import {
   ProductReviewsResponse,
   ProductReview
 } from './products.interface';
-import { WoocommerceHelperService } from '../shared/wooApi/helper.service';
-import { Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { WoocommerceHelperService } from '../helper.service';
+import { Product } from '../../wordpress/utils/types/wooCommerceTypes';
 
 @Injectable({
   providedIn: 'root'

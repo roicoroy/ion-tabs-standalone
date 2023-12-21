@@ -1,11 +1,11 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    
-    <!-- <ion-menu side="end" contentId="main-content" type="overlay">
+
+    <ion-menu side="end" contentId="main-content" type="overlay">
       <ion-content class="ion-text-center">
-      cart
+        <app-cart></app-cart>
       </ion-content>
-    </ion-menu> -->
+    </ion-menu>
 
     <ion-menu contentId="main-content" type="push" side="start" swipeGesture="false" menuId='sidemenu'>
       <ion-content no-bounce has-bouncing="false" forceOverscroll="false">
@@ -44,7 +44,7 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
-          
+
           <ion-menu-toggle auto-hide="false" *ngIf="!vs.isLoggedIn; else notLoggedIn">
             <ion-item routerDirection="root" [routerLink]="['login']" lines="none" detail="false"
               routerLinkActive="selected">

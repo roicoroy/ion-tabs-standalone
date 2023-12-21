@@ -11,7 +11,7 @@ export class WoocommerceHelperService {
 
   private store = inject(Store);
 
-  handleError(error: HttpErrorResponse): Observable<any> {
+  handleError(error: any): Observable<any> {
     if (error.error instanceof ErrorEvent) {
       this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
     } else {
@@ -24,7 +24,7 @@ export class WoocommerceHelperService {
     }));
 
   }
-  
+
   includeQuery(query: any = {}): any {
     const queryPatch: any = {};
     Object.keys(query).forEach(key => {

@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavigationService } from '../shared/utils/navigation.service';
-import { CartComponent } from '../shop/cart/cart.component';
-import { CartIconComponent } from '../shop/cart-icon/cart-icon.component';
+import { CartComponent } from '../components/cart-components/cart/cart.component';
+import { CartIconComponent } from '../components/cart-components/cart-icon/cart-icon.component';
 import { Store } from '@ngxs/store';
 import { ProductsActions } from '../store/products/products.actions';
 import { AddressesComponent } from '../components/addresses/addresses-list/addresses.component';
 import { AuthActions } from '../auth/store/auth.actions';
+import { CustomerActions } from '../store/customer/customer.actions';
 
 @Component({
   selector: 'app-home',
@@ -16,8 +17,8 @@ import { AuthActions } from '../auth/store/auth.actions';
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [
-    IonicModule, 
-    CommonModule, 
+    IonicModule,
+    CommonModule,
     FormsModule,
     CartComponent,
     CartIconComponent,
@@ -32,10 +33,6 @@ export class HomePage implements OnInit {
     private store: Store,
   ) { }
 
-  ionViewWillEnter() {
-    this.store.dispatch(new ProductsActions.RetrieveProducts());
-  }
-  
   ngOnInit() {
   }
 
@@ -46,15 +43,15 @@ export class HomePage implements OnInit {
   loginPage() {
     this.navigationsService.navigateFlip('/login');
   }
-  
+
   addressesPage() {
     this.navigationsService.navigateFlip('/checkout/addresses');
   }
-  
+
   productsListPage() {
     this.navigationsService.navigateFlip('/product-list');
   }
-  
+
   profilePage() {
     this.navigationsService.navigateFlip('/profile');
   }

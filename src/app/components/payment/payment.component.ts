@@ -14,6 +14,7 @@ import { WoocommerceHelperService } from 'src/app/shared/wooApi';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { LoadingService } from 'src/app/shared/utils/loading.service';
 const stripe = require("stripe")(environment.STRIPE_SECRET_KEY);
 
 @Component({
@@ -42,18 +43,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   card: StripeCardElement;
 
-  cardNumberElement: StripeCardNumberElement;
-
-  shipping_zones: any;
-
-  stripe_selected: boolean = false
-
-  gateway_instructions: string = ''
-
-  cart_total: number;
-
-  shipping_cost: number = 0;
-
   private facade = inject(PaymentComponentFacade);
 
   private store = inject(Store);
@@ -64,24 +53,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   private wooHelper = inject(WoocommerceHelperService);
 
+  private loadingService = inject(LoadingService);
+
   private readonly ngUnsubscribe = new Subject();
 
-  constructor(
-    private httpClient: HttpClient,
-  ) { }
-
   ngOnInit() {
+    this.store.dispatch(new PaymentActions.ClearPaymentState());
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.pipe(
-    //   takeUntil(this.ngUnsubscribe),
-    //   take(1),
-    // )
-    //   .subscribe({
-    //     next: (vs: IPaymentComponentFacadeModel) => {
-    //       console.log(vs);
-    //     },
-    //   });
-    this.loadStripe();
+    // this.loadStripe();
   }
 
   createPaymentIntent(cart: Order): void {
@@ -89,12 +68,43 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   navigateToOrderReview(orderId: number): void {
-    // console.log(orderId);
     this.router.navigate(['order-review', orderId]);
   }
 
-  async loadStripe() {
+  async confirmPayment(order: Order) {
+    await this.loadingService.simpleLoader();
+    return this.stripeService.confirmPayment({
+      elements: this.paymentElement?.elements,
+      redirect: 'if_required'
+    })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (result: any) => {
+        // console.log(result);
+        if (result.error) {
+          this.wooHelper.handleError(result.error);
+          this.loadingService.dismissLoader();
+        } else if (result.paymentIntent?.status === "succeeded") {
+          this.router.navigate(['order-review', order.id]).then(() => {
+            this.store.dispatch(new CartActions.ClearCartFromState());
+            this.store.dispatch(new PaymentActions.ClearPaymentState());
+            this.loadingService.dismissLoader();
+          });
+        }
+      });
+  }
 
+  createPaymentToken(order: Order) {
+    return this.stripeService
+      .createToken(this.card)
+      .subscribe(result => {
+        // console.log('result', result);
+        if (result.token) {
+        } else if (result.error) {
+          console.log(result.error.message);
+        }
+      });
+  }
+  async loadStripe() {
     await this.stripeService.elements(this.elementsOptions)
       .subscribe(elements => {
         this.elements = elements;
@@ -118,137 +128,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.card.mount('#card-element');
         }
       });
-  }
-
-
-  async confirm(order: Order, clientSecret: string) {
-
-  }
-
-  async initEmbeddedCheckout(clientSecret: string) {
-    // const checkout = await stripe.initEmbeddedCheckout();
-    // console.log(stripe);
-    const data =     {
-      clientSecret,
-    };
-    this.stripeService.initCustomCheckout(data)
-    // this.stripeService.initEmbeddedCheckout(data)
-      .subscribe((check) => {
-        console.log(check);
-      });
-
-  }
-
-
-  async confirmCardPayment(order?: Order, clientSecret?: string) {
-    // create Stripe confirm payment method data
-    // TODO add more data for Stripe to hold if necessary.  Receipt email is usually a good idea
-    const paymentMethod = {
-      payment_method: {
-        card: this.paymentElement?.elements,
-        // billing_details: {},
-        // shipping: {},
-        // receipt_email: ''
-      },
-    };
-    // use Stripe client secret to process card payment method
-    try {
-      // stripe.createPa
-      const result = await stripe.confirmCardPayment(clientSecret, paymentMethod);
-      console.log(result);
-
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-      return result;
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
-
-
-  confirmPayment(order: Order) {
-    // this.stripeService.stripe.c
-    return this.stripeService.confirmPayment({
-      elements: this.paymentElement?.elements,
-      redirect: 'if_required'
-    })
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(async (result: any) => {
-        console.log(result);
-        if (result.paymentIntent) {
-          // console.log(result.paymentIntent);
-        } if (result.error) {
-          this.wooHelper.handleError(result.error);
-          // this.store.dispatch(new PaymentActions.ClearPaymentState());
-          // this.store.dispatch(new CartActions.ClearCartFromState())
-        } else if (result.paymentIntent?.status === "succeeded") {
-          // console.log(result.paymentIntent.id);
-          this.navigateToOrderReview(order.id);
-          this.store.dispatch(new CartActions.ClearCartFromState())
-        }
-      });
-  }
-
-  createPaymentToken(order: Order) {
-    return this.stripeService
-      .createToken(this.card)
-      .subscribe(result => {
-        // console.log('result', result);
-        if (result.token) {
-          // this.stripeService.retrieveOrder(order.id);
-          this.sendToken(result.token.id, order.id);
-          // Use the token to create a charge or a customer
-          // https://stripe.com/docs/charges
-          // this.sendToken(result.token.id, order_id)
-        } else if (result.error) {
-          console.log(result.error.message);
-        }
-      });
-  }
-
-  sendToken(token: any, order_id: any) {
-    let data = {
-      order_id: order_id,
-      payment_token: token,
-      payment_method: 'stripe'
-    }
-    var url = 'wp-json/wc/v2/stripe_payment';
-    // console.log('send token', data)
-    return this.httpClient.post<any>(url, data)
-      .pipe(catchError(err => this.wooHelper.handleError(err)))
-      .subscribe((res) => {
-        console.log(res);
-      });
-
-  }
-
-  sendTokenToServer(token: any, order_id: any) {
-
-    var url = environment.origin + '/wp-json/wc/v2/stripe_payment';
-
-    var formData = new FormData();
-
-    formData.append("order_id", order_id);
-    formData.append("payment_token", token);
-    formData.append("payment_method", 'stripe');
-
-    var request = new XMLHttpRequest();
-    request.open("POST", 'stripe_payment');
-    request.send(formData);
-    request.onload = (e) => {
-      if (request.readyState === 4) {
-        if (request.status === 200) {
-          console.log(request)
-          alert(request.responseText);
-        } else {
-          console.log("Error", request)
-          alert(request.responseText);
-        }
-      }
-    };
-
   }
 
   ngOnDestroy(): void {

@@ -16,6 +16,8 @@ import { LanguageService } from './shared/language/language.service';
 import { KeyboardService } from './shared/native/keyboard/keyboard.service';
 import { ThemeService } from './shared/utils/theme.service';
 import { ProductsActions } from './store/products/products.actions';
+import { CustomerActions } from './store/customer/customer.actions';
+import { CartComponent } from './components/cart-components/cart/cart.component';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +33,7 @@ import { ProductsActions } from './store/products/products.actions';
     IonMenu,
     IonContent,
     IonList,
+    CartComponent,
     IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -72,6 +75,12 @@ export class AppComponent implements OnInit, OnDestroy {
     // });
   }
 
+  ionViewWillEnter() {
+    this.store.dispatch(new ProductsActions.RetrieveProducts());
+    this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
+    this.store.dispatch(new CustomerActions.GetCustomerOrders());
+  }
+  
   checkoutPage() {
     this.navigationsService.navigateFlip('/checkout/cart-review');
   }

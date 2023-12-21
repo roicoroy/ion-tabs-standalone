@@ -13,8 +13,6 @@ export class ICartReviewFacadeModel {
 })
 export class CartReviewFacade {
 
-    // @Select(CartState.getCartItems) cartItems$!: Observable<CartItem[]>;
-
     @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
 
     readonly viewState$: Observable<ICartReviewFacadeModel>;
@@ -22,19 +20,16 @@ export class CartReviewFacade {
     constructor() {
         this.viewState$ = combineLatest(
             [
-                // this.cartItems$,
                 this.customer$,
             ]
         )
             .pipe(
                 map((
                     [
-                        // cartItems,
                         customer
                     ]
                 ) => (
                     {
-                        // cartItems,
                         customer
                     }
                 ))

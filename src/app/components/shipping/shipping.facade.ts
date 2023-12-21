@@ -12,7 +12,8 @@ export class IShippingFacadeModel {
     shipping_zones: any;
     tax_classes: any;
     cart: Order;
-    secret_key: any;
+    // secret_key: any;
+    selected_shipping_line: any;
 }
 
 @Injectable({
@@ -32,7 +33,9 @@ export class ShippingFacade {
 
     @Select(CartState.getCart) cart$!: Observable<Order>;
 
-    @Select(ShippingState.getSecretKey) secret_key$!: Observable<any>;
+    // @Select(PaymentActions) secret_key$!: Observable<any>;
+    
+    @Select(ShippingState.getSelectedShippingLines) selected_shipping_line$!: Observable<any>;
 
     readonly viewState$: Observable<IShippingFacadeModel>;
 
@@ -45,7 +48,8 @@ export class ShippingFacade {
                 this.shipping_zones$,
                 this.tax_classes$,
                 this.cart$,
-                this.secret_key$,
+                // this.secret_key$,
+                this.selected_shipping_line$,
             ]
         )
             .pipe(
@@ -57,7 +61,8 @@ export class ShippingFacade {
                         shipping_zones,
                         tax_classes,
                         cart,
-                        secret_key,
+                        // secret_key,
+                        selected_shipping_line,
                     ]
                 ) => (
                     {
@@ -67,7 +72,8 @@ export class ShippingFacade {
                         shipping_zones,
                         tax_classes,
                         cart,
-                        secret_key,
+                        // secret_key,
+                        selected_shipping_line,
                     }
                 ))
             );

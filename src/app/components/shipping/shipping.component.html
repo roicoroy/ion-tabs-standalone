@@ -1,0 +1,49 @@
+<div *ngIf="viewState$ | async as vs">
+  Shipping Zones | shipping_zones
+  <ion-list>
+    <ion-item>
+      <ion-select (ionChange)="shippingShippingZones($event)" label="Shipping Zones">
+        <div *ngFor="let zone of vs.shipping_zones">
+          <ion-select-option [value]="zone">
+            {{ zone.name }}
+          </ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</div>
+
+<div *ngIf="viewState$ | async as vs">
+  Shipping Methods | shipping_lines
+  <ion-list>
+    <ion-item>
+      <ion-select [(ngModel)]="selected_shipping_line" (ionChange)="shippingLinesChange(selected_shipping_line)"
+        label="Shipping Methods">
+        <div *ngFor="let method of vs.shipping_methods">
+          <ion-select-option [value]="method">
+            {{ method.title }}
+          </ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</div>
+
+<ion-row>
+  <ion-col size="12">
+    <ion-button (click)="getShippingDetails()" expand="block" fill="clear" shape="round">
+      Get Shipping Details
+    </ion-button>
+  </ion-col>
+</ion-row>
+
+
+<ion-list *ngIf="viewState$ | async as vs">
+  <ion-item>
+    <ion-select (ionChange)="paymentGatewaysChange($event)" label="Payment Gateways">
+      <ion-select-option [value]="payment" *ngFor="let payment of vs.payment_gateways">
+        {{ payment.id }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
