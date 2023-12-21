@@ -7,12 +7,11 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { KeypadModule } from '../shared/native/keyboard/keypad.module';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { AddressesComponent } from '../components/addresses/addresses-list/addresses.component';
 import { CustomerActions } from '../store/customer/customer.actions';
 import { IProfileFacade, ProfileFacade } from './profile.facade';
-import { ListOrderParameters, WoocommerceOrderService } from '../shared/wooApi';
 
 @Component({
   selector: 'app-profile',
@@ -44,9 +43,12 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   private store = inject(Store);
 
-  ngOnInit() {
+  ionViewWillEnter(){
     this.store.dispatch(new CustomerActions.RetrieveAllCustomers());
     this.store.dispatch(new CustomerActions.GetCustomerOrders());
+  }
+
+  ngOnInit() {
     this.viewState$ = this.facade.viewState$;
   }
 

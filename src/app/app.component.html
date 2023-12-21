@@ -1,3 +1,73 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    
+    <!-- <ion-menu side="end" contentId="main-content" type="overlay">
+      <ion-content class="ion-text-center">
+      cart
+      </ion-content>
+    </ion-menu> -->
+
+    <ion-menu contentId="main-content" type="push" side="start" swipeGesture="false" menuId='sidemenu'>
+      <ion-content no-bounce has-bouncing="false" forceOverscroll="false">
+        <ion-list id="inbox-list" *ngIf="viewState$ | async as vs">
+
+          <ion-list-header *ngIf="vs.user?.user_email && vs.user?.user_display_name; else notLogged">
+            {{ vs.user.user_email }}
+          </ion-list-header>
+
+          <ion-note *ngIf="vs.user?.user_email && vs.user?.user_display_name">
+            Hello {{ vs.user.user_display_name }}
+          </ion-note>
+
+          <ng-template #notLogged>
+            <ion-list-header>
+              {{ 'Hello there...' }}
+            </ion-list-header>
+            <ion-note>{{ 'Please register and login.' }}</ion-note>
+          </ng-template>
+
+          <div *ngIf="vs.isLoggedIn">
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+                routerLinkActive="selected">
+                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'"
+                  [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item lines="none" (click)="checkoutPage()">
+              <ion-label>
+                Checkout
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          
+          <ion-menu-toggle auto-hide="false" *ngIf="!vs.isLoggedIn; else notLoggedIn">
+            <ion-item routerDirection="root" [routerLink]="['login']" lines="none" detail="false"
+              routerLinkActive="selected">
+              <ion-label>
+                {{ 'Login' }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ng-template #notLoggedIn>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item (click)="logout()">
+                <ion-label>
+                  {{ 'Logout' }}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-template>
+
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>

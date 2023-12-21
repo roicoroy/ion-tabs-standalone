@@ -1,0 +1,72 @@
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'SETTINGS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" no-bounce has-bouncing="false" forceOverscroll="false"
+  class="ion-padding settings-page" *ngIf="viewState$ | async as vs">
+  <ion-grid>
+    <ion-row>
+
+      <ion-col size-sm="6" offset-sm="3">
+        <app-image-picker [userAvatar]="userAvatar" (imagePick)="onImagePicked($event)">
+        </app-image-picker>
+      </ion-col>
+
+      <!-- {{ vs.fcmToken }} -->
+
+      <!-- <ion-button (click)="postMockSubscribeData(vs.fcmToken)" expand="block" fill="clear" shape="round">
+        Post Mock Subscribe Data
+      </ion-button> -->
+
+      <ion-col size="12">
+        <form [formGroup]="settingsForm">
+          <ion-list>
+            <ion-list-header>
+              <ion-label>
+                Change your preferences
+              </ion-label>
+            </ion-list-header>
+            <ion-item-group>
+              <ion-item>
+                <ion-toggle (ionChange)="onChangeTheme($event)" formControlName="darkMode" labelPlacement="start">
+                  App theme, set dark mode?
+                </ion-toggle>
+              </ion-item>
+              <ion-item>
+                <ion-buttons slot="end">
+                  <ion-label>
+                    Change language
+                  </ion-label>
+                  <ion-button (click)="openLanguageChooser()">
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+              <ion-item>
+                <ion-label aria-label="push"> {{ 'Accepted Push Messages?' }} </ion-label>
+                <ion-toggle aria-label="push" formControlName="pushAccepted" (ionChange)="onFCMChange($event)"
+                  slot="end">
+                </ion-toggle>
+              </ion-item>
+            </ion-item-group>
+          </ion-list>
+        </form>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+  <ion-fab id="share-button" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="share()">
+      <ion-icon name="share"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

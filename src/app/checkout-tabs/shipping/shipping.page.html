@@ -3,17 +3,8 @@
 <ion-content [fullscreen]="true">
 
   <div *ngIf="viewState$ | async as vs">
-
-    :: {{ vs.cart.shipping_lines }}
-
     <br />
     Shipping Methods | shipping_lines
-    <!-- <div *ngFor="let method of vs.shipping_methods">
-      <div>
-        {{ method.id }}
-      </div>
-    </div> -->
-
     <ion-list>
       <ion-item>
         <ion-select [(ngModel)]="shipping_lines" (ionChange)="shippingLinesChange($event)" label="Shipping Methods">
@@ -23,7 +14,6 @@
         </ion-select>
       </ion-item>
     </ion-list>
-
   </div>
 
   <div *ngIf="viewState$ | async as vs">
@@ -38,14 +28,6 @@
     </ion-list>
   </div>
   
-
-
-  <!-- <div>
-    <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
-    <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">
-      Form Ready!
-    </ion-button>
-  </div> -->
 </ion-content>
 
 <checkout-footer></checkout-footer>

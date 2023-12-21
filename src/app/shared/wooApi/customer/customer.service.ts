@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { WoocommerceHelperService } from '../shared/wooApi/helper.service';
-import { Store } from '@ngxs/store';
-import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { WoocommerceHelperService } from '../helper.service';
+import { Customer } from '../../wordpress/utils/types/wooCommerceTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ export class WoocommerceCustomerService {
   constructor(
     private httpClient: HttpClient,
     private wooHelper: WoocommerceHelperService,
-    private store: Store,
   ) { }
 
   createCustomer(customer: Customer): Observable<Customer> {
