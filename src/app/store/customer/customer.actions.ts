@@ -17,4 +17,8 @@ export namespace CustomerActions {
         static readonly type = '[CustomerActions] Update Customer Address';
         constructor(public id: string, public address: Address, public addressType: string) { }
     }
+    export class GetCustomerOrders {
+        static readonly type = '[CustomerActions] Get Customer Orders';
+        // constructor(public customerId: string) { }
+    }
 }

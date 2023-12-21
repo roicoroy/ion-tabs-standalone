@@ -16,13 +16,13 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { CheckoutTabsState } from './app/shop/checkout/checkout.state';
-import { ProductsState } from './app/store/shop/products.state';
+import { CheckoutTabsState } from './app/store/checkout/checkout.state';
+import { ProductsState } from './app/store/products/products.state';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { WooInterceptor } from './app/shared/woo.interceptor';
 import { register } from 'swiper/element/bundle';
-import { CartState } from './app/store/shop/cart.state';
-import { AddressesState } from './app/components/addresses/store/addresses.state';
+import { CartState } from './app/store/cart/cart.state';
+import { AddressesState } from './app/store/addresses/addresses.state';
 import { AuthState } from './app/auth/store/auth.state';
 import { ErrorsLoggingState } from './app/store/errors-logging/errors-logging.state';
 import { KeyboardState } from './app/store/keyboard/keyboard.state';
@@ -43,6 +43,8 @@ export function createTranslateLoader(http: HttpClient) {
 import { NgxStripeModule } from 'ngx-stripe';
 import { CustomerState } from './app/store/customer/customer.state';
 import { ShippingState } from './app/store/shipping/shipping.state';
+import { PaymentState } from './app/store/payment/payment.state';
+import { OrdersState } from './app/store/orders/orders.state';
 
 defineCustomElements(window);
 if (environment.production) {
@@ -91,7 +93,9 @@ bootstrapApplication(AppComponent, {
           'checkoutTabs',
           'cart',
           'addresses',
-          'shipping'
+          'shipping',
+          'payment',
+          'orders'
         ]
       })),
     importProvidersFrom(
@@ -106,7 +110,9 @@ bootstrapApplication(AppComponent, {
           CheckoutTabsState,
           CartState,
           AddressesState,
-          ShippingState
+          ShippingState,
+          PaymentState,
+          OrdersState
         ],
         { developmentMode: false }
       ),

@@ -3,13 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'checkout-footer',
   templateUrl: './checkout-footer.component.html',
   styleUrls: ['./checkout-footer.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    IonicModule, 
+    CommonModule, 
+    FormsModule,
+    RouterLink
+  ]
 })
 export class CheckoutFooterComponent implements OnInit {
 

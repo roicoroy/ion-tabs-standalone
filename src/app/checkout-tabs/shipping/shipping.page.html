@@ -6,7 +6,7 @@
 
     :: {{ vs.cart.shipping_lines }}
 
-    <br/>
+    <br />
     Shipping Methods | shipping_lines
     <!-- <div *ngFor="let method of vs.shipping_methods">
       <div>
@@ -17,7 +17,7 @@
     <ion-list>
       <ion-item>
         <ion-select [(ngModel)]="shipping_lines" (ionChange)="shippingLinesChange($event)" label="Shipping Methods">
-          <ion-select-option [value]="method.id" *ngFor="let method of vs.shipping_methods">
+          <ion-select-option [value]="method" *ngFor="let method of vs.shipping_methods">
             {{ method.title }}
           </ion-select-option>
         </ion-select>
@@ -26,20 +26,26 @@
 
   </div>
 
-  <!-- <div *ngIf="viewState$ | async as vs">
-    Shipping Zones
-    <div *ngFor="let zone of vs.shipping_zones">
-      <div *ngIf="zone.id != 0">
-        {{ zone.name }}
-      </div>
-    </div>
-  </div> -->
-  <div>
+  <div *ngIf="viewState$ | async as vs">
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="payment_gateways" (ionChange)="paymentGatewaysChange($event)" label="Payment Gateways">
+          <ion-select-option [value]="payment_gateways" *ngFor="let payment of vs.payment_gateways">
+            {{ payment.id }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+  
+
+
+  <!-- <div>
     <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
     <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">
       Form Ready!
     </ion-button>
-  </div>
+  </div> -->
 </ion-content>
 
 <checkout-footer></checkout-footer>

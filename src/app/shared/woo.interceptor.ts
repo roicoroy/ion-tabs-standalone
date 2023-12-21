@@ -87,6 +87,7 @@ export class WooInterceptor implements HttpInterceptor {
             request.url.includes('zones') ||
             request.url.includes('classes') ||
             request.url.includes('orders') ||
+            request.url.includes('create-payment-intent') ||
             request.url.includes('payment_gateways')
         ) {
             requestUrl = `${environment.origin}${environment.wc3Endpoint}/${request.url}${this.includeWooAuth(request.url)}`;
@@ -105,7 +106,10 @@ export class WooInterceptor implements HttpInterceptor {
                     })
                 );
         }
-        if (request.url.includes('products')) {
+        if (
+            request.url.includes('stripe-payment') ||
+            request.url.includes('products')
+            ) {
             requestUrl = `${environment.origin}${environment.wcEndpoint}/${request.url}${this.includeWooAuth(request.url)}`;
             authRequest = request.clone({
                 url: requestUrl

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ProductsState } from '../store/shop/products.state';
+import { ProductsState } from '../store/products/products.state';
 import { Order, Product } from '../shared/wordpress/utils/types/wooCommerceTypes';
-import { CartState } from '../store/shop/cart.state';
+import { CartState } from '../store/cart/cart.state';
 
 export interface IProductsFacadeModel {
     products: Product[];

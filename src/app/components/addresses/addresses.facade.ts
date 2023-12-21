@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { Billing, Shipping, UserResponse } from 'src/app/shared/wooApi';
-import { AddressesState } from './store/addresses.state';
+import { AddressesState } from '../../store/addresses/addresses.state';
 import { CustomerActions } from '../../store/customer/customer.actions';
 import { Customer } from '../../shared/wordpress/utils/types/wooCommerceTypes';
 import { CustomerState } from '../../store/customer/customer.state';
@@ -23,8 +23,6 @@ export class AddressesFacade {
     @Select(AddressesState.getBilling) billing_address$!: Observable<Billing>;
 
     @Select(CustomerState.getCustomer) customer$!: Observable<any>;
-
-    
 
     readonly viewState$: Observable<IAddressesFacadeModel>;
 

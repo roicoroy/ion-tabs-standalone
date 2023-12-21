@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Router, RouterLink } from '@angular/router';
-import { Observable, Subject, combineLatest, map, take, takeUntil } from 'rxjs';
-import { AddressesState } from '../store/addresses.state';
+import { RouterLink } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { AddressesState } from '../../../store/addresses/addresses.state';
 import { Select, Store } from '@ngxs/store';
 import { Shipping, Billing, Address } from 'src/app/shared/wooApi';
-import { NavigationService } from 'src/app/shared/utils/navigation.service';
 import { ModalController } from '@ionic/angular';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressesFacade, IAddressesFacadeModel } from '../addresses.facade';
-import { AddressesActions } from '../store/addresses.actions';
-import { CustomerActions } from 'src/app/store/customer/customer.actions';
+import { AddressesActions } from '../../../store/addresses/addresses.actions';
 
 export enum EAddresses {
   billing_address,
@@ -62,6 +60,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
     // )
     //   .subscribe({
     //     next: (res: any) => {
+    //       console.log(res);
     //     },
     //     error: (e) => {
     //       console.error(e)
@@ -78,17 +77,14 @@ export class AddressesComponent implements OnInit, OnDestroy {
       this.store.dispatch(new AddressesActions.ClearShippingAddress());
     }
   }
-  // address?: Address, 
+
   async openModalAddressPage(addressType?: string, address?: Address) {
-    // console.table(address);
-    // console.table(addressType);
     const modal = await this.modalController.create({
       component: AddAddressPage,
       componentProps: {
         address: address ? address : null,
         addressType
       },
-      // presentingElement
     });
     await modal.present();
     // console.table(response.data);

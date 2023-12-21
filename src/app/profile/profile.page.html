@@ -16,11 +16,11 @@
 
   <ion-grid>
 
-    <ion-row>
+    <!-- <ion-row>
       <ion-col size="12">
         <addresses-component></addresses-component>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row *ngIf="viewState$ | async as vs">
       <ion-col size="12">
@@ -43,6 +43,15 @@
       <ion-col size="6">
         Billing Address
         {{ vs.customer?.billing | json }}
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-item *ngFor="let order of vs.customerOrders">
+          <ion-label>
+            {{  order.id }}
+            {{  order.status }}
+          </ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>

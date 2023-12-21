@@ -6,7 +6,7 @@ import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { NavigationService } from 'src/app/shared/utils/navigation.service';
 import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { CartState } from '../../store/shop/cart.state';
+import { CartState } from '../../store/cart/cart.state';
 import { IProductsFacadeModel, ProductsFacade } from '../products.facade';
 
 @Component({

@@ -4,7 +4,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngxs/store';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, call, camera, cameraOutline, cog, cogOutline, home, homeOutline, mail, menu, menuOutline, storefront, storefrontOutline, thumbsUp, thumbsUpOutline, homeSharp, heart, share, create, add, cart, checkmarkOutline, arrowBack, wallet, bicycle, book, triangle, remove, informationCircleOutline, eyeOffOutline, eyeOutline } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, call, camera, cameraOutline, cog, cogOutline, home, homeOutline, mail, menu, menuOutline, storefront, storefrontOutline, thumbsUp, thumbsUpOutline, homeSharp, heart, share, create, add, cart, checkmarkOutline, arrowBack, wallet, bicycle, book, triangle, remove, informationCircleOutline, eyeOffOutline, eyeOutline, card } from 'ionicons/icons';
 
 import { Observable, Subject } from 'rxjs';
 import { AppFacade, IAppFacadeModel } from './app.facade';
@@ -15,7 +15,7 @@ import { FcmService } from './shared/fcm.service';
 import { LanguageService } from './shared/language/language.service';
 import { KeyboardService } from './shared/native/keyboard/keyboard.service';
 import { ThemeService } from './shared/utils/theme.service';
-import { ProductsActions } from './store/shop/products.actions';
+import { ProductsActions } from './store/products/products.actions';
 
 @Component({
   selector: 'app-root',
@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
     return addIcons({
       remove,
       cart,
+      card,
       create,
       informationCircleOutline,
       add,

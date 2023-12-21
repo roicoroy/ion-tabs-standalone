@@ -7,7 +7,7 @@ import { CheckoutHeaderComponent } from './header/header.component';
 import { CheckoutTabsFacade, ICheckoutTabsFacadeModel } from './checkout.facade';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { CheckoutActions } from '../shop/checkout/checkout.actions';
+import { CheckoutActions } from '../store/checkout/checkout.actions';
 import { CheckoutTabsService } from './checkout-tabs.service';
 
 @Component({

@@ -13,7 +13,7 @@ import { LoadingController } from '@ionic/angular';
 import { CartIconComponent } from 'src/app/shop/cart-icon/cart-icon.component';
 import { CartReviewFacade, ICartReviewFacadeModel } from './cart-review.facade';
 import { LineItem, Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { CartActions } from 'src/app/store/shop/cart.actions';
+import { CartActions } from 'src/app/store/cart/cart.actions';
 
 @Component({
   selector: 'app-cart-review',

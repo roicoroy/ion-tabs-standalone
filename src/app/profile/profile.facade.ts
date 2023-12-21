@@ -5,12 +5,13 @@ import { map } from 'rxjs/operators';
 import { AuthState } from '../auth/store/auth.state';
 import { UserResponse } from '../shared/wooApi';
 import { CustomerState } from '../store/customer/customer.state';
-import { Customer } from '../shared/wordpress/utils/types/wooCommerceTypes';
+import { Customer, Order } from '../shared/wordpress/utils/types/wooCommerceTypes';
 
 export interface IProfileFacade {
     isLoggedIn: boolean,
     user: UserResponse,
-    customer: Customer
+    customer: Customer,
+    customerOrders: Order[]
 }
 
 @Injectable({
@@ -24,6 +25,8 @@ export class ProfileFacade {
 
     @Select(CustomerState.getCustomer) customer$!: Observable<Customer>;
 
+    @Select(CustomerState.getCustomerOrders) customerOrders$!: Observable<Order[]>;
+
     readonly viewState$: Observable<IProfileFacade>;
 
     constructor() {
@@ -32,6 +35,7 @@ export class ProfileFacade {
                 this.isLoggedIn$,
                 this.user$,
                 this.customer$,
+                this.customerOrders$,
             ]
         )
             .pipe(
@@ -39,12 +43,14 @@ export class ProfileFacade {
                     [
                         a,
                         b,
-                        customer
+                        customer,
+                        customerOrders
                     ]
                 ) => ({
                     isLoggedIn: a,
                     user: b,
-                    customer
+                    customer,
+                    customerOrders
                 }))
             );
     }

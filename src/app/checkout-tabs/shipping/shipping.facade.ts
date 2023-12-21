@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Select } from "@ngxs/store";
 import { Observable, combineLatest, map } from "rxjs";
 import { ShippingState } from "../../store/shipping/shipping.state";
-import { CartState } from "src/app/store/shop/cart.state";
+import { CartState } from "src/app/store/cart/cart.state";
 import { Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 
 export class IShippingFacadeModel {
@@ -12,6 +12,7 @@ export class IShippingFacadeModel {
     shipping_zones: any;
     tax_classes: any;
     cart: Order;
+    secret_key: any;
 }
 
 @Injectable({
@@ -31,6 +32,8 @@ export class ShippingFacade {
 
     @Select(CartState.getCart) cart$!: Observable<Order>;
 
+    @Select(ShippingState.getSecretKey) secret_key$!: Observable<any>;
+
     readonly viewState$: Observable<IShippingFacadeModel>;
 
     constructor() {
@@ -42,6 +45,7 @@ export class ShippingFacade {
                 this.shipping_zones$,
                 this.tax_classes$,
                 this.cart$,
+                this.secret_key$,
             ]
         )
             .pipe(
@@ -53,6 +57,7 @@ export class ShippingFacade {
                         shipping_zones,
                         tax_classes,
                         cart,
+                        secret_key,
                     ]
                 ) => (
                     {
@@ -62,6 +67,7 @@ export class ShippingFacade {
                         shipping_zones,
                         tax_classes,
                         cart,
+                        secret_key,
                     }
                 ))
             );

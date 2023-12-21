@@ -1,12 +1,9 @@
 <checkout-header [pageTitle]="pageTitle"></checkout-header>
 
 <ion-content [fullscreen]="true">
-  <div>
-    <ion-icon name="triangle" [color]="buttonToggle ? 'danger' : 'primary'"></ion-icon>
-    <ion-button expand="block" fill="clear" shape="round" (click)="toogle()">
-      Form Ready!
-    </ion-button>
-  </div>
+
+  <payment-component></payment-component>
+
 </ion-content>
 
 <checkout-footer></checkout-footer>

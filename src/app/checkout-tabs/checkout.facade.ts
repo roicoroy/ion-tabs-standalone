@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CheckoutTabsState } from '../shop/checkout/checkout.state';
+import { CheckoutTabsState } from '../store/checkout/checkout.state';
 import { ICheckoutTabs } from './checkout-tabs.config';
 
 export class ICheckoutTabsFacadeModel {

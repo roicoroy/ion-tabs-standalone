@@ -17,6 +17,10 @@ export namespace ShippingActions {
     }
     export class UpdateCartShippingLines {
         static readonly type = '[ShippingActions] Update Cart Shipping Lines';
-        constructor(public methodId: number) { }
+        constructor(public method: any) { }
     }
- }
+    export class UpdateCartPaymentGateways {
+        static readonly type = '[ShippingActions] Update Cart Payment Gateways';
+        constructor(public paymentGateway: any) { }
+    }
+}

@@ -8,12 +8,12 @@ import { CheckoutFooterComponent } from '../checkout-footer/checkout-footer.comp
 import { CheckoutTabsService } from '../checkout-tabs.service';
 import { AddressesComponent } from 'src/app/components/addresses/addresses-list/addresses.component';
 import { Select, Store } from '@ngxs/store';
-import { AddressesState } from 'src/app/components/addresses/store/addresses.state';
+import { AddressesState } from 'src/app/store/addresses/addresses.state';
 import { Address, Billing, Shipping } from 'src/app/shared/wooApi';
 import { LoadingController } from '@ionic/angular';
 import { IAddressesFacadeModel, AddressesFacade } from 'src/app/components/addresses/addresses.facade';
 import { CartAddressesFacade, ICartAddressesFacadeModel } from './cart-addresses.facade';
-import { AddressesActions } from 'src/app/components/addresses/store/addresses.actions';
+import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 
 @Component({
   selector: 'app-addresses',
@@ -56,19 +56,19 @@ export class AddressesPage implements OnInit, OnDestroy {
     // const loading = await this.loadingController.create();
     // await loading.present();
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$
-    //   .pipe(
-    //     takeUntil(this.ngUnsubscribe),
-    //     take(1)
-    //   )
-    //   .subscribe({
-    //     next: async (p: any) => {
-    //       // console.log(p.customer.billing);
-    //       // console.log(p.customer.shipping);
-    //       // this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.billing))
-    //       // this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.shipping))
-    //     },
-    //   });
+    this.viewState$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1)
+      )
+      .subscribe({
+        next: async (p: any) => {
+          // console.log(p.customer.billing);
+          console.log(p);
+          this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.billing))
+          this.store.dispatch(new AddressesActions.AddAddressToSavedList(p.customer.shipping))
+        },
+      });
   }
 
   addNewAddressToList() {

@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy, inject } from "@angular/core";
 import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
-import { Billing, WoocommerceCustomerService } from "src/app/shared/wooApi";
+import { Billing, ListOrderParameters, WoocommerceCustomerService, WoocommerceOrderService } from "src/app/shared/wooApi";
 import { CustomerActions } from "./customer.actions";
-import { Customer } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
+import { Customer, Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
 import { Subject, catchError, takeUntil } from "rxjs";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
 import { AuthState } from "src/app/auth/store/auth.state";
@@ -10,14 +10,11 @@ import { AuthState } from "src/app/auth/store/auth.state";
 export interface ICustomerStateModel {
     customer: Customer | null;
     customers: Customer[] | null;
+    customerOrders: Order[];
 }
 
 @State<ICustomerStateModel>({
     name: 'customer',
-    defaults: {
-        customer: null,
-        customers: null,
-    },
 })
 @Injectable({
     providedIn: 'root'
@@ -25,6 +22,8 @@ export interface ICustomerStateModel {
 export class CustomerState implements OnDestroy {
 
     private wooApiCustomer = inject(WoocommerceCustomerService);
+
+    private wooApiOrdersService = inject(WoocommerceOrderService);
 
     private store = inject(Store);
 
@@ -40,6 +39,11 @@ export class CustomerState implements OnDestroy {
     @Selector()
     static getCustomers(state: ICustomerStateModel): Customer[] | null {
         return state.customers;
+    }
+
+    @Selector()
+    static getCustomerOrders(state: ICustomerStateModel): Order[] {
+        return state.customerOrders;
     }
 
     @Action(CustomerActions.CreateCustomer)
@@ -71,9 +75,9 @@ export class CustomerState implements OnDestroy {
             )
             .subscribe((customers: Customer[]) => {
                 this.store.dispatch(new CustomerActions.RetrieveCustomer(user));
-                    ctx.patchState({
-                        customers
-                    });
+                ctx.patchState({
+                    customers
+                });
             });
     }
 
@@ -93,6 +97,8 @@ export class CustomerState implements OnDestroy {
         });
     }
 
+
+
     @Action(CustomerActions.UpdateCustomerAddress)
     updateCustomers(ctx: StateContext<ICustomerStateModel>, { id, address, addressType }: CustomerActions.UpdateCustomerAddress) {
         const state = ctx.getState();
@@ -107,7 +113,7 @@ export class CustomerState implements OnDestroy {
                 shipping: address
             };
         }
-        console.log(payload);
+        // console.log(payload);
         this.wooApiCustomer.updateCustomer(Number(id), payload)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
@@ -119,6 +125,28 @@ export class CustomerState implements OnDestroy {
                 return ctx.patchState({
                     ...state,
                     customer,
+                });
+            });
+    }
+
+    @Action(CustomerActions.GetCustomerOrders)
+    getCustomerOrders(ctx: StateContext<ICustomerStateModel>) {
+        const state = ctx.getState();
+        const params: ListOrderParameters = {
+            customer: state.customer.id,
+        };
+        this.wooApiOrdersService.listAllOrders(params)
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                catchError((e: any) => {
+                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(e));
+                })
+            )
+            .subscribe((customerOrders: Order[]) => {
+                // console.log(customerOrders);
+                return ctx.patchState({
+                    ...state,
+                    customerOrders,
                 });
             });
     }

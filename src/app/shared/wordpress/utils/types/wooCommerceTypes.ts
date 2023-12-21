@@ -260,6 +260,7 @@ export interface Order {
   refunds?: any[]; // TODO define refunds properties
   set_paid?: boolean;
   _links?: Links;
+  payment_url?: any;
 }
 
 export interface Links {

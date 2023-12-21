@@ -2,9 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Shipping, Billing, Address, WoocommerceOrderService } from 'src/app/shared/wooApi';
 import { AddressesActions } from './addresses.actions';
-import { CartState, ICartStateModel } from 'src/app/store/shop/cart.state';
+import { CartState, ICartStateModel } from 'src/app/store/cart/cart.state';
 import { Order } from 'src/app/shared/wordpress/utils/types/wooCommerceTypes';
-import { CartActions } from 'src/app/store/shop/cart.actions';
+import { CartActions } from 'src/app/store/cart/cart.actions';
 
 export class IAddressesStateModel {
     billing_address!: Billing | null;
@@ -138,12 +138,12 @@ export class AddressesState {
         });
     }
 
-    addressesList: any[];
+    addressesList: any[] = [];
 
     @Action(AddressesActions.AddAddressToSavedList)
     addAddressToSavedList(ctx: StateContext<IAddressesStateModel>, { address }: AddressesActions.AddAddressToSavedList) {
         // console.log(address);
-        if (address && this.addressesList) {
+        if (address) {
             this.addressesList.push(address);
             // console.log(this.addressesList);
             return ctx.patchState({

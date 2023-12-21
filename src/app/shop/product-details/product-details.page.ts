@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { ProductsActions } from '../../store/shop/products.actions';
+import { ProductsActions } from '../../store/products/products.actions';
 import { LoadingController } from '@ionic/angular';
 import { CartComponent } from '../cart/cart.component';
 import { CartIconComponent } from '../cart-icon/cart-icon.component';
@@ -38,8 +38,6 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
 
   private store = inject(Store);
 
-  private loadingController = inject(LoadingController);
-
   private facade = inject(ProductsFacade);
 
   private sanitizer = inject(DomSanitizer);
@@ -48,15 +46,14 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.viewState$ = this.facade.viewState$;
-    const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    console.log(id);
+    const id = this.activatedRoute.snapshot.paramMap.get('id') as string
     if (id) {
       this.store.dispatch(new ProductsActions.GetProductById(id));
     }
   }
 
   sanitise(content: any) {
-    return this.sanitizer.bypassSecurityTrustHtml(content);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(content);
   }
 
   ngOnDestroy(): void {

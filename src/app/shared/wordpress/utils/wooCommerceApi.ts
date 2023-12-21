@@ -17,7 +17,7 @@ export async function fetchWooCommerceProducts() {
   try {
     const response = await api.get("products");
     return response;
-  } catch (error:any) {
+  } catch (error: any) {
     throw new Error(error);
   }
 }
@@ -27,7 +27,7 @@ export async function createWooCommerceOrder(data: Order) {
   try {
     const response = await api.post("orders", data);
     return response;
-  } catch (error:any) {
+  } catch (error: any) {
     throw new Error(error);
   }
 }
@@ -36,7 +36,17 @@ export async function retrieveProductById(productId: string) {
   try {
     const response = await api.get(`products/${productId}`);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
+    throw new Error(error);
+  }
+
+}
+
+export const postShippingMethods = async (methodId: string) => {
+  try {
+    const response = await api.get(`shipping_methods/${methodId}`);
+    return response.data;
+  } catch (error: any) {
     throw new Error(error);
   }
 }

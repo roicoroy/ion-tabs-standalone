@@ -8,12 +8,8 @@ import { NgxsFormPluginModule, SetFormDirty, UpdateFormValue } from '@ngxs/form-
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { ModalController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
-import { AddressesActions } from '../store/addresses.actions';
-import { EAddresses } from '../addresses-list/addresses.component';
-import { CheckoutTabsService } from 'src/app/checkout-tabs/checkout-tabs.service';
+import { AddressesActions } from '../../../store/addresses/addresses.actions';
 import { IAddressesFacadeModel, AddressesFacade } from '../addresses.facade';
-import { AuthActions } from 'src/app/auth/store/auth.actions';
 import { CustomerActions } from 'src/app/store/customer/customer.actions';
 
 @Component({

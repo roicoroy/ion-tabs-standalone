@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Order Review
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="checkout/payment"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home">
+        Home Page
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        Order Review
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="viewState$ | async as vs">
+    status: {{ vs.completedOrder?.status }}
+    <ion-item *ngFor="let meta of vs.completedOrder?.meta_data">
+      <ion-label>
+        {{ meta.key }} - {{ meta.value }}
+      </ion-label>
+    </ion-item>
+  </div>
+
+</ion-content>

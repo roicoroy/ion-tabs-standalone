@@ -1,4 +1,70 @@
 
+export interface StripeIntend {
+    id?: string;
+    object?: string;
+    amount: number | any;
+    amount_capturable?: number;
+    amount_details?: AmountDetails;
+    amount_received?: number;
+    application?: null;
+    application_fee_amount?: null;
+    automatic_payment_methods?: AutomaticPaymentMethods;
+    canceled_at?: null;
+    cancellation_reason?: null;
+    capture_method?: string;
+    client_secret?: string;
+    confirmation_method?: string;
+    created?: number;
+    currency: string;
+    customer?: null;
+    description?: null;
+    invoice?: null;
+    last_payment_error?: null;
+    latest_charge?: null;
+    livemode?: boolean;
+    metadata?: TipOrMetadata;
+    next_action?: null;
+    on_behalf_of?: null;
+    payment_method?: null;
+    payment_method_configuration_details?: PaymentMethodConfigurationDetails;
+    payment_method_options?: PaymentMethodOptions;
+    payment_method_types?: (string)[] | null;
+    processing?: null;
+    receipt_email?: null;
+    review?: null;
+    setup_future_usage?: null;
+    shipping?: null;
+    source?: null;
+    statement_descriptor?: null;
+    statement_descriptor_suffix?: null;
+    status?: string;
+    transfer_data?: null;
+    transfer_group?: null;
+}
+export interface AmountDetails {
+    tip: TipOrMetadata;
+}
+export interface TipOrMetadata {
+}
+export interface AutomaticPaymentMethods {
+    allow_redirects: string;
+    enabled: boolean;
+}
+export interface PaymentMethodConfigurationDetails {
+    id: string;
+    parent?: null;
+}
+export interface PaymentMethodOptions {
+    card: Card;
+}
+export interface Card {
+    installments?: null;
+    mandate_options?: null;
+    network?: null;
+    request_three_d_secure: string;
+}
+
+
 export interface IOrder {
     id?: number;
     parent_id?: number;

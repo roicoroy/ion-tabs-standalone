@@ -4,9 +4,11 @@ import { Subject, catchError, takeUntil } from "rxjs";
 import { ShippingActions } from "./shipping.actions";
 import { WoocommerceShippingService } from "../../checkout-tabs/shipping/shipping.service";
 import { ErrorLoggingActions } from "src/app/store/errors-logging/errors-logging.actions";
-import { CartState } from "src/app/store/shop/cart.state";
+import { CartState } from "src/app/store/cart/cart.state";
+import { HttpClient } from "@angular/common/http";
+import { WoocommerceHelperService } from "src/app/shared/wooApi";
 import { Order } from "src/app/shared/wordpress/utils/types/wooCommerceTypes";
-import { CartActions } from "src/app/store/shop/cart.actions";
+import { CartActions } from "../cart/cart.actions";
 
 export interface IShippingStateModel {
     shipping_methods: any;
@@ -14,14 +16,12 @@ export interface IShippingStateModel {
     payment_gateways: any;
     shipping_zones: any;
     tax_classes: any;
+    secret_key: string;
+    payment_gateway: string;
 }
 
 @State<IShippingStateModel>({
     name: 'shipping',
-    // defaults: {
-    //     customer: null,
-    //     customers: []
-    // },
 })
 @Injectable({
     providedIn: 'root'
@@ -33,6 +33,11 @@ export class ShippingState implements OnDestroy {
     private wooApiSerice = inject(WoocommerceShippingService);
 
     private store = inject(Store);
+
+    constructor(
+        private httpClient: HttpClient,
+        private wooHelper: WoocommerceHelperService
+    ) { }
 
     @Selector()
     static getShippingMethods(state: IShippingStateModel) {
@@ -53,6 +58,16 @@ export class ShippingState implements OnDestroy {
     @Selector()
     static getTaxClasses(state: IShippingStateModel) {
         return state.tax_classes;
+    }
+
+    @Selector()
+    static getSecretKey(state: IShippingStateModel): any {
+        return state.secret_key;
+    }
+
+    @Selector()
+    static getSelectedPaymentGateway(state: IShippingStateModel): any {
+        return state.payment_gateway;
     }
 
     @Action(ShippingActions.RetrieveShippingMethods)
@@ -156,21 +171,37 @@ export class ShippingState implements OnDestroy {
     }
 
     @Action(ShippingActions.UpdateCartShippingLines)
-    updateOrder(ctx: StateContext<IShippingStateModel>, { methodId }: ShippingActions.UpdateCartShippingLines) {
+    async updateOrder(ctx: StateContext<IShippingStateModel>, { method }: ShippingActions.UpdateCartShippingLines) {
+        // console.log(method._links.self[0].href);
+        const postUrl = method._links.self[0]
+        const methodId = method.id;
+        console.log(method);
         console.log(methodId);
         const cart = this.store.selectSnapshot(CartState.getCart);
-        // console.log(cart);
-        // console.log(cart.customer_id);
+        // this.httpClient.get<any>(`shipping_methods/${methodId}`,)
+        //     .pipe(catchError(err => this.wooHelper.handleError(err)))
+        //     .subscribe((cart) => {
+        //         console.log(cart);
+        //     });
+    }
+
+    @Action(ShippingActions.UpdateCartPaymentGateways)
+    async UpdateCartPaymentGateways(ctx: StateContext<IShippingStateModel>, { paymentGateway }: ShippingActions.UpdateCartPaymentGateways) {
+        const cart = this.store.selectSnapshot(CartState.getCart);
+        console.log('paymentGateway', paymentGateway);
         const order: Order = {
-            ...cart,
-            shipping_lines: [
-                {
-                    id: methodId
-                }
-            ],
+            id: cart.id,
+            customer_id: cart.customer_id,
+            payment_method: paymentGateway.id,
+            payment_method_title: "Card",
         }
-        console.log(order);
+        console.log('prder', order);
         this.store.dispatch(new CartActions.UpdateCartOrder(order));
+        if (paymentGateway) {
+            ctx.patchState({
+                payment_gateway: paymentGateway,
+            });
+        }
     }
 
     ngOnDestroy(): void {

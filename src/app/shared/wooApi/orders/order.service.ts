@@ -6,7 +6,6 @@ import { WoocommerceHelperService } from '../helper.service';
 import { ListOrderParameters, IOrder } from './orders.interface';
 import { Order } from '../../wordpress/utils/types/wooCommerceTypes';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +15,8 @@ export class WoocommerceOrderService {
     private httpClient: HttpClient,
     private wooHelper: WoocommerceHelperService
   ) { }
+
+
 
   createOrder(order: Order): Observable<Order> {
     return this.httpClient.post<Order>(`orders`, order)
@@ -27,8 +28,8 @@ export class WoocommerceOrderService {
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 
-  listAllOrders(params?: ListOrderParameters): Observable<IOrder[]> {
-    return this.httpClient.get<IOrder[]>(`orders`, { params: params as HttpParams || {} })
+  listAllOrders(params?: ListOrderParameters): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(`orders`, { params: params as HttpParams || {} })
       .pipe(catchError(err => this.wooHelper.handleError(err)));
   }
 

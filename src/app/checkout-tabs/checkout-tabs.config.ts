@@ -34,6 +34,6 @@ export const checkoutTabs: ICheckoutTabs[] = [
     tab: 'payment',
     iconName: 'wallet',
     buttonChecked: false,
-    disabled: true
+    disabled: false
   }
 ]

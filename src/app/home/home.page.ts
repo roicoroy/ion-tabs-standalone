@@ -6,7 +6,7 @@ import { NavigationService } from '../shared/utils/navigation.service';
 import { CartComponent } from '../shop/cart/cart.component';
 import { CartIconComponent } from '../shop/cart-icon/cart-icon.component';
 import { Store } from '@ngxs/store';
-import { ProductsActions } from '../store/shop/products.actions';
+import { ProductsActions } from '../store/products/products.actions';
 import { AddressesComponent } from '../components/addresses/addresses-list/addresses.component';
 import { AuthActions } from '../auth/store/auth.actions';
 
